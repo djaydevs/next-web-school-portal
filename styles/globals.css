@@ -1,0 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    font-family: 'Montserrat', sans-serif;
+}
+
+.hero-image {
+    @apply absolute inset-0 w-full h-screen object-cover;
+    -webkit-mask-image: linear-gradient(
+        rgba(99, 48, 47, 1),
+        rgba(99, 48, 47, 0.5) 90%,
+        rgba(99, 48, 47, 0)
+    );
+    mask-image: linear-gradient(
+        rgba(99, 48, 47, 1),
+        rgba(99, 48, 47, 0.5) 90%,
+        rgba(99, 48, 47, 0)
+    );
+}
