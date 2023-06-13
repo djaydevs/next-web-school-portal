@@ -6,6 +6,7 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import PageButton from "./PageButton";
 import NavbarLinks from "./NavbarLinks";
+import Link from "next/link";
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -13,16 +14,16 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className="z-40 sticky top-0 left-0 p-2 backdrop-blur-md bg-white/70 text-primary-500 flex items-center justify-between text-xs md:text-sm"
+        className="z-40 custom-navbar flex-between text-primary-500 text-xs md:text-sm"
         aria-label="Global"
       >
-        <a href="" className="flex items-center">
-          <Image
+        <a href="" className="flex-center">
+          {/* <Image
             src="/assets/images/mja-logo.png"
-            width={48}
-            height={48}
+            fill
             alt="Logo"
-          />
+            className="object-contain object-left"
+          /> */}
           <div className="p-2">
             <strong className="text-sm">Mary Josette Academy</strong>
             <br />
@@ -31,7 +32,12 @@ export default function Navbar() {
             </span>
           </div>
         </a>
-        <NavbarLinks className="hidden lg:flex lg:justify-between lg:gap-x-12 lg:text-md font-semibold" />
+        <div className="hidden lg:flex lg:justify-between lg:gap-x-12 lg:text-md font-semibold">
+          <Link href="">Home</Link>
+          <Link href="#programs">Programs</Link>
+          <Link href="">About</Link>
+          <Link href="">Contacts</Link>
+        </div>
         <div className="flex justify-end gap-3">
           {/* <PageButton
             to="/login"
@@ -74,8 +80,9 @@ export default function Navbar() {
               >
                 <Image
                   src="@assets/images/mja-logo.png"
-                  width={500}
-                  height={500}
+                  width={48}
+                  height={48}
+                  quality={90}
                   alt="Logo"
                 />
                 <div className="p-2">

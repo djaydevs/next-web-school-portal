@@ -1,6 +1,6 @@
 import Image from "next/image";
-import Navbar from "@components/home/Navbar";
-import PageButton from "@components/home/PageButton";
+import Navbar from "@/components/home/Navbar";
+import PageButton from "@/components/home/PageButton";
 
 export default function Home() {
   return (
@@ -9,10 +9,9 @@ export default function Home() {
         <Navbar />
         <Image
           src="/assets/images/bgHero.png"
-          //   width={500}
-          //   height={500}
-          fill={true}
+          fill
           alt="Hero"
+          className="hero-image"
         />
         <div className="pt-40 px-16 flex flex-col justify-center items-center space-y-[10rem]">
           <div className="z-10 text-accent-500 text-center space-y-3">
