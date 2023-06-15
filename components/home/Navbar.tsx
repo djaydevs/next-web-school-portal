@@ -2,11 +2,10 @@
 
 import { useState, Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
-import PageButton from "./PageButton";
-import NavbarLinks from "./NavbarLinks";
 import Link from "next/link";
+import ScrollLink from "@/components/ui/ScrollLink";
+import { XCircle } from "lucide-react";
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -17,26 +16,32 @@ export default function Navbar() {
         className="z-40 custom-navbar flex-between text-primary-500 text-xs md:text-sm"
         aria-label="Global"
       >
-        <a href="" className="flex-center">
-          {/* <Image
-            src="/assets/images/mja-logo.png"
+        <Link href={"/"}>
+          <Image
+            priority
             fill
+            quality={100}
+            src="/mja-logo.png"
             alt="Logo"
-            className="object-contain object-left"
-          /> */}
-          <div className="p-2">
+            style={{
+              padding: "0.2rem",
+              objectFit: "contain",
+              objectPosition: "left",
+            }}
+          />
+          <div className="relative mx-16 p-2">
             <strong className="text-sm">Mary Josette Academy</strong>
             <br />
             <span className="hidden md:block">
               Tigbe, Norzagaray, Bulacan, Philippines, 3013
             </span>
           </div>
-        </a>
-        <div className="hidden lg:flex lg:justify-between lg:gap-x-12 lg:text-md font-semibold">
-          <Link href="">Home</Link>
-          <Link href="#programs">Programs</Link>
-          <Link href="">About</Link>
-          <Link href="">Contacts</Link>
+        </Link>
+        <div className="hidden z-50 lg:flex lg:justify-between lg:gap-x-12 lg:text-md font-semibold">
+          <Link href="/">Home</Link>
+          <ScrollLink href="#programs">Programs</ScrollLink>
+          <ScrollLink href="#about">About</ScrollLink>
+          <ScrollLink href="#contacts">Contacts</ScrollLink>
         </div>
         <div className="flex justify-end gap-3">
           {/* <PageButton
@@ -74,34 +79,36 @@ export default function Navbar() {
         >
           <Dialog.Panel className="fixed inset-y-0 right-0 z-10 w-full top-0 p-2 backdrop-blur-md bg-white/70 text-primary-500 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
             <div className="relative flex items-center justify-between">
-              <a
-                href=""
-                className="flex justify-between items-center sm:hidden"
-              >
+              <Link href={"/"}>
                 <Image
-                  src="@assets/images/mja-logo.png"
-                  width={48}
-                  height={48}
-                  quality={90}
+                  priority
+                  fill
+                  quality={100}
+                  src="/mja-logo.png"
                   alt="Logo"
+                  style={{
+                    padding: "0.2rem",
+                    objectFit: "contain",
+                    objectPosition: "left",
+                  }}
                 />
-                <div className="p-2">
+                <div className="relative mx-12 p-2">
                   <strong className="text-sm">Mary Josette Academy</strong>
                 </div>
-              </a>
+              </Link>
               <button
                 type="button"
                 className="p-2.5 pr-4 rounded-md text-primary-500 hover:text-primary-300 focus:text-primary-300 sm:absolute sm:right-0 sm:top-0 sm:pt-4"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <span className="sr-only">Close menu</span>
-                <XMarkIcon className="w-8" aria-hidden="true" />
+                <XCircle className="w-8" aria-hidden="true" />
               </button>
             </div>
             <div className="mt-6 mx-4 flow-root">
               <div className="-my-6 divide-y divide-gray-500/10">
                 <div className="space-y-4 py-16">
-                  <NavbarLinks className="flex flex-col gap-10 text-md text-center font-medium" />
+                  {/* <NavbarLinks className="flex flex-col gap-10 text-md text-center font-medium" /> */}
                 </div>
                 {/* <PageButton
                   to="/login"

@@ -1,9 +1,11 @@
-import type { Metadata } from "next";
-import "@styles/globals.css";
+import { Montserrat } from "next/font/google";
 
-export const metadata: Metadata = {
-  title: "Mary Josette Academy",
-};
+import "@/styles/globals.css";
+
+const montserrat = Montserrat({
+  subsets: ["latin"],
+  display: "swap",
+});
 
 export default function RootLayout({
   children,
@@ -11,7 +13,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className={montserrat.className}>
       <body>{children}</body>
     </html>
   );
