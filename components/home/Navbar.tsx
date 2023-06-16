@@ -5,7 +5,8 @@ import { Dialog, Transition } from "@headlessui/react";
 import Image from "next/image";
 import Link from "next/link";
 import ScrollLink from "@/components/ui/ScrollLink";
-import { XCircle } from "lucide-react";
+import { Menu, XCircle } from "lucide-react";
+import { Button } from "@/components/ui/Button";
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -16,50 +17,55 @@ export default function Navbar() {
         className="z-40 custom-navbar flex-between text-primary-500 text-xs md:text-sm"
         aria-label="Global"
       >
-        <Link href={"/"}>
-          <Image
-            priority
-            fill
-            quality={100}
-            src="/mja-logo.png"
-            alt="Logo"
-            style={{
-              padding: "0.2rem",
-              objectFit: "contain",
-              objectPosition: "left",
-            }}
-          />
-          <div className="relative mx-16 p-2">
+        <Link href={"/"} className="flex-none relative flex-center">
+          <div className="w-14 h-14">
+            <Image
+              priority
+              fill
+              quality={100}
+              src="/mja-logo.png"
+              alt="Logo"
+              style={{
+                objectFit: "contain",
+                objectPosition: "left",
+              }}
+            />
+          </div>
+          <div className="p-2">
             <strong className="text-sm">Mary Josette Academy</strong>
             <br />
-            <span className="hidden md:block">
+            <span className="hidden sm:block sm:text-xs md:text-sm">
               Tigbe, Norzagaray, Bulacan, Philippines, 3013
             </span>
           </div>
         </Link>
-        <div className="hidden z-50 lg:flex lg:justify-between lg:gap-x-12 lg:text-md font-semibold">
-          <Link href="/">Home</Link>
-          <ScrollLink href="#programs">Programs</ScrollLink>
-          <ScrollLink href="#about">About</ScrollLink>
-          <ScrollLink href="#contacts">Contacts</ScrollLink>
+        <div className="flex-auto hidden z-50 lg:flex lg:justify-center lg:gap-x-12">
+          <Button variant="link">
+            <Link href="/">Home</Link>
+          </Button>
+          <Button variant="link">
+            <ScrollLink href="#programs">Programs</ScrollLink>
+          </Button>
+          <Button variant="link">
+            <ScrollLink href="#about">About</ScrollLink>
+          </Button>
+          <Button variant="link">
+            <ScrollLink href="#contacts">Contacts</ScrollLink>
+          </Button>
         </div>
+        <Button asChild className="hidden lg:block">
+          <Link href="/login">School Portal</Link>
+        </Button>
         <div className="flex justify-end gap-3">
-          {/* <PageButton
-            to="/login"
-            className="hidden bg-primary-500 text-white hover:bg-accent-500 hover:text-primary-500 focus:bg-accent-500 focus:text-primary-500 sm:block"
+          <Button
+            variant="ghost"
+            size="icon"
+            className="flex lg:hidden"
+            onClick={() => setMobileMenuOpen(true)}
           >
-            School Portal
-          </PageButton> */}
-          <div className="flex lg:hidden">
-            {/* <button
-              type="button"
-              className="p-2.5 text-primary-500 hover:text-primary-900 focus:text-primary-900"
-              onClick={() => setMobileMenuOpen(true)}
-            >
-              <span className="sr-only">Open main menu</span>
-              <Bars3Icon className="w-8" aria-hidden="true" />
-            </button> */}
-          </div>
+            <span className="sr-only">Open main menu</span>
+            <Menu className="w-8 h-8 text-primary" aria-hidden="true" />
+          </Button>
         </div>
       </nav>
 
@@ -78,44 +84,65 @@ export default function Navbar() {
           onClose={setMobileMenuOpen}
         >
           <Dialog.Panel className="fixed inset-y-0 right-0 z-10 w-full top-0 p-2 backdrop-blur-md bg-white/70 text-primary-500 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
-            <div className="relative flex items-center justify-between">
-              <Link href={"/"}>
-                <Image
-                  priority
-                  fill
-                  quality={100}
-                  src="/mja-logo.png"
-                  alt="Logo"
-                  style={{
-                    padding: "0.2rem",
-                    objectFit: "contain",
-                    objectPosition: "left",
-                  }}
-                />
-                <div className="relative mx-12 p-2">
+            <div className="relative flex-between sm:flex sm:justify-end">
+              <Link href={"/"} className="relative flex-center sm:hidden">
+                <div className="w-14 h-14">
+                  <Image
+                    priority
+                    fill
+                    quality={100}
+                    src="/mja-logo.png"
+                    alt="Logo"
+                    style={{
+                      objectFit: "contain",
+                      objectPosition: "left",
+                    }}
+                  />
+                </div>
+                <div className="p-2">
                   <strong className="text-sm">Mary Josette Academy</strong>
                 </div>
               </Link>
-              <button
-                type="button"
-                className="p-2.5 pr-4 rounded-md text-primary-500 hover:text-primary-300 focus:text-primary-300 sm:absolute sm:right-0 sm:top-0 sm:pt-4"
+              <Button
+                variant="ghost"
+                size="icon"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <span className="sr-only">Close menu</span>
-                <XCircle className="w-8" aria-hidden="true" />
-              </button>
+                <XCircle className="w-8 h-8 text-primary" aria-hidden="true" />
+              </Button>
             </div>
             <div className="mt-6 mx-4 flow-root">
               <div className="-my-6 divide-y divide-gray-500/10">
-                <div className="space-y-4 py-16">
-                  {/* <NavbarLinks className="flex flex-col gap-10 text-md text-center font-medium" /> */}
+                <div className="space-y-4 py-16 flex flex-col gap-10 text-center">
+                  <Button
+                    variant="link"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    <Link href="/">Home</Link>
+                  </Button>
+                  <Button
+                    variant="link"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    <ScrollLink href="#programs">Programs</ScrollLink>
+                  </Button>
+                  <Button
+                    variant="link"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    <ScrollLink href="#about">About</ScrollLink>
+                  </Button>
+                  <Button
+                    variant="link"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    <ScrollLink href="#contacts">Contacts</ScrollLink>
+                  </Button>
+                  <Button asChild>
+                    <Link href="/login">School Portal</Link>
+                  </Button>
                 </div>
-                {/* <PageButton
-                  to="/login"
-                  className="w-full border-none bg-primary-500 text-white hover:bg-accent-500 hover:text-primary-500 sm:hidden"
-                >
-                  School Portal
-                </PageButton> */}
               </div>
             </div>
           </Dialog.Panel>
