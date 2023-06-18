@@ -15,7 +15,6 @@ export default function Home() {
   return (
     <>
       <header className="h-screen dark:bg-brown-500">
-        <Navbar />
         <Hero />
       </header>
       <main className="-mt-1 z-20 max-width dark:bg-brown-500">
