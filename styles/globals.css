@@ -4,9 +4,9 @@
 
 @layer base {
     :root {
-      --background: 0 0% 100%;
+      --background: 0 0% 97%; /* brown-300 */
       --foreground: 1 36% 29%; /* brown-500 */
-   
+
       --muted: 210 40% 96.1%;
       --muted-foreground: 215.4 16.3% 46.9%;
    
@@ -55,8 +55,8 @@
       --primary: 5 15% 86%;
       --primary-foreground: 1 36% 29%;
    
-      --secondary: 222.2 47.4% 11.2%;
-      --secondary-foreground: 210 40% 98%;
+      --secondary: 56 85% 89%;
+      --secondary-foreground: 56 100% 46%;
    
       --accent: 56 100% 46%;
       --accent-foreground: 0 36% 12%;
@@ -93,10 +93,6 @@
     @apply flex justify-between items-center;
 }
 
-.custom-navbar {
-    @apply sticky top-0 left-0 p-2 backdrop-blur-md bg-background/80;
-}
-
 /* Hero */
 .hero-image {
     -webkit-mask-image: linear-gradient(
@@ -109,4 +105,12 @@
         rgba(99, 48, 47, 0.5) 90%,
         rgba(99, 48, 47, 0)
     );
+}
+
+.three-d {
+  text-shadow: 0px 3px 0px hsl(0 36% 12%);
+}
+
+.dark .three-d {
+  text-shadow: 0px 3px 0px hsl(2 15% 57%);
 }

@@ -15,7 +15,7 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className="z-40 custom-navbar flex-between gap-2 text-primary text-xs md:text-sm dark:bg-brown-800/80 dark:text-primary"
+        className="z-40 sticky top-0 left-0 p-2 flex-between gap-2 text-primary text-xs md:text-sm backdrop-blur-md bg-white/80 dark:bg-brown-800/80 dark:text-primary"
         aria-label="Global"
       >
         <Link href={"/"} className="flex-none relative flex-center">

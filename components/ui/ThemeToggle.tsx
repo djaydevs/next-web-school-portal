@@ -5,13 +5,8 @@ import { useTheme } from "next-themes";
 import { Icons } from "@/components/ui/Icons";
 import { Button } from "@/components/ui/Button";
 import { useEffect, useState } from "react";
-import { FC } from "react";
 
-interface ThemeToggleProps {
-  className?: string;
-}
-
-const ThemeToggle: FC<ThemeToggleProps> = ({}) => {
+export default function ThemeToggle({}) {
   const { systemTheme, theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const currentTheme = theme === "system" ? systemTheme : theme;
@@ -36,6 +31,4 @@ const ThemeToggle: FC<ThemeToggleProps> = ({}) => {
       )}
     </>
   );
-};
-
-export default ThemeToggle;
+}

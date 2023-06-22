@@ -1,5 +1,9 @@
 import { FC } from "react";
 import Image from "next/image";
+import Heading from "@/components/ui/Heading";
+import Paragraph from "@/components/ui/Paragraph";
+import { Button } from "@/components/ui/Button";
+import Link from "next/link";
 
 interface HeroProps {}
 
@@ -14,21 +18,27 @@ const Hero: FC<HeroProps> = ({}) => {
         style={{ objectFit: "cover" }}
         className="hero-image"
       />
-      <div className="pt-40 px-16 flex flex-col justify-center items-center space-y-[10rem]">
-        <div className="z-10 text-accent-500 text-center space-y-3">
-          <h1 className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black">
+      <div className="pt-40 px-16 flex flex-col justify-center items-center space-y-[12rem]">
+        <div className="z-10 space-y-3">
+          <Heading
+            size="lg"
+            className="text-secondary dark:text-secondary-foreground three-d"
+          >
             Welcome MJAIANS!
-          </h1>
-          <p className="text-xs md:text-sm lg:text-md xl:text-lg md:font-semibold">
+          </Heading>
+          <Paragraph>
             "Unwavering commitment towards academic distinction."
-          </p>
+          </Paragraph>
         </div>
-        {/* <PageButton
-          to="/login"
-          className="z-10 border-solid border-2 border-accent-500 text-accent-500 md:border-4 md:text-sm tracking-wider hover:bg-accent-500 hover:text-primary-500 hover:-translate-y-1 hover:scale-110 focus:text-primary-500 focus:-translate-y-1 focus:scale-110 lg:mt-[5rem]"
+        <Button
+          asChild
+          variant="default"
+          size="lg"
+          transition="d300"
+          className="z-10 rounded-full tracking-wider hover:bg-secondary hover:text-primary hover:-translate-y-1 hover:scale-110 focus:text-primary focus:-translate-y-1 focus:scale-110 lg:mt-[5rem]"
         >
-          Login to School Portal
-        </PageButton> */}
+          <Link href="/login">Login to School Portal</Link>
+        </Button>
       </div>
     </>
   );
