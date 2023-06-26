@@ -21,7 +21,7 @@ export default function Home() {
         </Providers>
         <Hero />
       </header>
-      <main className="-mt-1 z-20 bg-background max-width dark:bg-background">
+      <main className="-mt-1 z-20 bg-background max-w-[1300px] mx-auto dark:bg-background">
         <SectionMessage />
         <SectionPrograms />
         <SectionAbout />

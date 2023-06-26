@@ -81,10 +81,6 @@
 }
   
 /* General styles */
-.max-width {
-    @apply max-w-[1440px] mx-auto;
-}
-  
 .flex-center {
     @apply flex items-center justify-center;
 }

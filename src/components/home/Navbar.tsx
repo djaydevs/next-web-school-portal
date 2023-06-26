@@ -3,6 +3,7 @@
 import { useState, Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import Image from "next/image";
+import Logo from "@/public/mja-logo.png";
 import Link from "next/link";
 import ScrollLink from "@/components/ui/ScrollLink";
 import { Button } from "@/components/ui/Button";
@@ -19,18 +20,8 @@ export default function Navbar() {
         aria-label="Global"
       >
         <Link href={"/"} className="flex-none relative flex-center">
-          <div className="w-14 h-14">
-            <Image
-              priority
-              fill
-              quality={100}
-              src="/mja-logo.png"
-              alt="Logo"
-              style={{
-                objectFit: "contain",
-                objectPosition: "left",
-              }}
-            />
+          <div className="w-14 h-auto">
+            <Image priority quality={100} src={Logo} alt="Logo" />
           </div>
           <div className="p-2 text-xs">
             <strong className="text-sm">Mary Josette Academy</strong>
@@ -88,18 +79,8 @@ export default function Navbar() {
           <Dialog.Panel className="fixed inset-y-0 right-0 z-10 w-full top-0 p-2 backdrop-blur-md bg-white/70 dark:bg-background/70 text-primary-500 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
             <div className="relative flex-between sm:flex sm:justify-end">
               <Link href={"/"} className="relative flex-center sm:hidden">
-                <div className="w-14 h-14">
-                  <Image
-                    priority
-                    fill
-                    quality={100}
-                    src="/mja-logo.png"
-                    alt="Logo"
-                    style={{
-                      objectFit: "contain",
-                      objectPosition: "left",
-                    }}
-                  />
+                <div className="w-14 h-auto">
+                  <Image priority quality={100} src={Logo} alt="Logo" />
                 </div>
                 <div className="p-2">
                   <strong className="text-sm">Mary Josette Academy</strong>

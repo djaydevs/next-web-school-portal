@@ -1,24 +1,29 @@
+"use client";
+
 import { FC } from "react";
 import Image from "next/image";
+import HeroImage from "@/public/bg-hero.png";
 import Heading from "@/components/ui/Heading";
 import Paragraph from "@/components/ui/Paragraph";
 import { Button } from "@/components/ui/Button";
 import Link from "next/link";
+import { ChevronsDown } from "lucide-react";
+import ScrollLink from "@/components/ui/ScrollLink";
 
 interface HeroProps {}
 
 const Hero: FC<HeroProps> = ({}) => {
   return (
-    <>
+    <div className="w-full h-screen">
       <Image
         priority
         fill
-        src="/bg-hero.png"
-        alt="Hero"
+        src={HeroImage}
+        alt="Hero Image"
         style={{ objectFit: "cover" }}
         className="hero-image"
       />
-      <div className="pt-40 px-16 flex flex-col justify-center items-center space-y-[12rem]">
+      <div className="py-32 px-10 w-full h-screen flex flex-col justify-center items-center space-y-[8rem]">
         <div className="z-10 space-y-3">
           <Heading
             size="lg"
@@ -35,12 +40,22 @@ const Hero: FC<HeroProps> = ({}) => {
           variant="default"
           size="lg"
           transition="d300"
-          className="z-10 rounded-full tracking-wider hover:bg-secondary hover:text-primary hover:-translate-y-1 hover:scale-110 focus:text-primary focus:-translate-y-1 focus:scale-110 lg:mt-[5rem]"
+          className="z-10 py-4 rounded-full tracking-wider hover:bg-secondary hover:text-primary hover:-translate-y-1 hover:scale-110 focus:text-primary focus:-translate-y-1 focus:scale-110 lg:mt-[5rem]"
         >
           <Link href="/login">Login to School Portal</Link>
         </Button>
+        <Button
+          asChild
+          variant="none"
+          transition="d300"
+          className="z-10 w-full text-primary hover:translate-y-4 hover:text-secondary-foreground"
+        >
+          <ScrollLink href="#message">
+            <ChevronsDown className="w-12 h-12 mx-auto" />
+          </ScrollLink>
+        </Button>
       </div>
-    </>
+    </div>
   );
 };
 
