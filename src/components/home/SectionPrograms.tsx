@@ -1,12 +1,54 @@
-import { FC } from "react";
+import { FC, ReactNode } from "react";
+import Image from "next/image";
+import { Card, CardHeader, CardTitle } from "@/components/ui/Card";
+import Heading from "@/components/ui/Heading";
 
 interface SectionProgramsProps {}
 
 const SectionPrograms: FC<SectionProgramsProps> = ({}) => {
   return (
-    <section id="programs" className="bg-white p-10">
+    <section id="programs" className="p-10">
+      <Heading size="sm">Programs</Heading>
       <div className="bg-primary-500 p-10 rounded-xl">
-        <h3>Programs</h3>
+        <Card>
+          <CardHeader>
+            <Image
+              width="300"
+              height="100"
+              src="/elem.webp"
+              alt="Programs Image"
+              style={{ objectFit: "contain" }}
+              className="rounded-xl"
+            />
+            <CardTitle>Pre-Elementary and Elementary</CardTitle>
+          </CardHeader>
+        </Card>
+        <Card>
+          <CardHeader>
+            <Image
+              width="300"
+              height="100"
+              src="/jhs.webp"
+              alt="Programs Image"
+              style={{ objectFit: "contain" }}
+              className="rounded-xl"
+            />
+            <CardTitle>Junior High School</CardTitle>
+          </CardHeader>
+        </Card>
+        <Card>
+          <CardHeader>
+            <Image
+              width="300"
+              height="100"
+              src="/shs.webp"
+              alt="Programs Image"
+              style={{ objectFit: "contain" }}
+              className="rounded-xl"
+            />
+            <CardTitle>Senior High School</CardTitle>
+          </CardHeader>
+        </Card>
       </div>
     </section>
   );
