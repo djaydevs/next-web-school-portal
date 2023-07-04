@@ -13,7 +13,7 @@ interface HeroProps {}
 
 const Hero: FC<HeroProps> = ({}) => {
   return (
-    <div className="w-full h-screen">
+    <div className="static w-full h-screen">
       <Image
         priority
         fill
@@ -22,7 +22,7 @@ const Hero: FC<HeroProps> = ({}) => {
         style={{ objectFit: "cover" }}
         className="hero-image"
       />
-      <div className="py-32 px-10 w-full h-screen flex flex-col justify-center items-center space-y-[8rem]">
+      <div className="py-40 px-10 w-full h-screen flex flex-col justify-center items-center space-y-[8rem]">
         <div className="z-10 pt-10 space-y-3">
           <Heading
             size="lg"
