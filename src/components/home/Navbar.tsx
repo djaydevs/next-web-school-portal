@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, Fragment, useEffect } from "react";
+import { useState, Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -11,39 +11,11 @@ import ThemeToggle from "@/components/ui/ThemeToggle";
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [show, setShow] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
-
-  const controlNavbar = () => {
-    if (typeof window !== "undefined") {
-      if (window.scrollY > lastScrollY) {
-        // if scroll down hide the navbar
-        setShow(false);
-      } else {
-        // if scroll up show the navbar
-        setShow(true);
-      }
-      // remember current page location to use in the next move
-      setLastScrollY(window.scrollY);
-    }
-  };
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      window.addEventListener("scroll", controlNavbar);
-      // cleanup function
-      return () => {
-        window.removeEventListener("scroll", controlNavbar);
-      };
-    }
-  }, [lastScrollY]);
 
   return (
     <>
       <nav
-        className={`z-50 fixed top-0 left-0 w-full p-2 flex-between gap-2 text-primary text-xs md:text-sm backdrop-blur-md bg-white/80 dark:bg-brown-800/80 dark:text-primary transition duration-150 ease-linear ${
-          show || "-translate-y-full"
-        }`}
+        className="z-40 sticky top-0 left-0 p-2 flex-between gap-2 text-primary text-xs md:text-sm backdrop-blur-md bg-white/80 dark:bg-brown-800/80 dark:text-primary"
         aria-label="Global"
       >
         <Link href={"/"} className="flex-none relative flex-center">
