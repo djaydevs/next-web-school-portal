@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, Fragment, useEffect } from "react";
+import { useState, useEffect, Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import Image from "next/image";
 import Link from "next/link";
+
 import ScrollLink from "@/components/ui/ScrollLink";
 import { Button } from "@/components/ui/Button";
 import Icons from "@/components/ui/Icons";
@@ -46,7 +47,7 @@ export default function Navbar() {
         }`}
         aria-label="Global"
       >
-        <Link href={"/"} className="flex-none relative flex-center">
+        <Link href={"/"} className="relative flex-center">
           <div className="w-14 h-14">
             <Image
               priority

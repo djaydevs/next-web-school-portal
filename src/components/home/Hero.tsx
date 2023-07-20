@@ -23,7 +23,7 @@ const Hero: FC<HeroProps> = ({}) => {
         className="hero-image"
       />
       <div className="py-40 px-10 w-full h-screen flex flex-col justify-center items-center space-y-[8rem]">
-        <div className="z-10 pt-10 space-y-3">
+        <div className="z-10 pt-36 space-y-3">
           <Heading
             size="lg"
             className="text-secondary dark:text-secondary-foreground three-d"
