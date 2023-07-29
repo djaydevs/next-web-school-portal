@@ -11,48 +11,45 @@ const routes = [
   {
     label: "Dashboard",
     icon: Icons.LayoutDashboard,
-    href: "/student/dashboard",
+    href: "/admin/dashboard",
     color: "text-sky-500",
+  },
+  {
+    label: "Student Record",
+    icon: Icons.Star,
+    href: "/admin/student-record",
+    color: "text-violet-500",
   },
   {
     label: "Enrollment",
     icon: Icons.FileText,
-    href: "/student/enrollment",
-    color: "text-violet-500",
-  },
-  {
-    label: "Report Card",
-    icon: Icons.Star,
     color: "text-pink-700",
-    href: "/student/grades",
+    href: "/admin/enrollment",
   },
   {
     label: "Document Request",
     icon: Icons.FolderOpen,
     color: "text-orange-700",
-    href: "/student/request",
+    href: "/admin/request",
   },
   {
-    label: "Settings",
+    label: "Account Settings",
     icon: Icons.Settings,
-    href: "/settings",
+    href: "/admin/account-settings",
   },
 ];
 
-export const StudentSidebar = () => {
+export const AdminSidebar = () => {
   const pathname = usePathname();
 
   return (
     <div className="space-y-4 py-4 flex flex-col h-full bg-brown-900 text-white">
       <div className="px-3 py-2 flex-1">
-        <Link
-          href="/student/dashboard"
-          className="flex items-center pl-3 mb-14"
-        >
+        <Link href="/admin/dashboard" className="flex items-center pl-3 mb-14">
           <div className="relative h-10 w-10 mr-4">
             <Image fill alt="Logo" src="/mja-logo.png" />
           </div>
-          <h1 className="text-2xl font-bold">Student Portal</h1>
+          <h1 className="text-2xl font-bold">Admin Portal</h1>
         </Link>
         <div className="space-y-1">
           {routes.map((route) => (
