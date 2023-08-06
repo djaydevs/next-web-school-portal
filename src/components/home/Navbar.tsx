@@ -15,6 +15,7 @@ export default function Navbar() {
   const [show, setShow] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const controlNavbar = () => {
     if (typeof window !== "undefined") {
       if (window.scrollY > lastScrollY) {
@@ -37,7 +38,7 @@ export default function Navbar() {
         window.removeEventListener("scroll", controlNavbar);
       };
     }
-  }, [lastScrollY]);
+  }, [controlNavbar, lastScrollY]);
 
   return (
     <>
