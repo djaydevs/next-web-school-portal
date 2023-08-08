@@ -10,3 +10,127 @@ datasource db {
   url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
 }
+
+model Account {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  role      Role     @default(STUDENT)
+
+  //one-to-one
+  student   Student? @relation(fields: [studentId], references: [id])
+  studentId String?  @unique
+  faculty   Faculty? @relation(fields: [facultyId], references: [id])
+  facultyId String?  @unique
+  admin     Admin?   @relation(fields: [adminId], references: [id])
+  adminId   String?  @unique
+}
+
+model Student {
+  id                    String   @id @default(cuid())
+  lrn                   Int      @unique
+  lastName              String
+  firstName             String
+  middleName            String?
+  age                   Int
+  dateOfBirth           DateTime
+  gender                String
+  address               String
+  contactNumber         String?
+  guardianName          String?
+  guardianContactNumber String?
+
+  Enrollment   Enrollment? @relation(fields: [enrollmentId], references: [id])
+  enrollmentId String?
+
+  account Account?
+  Section Section?
+  Subject Subject[]
+  Grades  Grades[]
+}
+
+model Faculty {
+  id            String   @id @default(cuid())
+  lastName      String
+  firstName     String
+  middleName    String?
+  age           Int
+  dateOfBirth   DateTime
+  gender        String
+  address       String
+  contactNumber String?
+
+  account Account?
+  Section Section[]
+  Subject Subject[]
+}
+
+model Admin {
+  id            String   @id @default(cuid())
+  lastName      String
+  firstName     String
+  middleName    String?
+  age           Int
+  dateOfBirth   DateTime
+  gender        String
+  address       String
+  contactNumber String?
+
+  account Account?
+}
+
+model Enrollment {
+  id     String   @id @default(cuid())
+  status String
+  date   DateTime
+
+  student Student[]
+}
+
+model Section {
+  id          String @id @default(cuid())
+  sectionName String
+  yearLevel   Int
+  schedule    String
+  room        String
+
+  student   Student? @relation(fields: [studentId], references: [id])
+  studentId String?  @unique
+  faculty   Faculty? @relation(fields: [facultyId], references: [id])
+  facultyId String?
+}
+
+model Subject {
+  id          String @id @default(cuid())
+  subjectCode String @unique
+  subjectName String
+  semester    String
+
+  student   Student? @relation(fields: [studentId], references: [id])
+  studentId String?
+  faculty   Faculty? @relation(fields: [facultyId], references: [id])
+  facultyId String?
+
+  grades Grades[]
+}
+
+model Grades {
+  id            String @id @default(cuid())
+  firstGrading  Float?
+  secondGrading Float?
+  thirdGrading  Float?
+  fourthGrading Float?
+  finalGrade    Float?
+
+  subject   Subject? @relation(fields: [subjectId], references: [id])
+  subjectId String?
+  student   Student? @relation(fields: [studentId], references: [id])
+  studentId String?
+}
+
+enum Role {
+  STUDENT
+  FACULTY
+  ADMIN
+}

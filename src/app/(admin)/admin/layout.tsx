@@ -2,7 +2,6 @@ import "@/styles/globals.css";
 import { AdminSidebar } from "@/components/sidebar/AdminSidebar";
 import AdminNavbar from "@/components/navbar/AdminNavbar";
 import Providers from "@/components/Providers";
-import { MobileAdminSide } from "@/components/sidebar/MobileAdminSide";
 
 export default function AdminPortalLayout({
   children,
