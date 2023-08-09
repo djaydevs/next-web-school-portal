@@ -1,13 +1,15 @@
+/* eslint-disable react/no-unescaped-entities */
 "use client";
 
 import { FC } from "react";
 import Image from "next/image";
+import Link from "next/link";
+
 import Heading from "@/components/ui/Heading";
 import Paragraph from "@/components/ui/Paragraph";
 import { Button } from "@/components/ui/Button";
-import Link from "next/link";
-import { ChevronsDown } from "lucide-react";
 import ScrollLink from "@/components/ui/ScrollLink";
+import Icons from "@/components/ui/Icons";
 
 interface HeroProps {}
 
@@ -51,7 +53,7 @@ const Hero: FC<HeroProps> = ({}) => {
             className="w-full text-primary hover:translate-y-4 hover:text-secondary-foreground"
           >
             <ScrollLink href="#message">
-              <ChevronsDown className="w-12 h-12 mx-auto" />
+              <Icons.ChevronsDown className="w-12 h-12 mx-auto" />
             </ScrollLink>
           </Button>
         </div>
