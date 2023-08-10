@@ -1,6 +1,7 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import Link from "next/link";
 import ScrollLink from "../ui/ScrollLink";
+import dynamic from "next/dynamic";
 
 import {
   Sheet,
@@ -44,7 +45,7 @@ const MobileNav: FC<MobileNavProps> = ({}) => {
           <Icons.Menu className="h-8 w-8" />
         </Button>
       </SheetTrigger>
-      <SheetContent className="p-2">
+      <SheetContent className="p-2 bg-white/80 dark:bg-brown-900/80">
         <div className="mt-6 mx-4 flow-root">
           <div className="-my-6 divide-y divide-gray-500/10">
             <div className="w-full space-y-4 py-20 flex flex-col gap-10 text-center">
@@ -70,4 +71,4 @@ const MobileNav: FC<MobileNavProps> = ({}) => {
   );
 };
 
-export default MobileNav;
+export default dynamic(() => Promise.resolve(MobileNav), { ssr: false });

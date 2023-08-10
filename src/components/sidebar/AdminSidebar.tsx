@@ -45,7 +45,7 @@ export const AdminSidebar = () => {
   const pathname = usePathname();
 
   return (
-    <div className="space-y-4 py-4 flex flex-col h-full bg-white/5 text-primary">
+    <div className="space-y-4 py-4 flex flex-col h-full bg-black/5 dark:bg-white/5 text-primary">
       <div className="px-3 py-2 flex-1">
         <Link href="/admin/dashboard" className="flex items-center mb-14">
           <div className="relative h-14 w-14">
@@ -84,7 +84,7 @@ export const AdminSidebar = () => {
                     </div>
                   </Link>
                 </TooltipTrigger>
-                <TooltipContent className="hidden md:block lg:hidden -mb-16 mx-14 p-[0.88rem] bg-[#453b16] text-primary font-medium shadow-none border-none rounded-lg">
+                <TooltipContent className="hidden md:block lg:hidden -mb-16 mx-14 p-[0.88rem] bg-[#d6cccb] dark:bg-[#453b16] text-primary font-medium shadow-none border-none rounded-lg">
                   {route.label}
                 </TooltipContent>
               </Tooltip>
