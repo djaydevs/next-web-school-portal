@@ -6,9 +6,8 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model Account {
@@ -18,7 +17,6 @@ model Account {
   createdAt DateTime @default(now())
   role      Role     @default(STUDENT)
 
-  //one-to-one
   student   Student? @relation(fields: [studentId], references: [id])
   studentId String?  @unique
   faculty   Faculty? @relation(fields: [facultyId], references: [id])
@@ -41,13 +39,13 @@ model Student {
   guardianName          String?
   guardianContactNumber String?
 
+  account  Account?
+  section  Section?
+  subjects Subject[]
+  grades   Grades[]
+
   Enrollment   Enrollment? @relation(fields: [enrollmentId], references: [id])
   enrollmentId String?
-
-  account Account?
-  Section Section?
-  Subject Subject[]
-  Grades  Grades[]
 }
 
 model Faculty {
@@ -61,9 +59,9 @@ model Faculty {
   address       String
   contactNumber String?
 
-  account Account?
-  Section Section[]
-  Subject Subject[]
+  account  Account?
+  section  Section[]
+  subjects Subject[]
 }
 
 model Admin {
@@ -83,48 +81,52 @@ model Admin {
 model Enrollment {
   id     String   @id @default(cuid())
   status String
-  date   DateTime
+  date   DateTime @default(now())
 
-  student Student[]
+  students Student[]
+}
+
+model Strand {
+  id         String @id @default(cuid())
+  strandCode String
+  strandName String
+
+  sections Section[]
 }
 
 model Section {
   id          String @id @default(cuid())
   sectionName String
   yearLevel   Int
-  schedule    String
   room        String
 
   student   Student? @relation(fields: [studentId], references: [id])
   studentId String?  @unique
   faculty   Faculty? @relation(fields: [facultyId], references: [id])
   facultyId String?
+  Strand    Strand?  @relation(fields: [strandId], references: [id])
+  strandId  String?
 }
 
 model Subject {
   id          String @id @default(cuid())
   subjectCode String @unique
   subjectName String
-  semester    String
 
   student   Student? @relation(fields: [studentId], references: [id])
   studentId String?
   faculty   Faculty? @relation(fields: [facultyId], references: [id])
   facultyId String?
-
-  grades Grades[]
 }
 
 model Grades {
-  id            String @id @default(cuid())
-  firstGrading  Float?
-  secondGrading Float?
-  thirdGrading  Float?
-  fourthGrading Float?
-  finalGrade    Float?
+  id            String   @id @default(cuid())
+  firstGrading  Decimal?
+  secondGrading Decimal?
+  thirdGrading  Decimal?
+  fourthGrading Decimal?
+  finalGrade    Decimal?
 
-  subject   Subject? @relation(fields: [subjectId], references: [id])
-  subjectId String?
   student   Student? @relation(fields: [studentId], references: [id])
   studentId String?
 }
