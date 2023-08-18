@@ -5,7 +5,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 import { cn } from "@/lib/utils";
-import Icons from "@/components/ui/Icons";
+import Icons from "@/components/ui/icons";
 import {
   Tooltip,
   TooltipContent,

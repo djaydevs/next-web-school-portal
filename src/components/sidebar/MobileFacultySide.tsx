@@ -2,10 +2,10 @@
 
 import { useEffect, useState } from "react";
 
-import { Button } from "@/components/ui/Button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/Sheet";
+import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { FacultySidebar } from "@/components/sidebar/FacultySidebar";
-import Icons from "@/components/ui/Icons";
+import Icons from "@/components/ui/icons";
 
 export const MobileFacultySide = () => {
   const [isMounted, setIsMounted] = useState(false);

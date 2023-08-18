@@ -1,6 +1,6 @@
 import { FC } from "react";
-import Heading from "@/components/ui/Heading";
-import Paragraph from "@/components/ui/Paragraph";
+import Heading from "@/components/ui/heading";
+import Paragraph from "@/components/ui/paragraph";
 
 interface SectionMessageProps {}
 

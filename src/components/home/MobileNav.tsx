@@ -1,6 +1,6 @@
 import { FC } from "react";
 import Link from "next/link";
-import ScrollLink from "../ui/ScrollLink";
+import ScrollLink from "../ui/scroll-link";
 import dynamic from "next/dynamic";
 
 import {
@@ -8,9 +8,9 @@ import {
   SheetClose,
   SheetContent,
   SheetTrigger,
-} from "@/components/ui/Sheet";
-import { Button } from "@/components/ui/Button";
-import Icons from "@/components/ui/Icons";
+} from "@/components/ui/sheet";
+import { Button } from "@/components/ui/button";
+import Icons from "@/components/ui/icons";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 
