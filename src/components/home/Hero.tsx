@@ -5,11 +5,11 @@ import { FC } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-import Heading from "@/components/ui/Heading";
-import Paragraph from "@/components/ui/Paragraph";
-import { Button } from "@/components/ui/Button";
-import ScrollLink from "@/components/ui/ScrollLink";
-import Icons from "@/components/ui/Icons";
+import Heading from "@/components/ui/heading";
+import Paragraph from "@/components/ui/paragraph";
+import { Button } from "@/components/ui/button";
+import ScrollLink from "@/components/ui/scroll-link";
+import Icons from "@/components/ui/icons";
 
 interface HeroProps {}
 

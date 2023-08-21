@@ -4,10 +4,10 @@ import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { AdminSidebar } from "@/components/sidebar/AdminSidebar";
+import { FacultySidebar } from "@/components/sidebar/FacultySidebar";
 import Icons from "@/components/ui/icons";
 
-export const MobileAdminSide = () => {
+export const MobileFacultySide = () => {
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -26,7 +26,7 @@ export const MobileAdminSide = () => {
         </Button>
       </SheetTrigger>
       <SheetContent side="left" className="p-0">
-        <AdminSidebar />
+        <FacultySidebar />
       </SheetContent>
     </Sheet>
   );

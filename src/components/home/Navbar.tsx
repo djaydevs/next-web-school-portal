@@ -4,8 +4,8 @@ import { useState, useEffect, Fragment } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-import ScrollLink from "@/components/ui/ScrollLink";
-import { Button } from "@/components/ui/Button";
+import ScrollLink from "@/components/ui/scroll-link";
+import { Button } from "@/components/ui/button";
 import ThemeToggle from "@/components/ui/ThemeToggle";
 import MobileNav from "@/components/home/MobileNav";
 

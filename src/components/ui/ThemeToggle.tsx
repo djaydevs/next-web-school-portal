@@ -2,8 +2,8 @@
 
 import * as React from "react";
 import { useTheme } from "next-themes";
-import { Icons } from "@/components/ui/Icons";
-import { Button } from "@/components/ui/Button";
+import { Icons } from "@/components/ui/icons";
+import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 
 export default function ThemeToggle({}) {

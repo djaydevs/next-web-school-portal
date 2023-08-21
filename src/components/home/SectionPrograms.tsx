@@ -1,7 +1,7 @@
 import { FC, ReactNode } from "react";
 import Image from "next/image";
-import { Card, CardHeader, CardTitle } from "@/components/ui/Card";
-import Heading from "@/components/ui/Heading";
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+import Heading from "@/components/ui/heading";
 
 interface SectionProgramsProps {}
 
