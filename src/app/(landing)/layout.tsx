@@ -1,11 +1,5 @@
-import { Montserrat } from "next/font/google";
-
 import "@/styles/globals.css";
-
-const montserrat = Montserrat({
-  subsets: ["latin"],
-  display: "swap",
-});
+import { montserrat } from "@/lib/fonts";
 
 export default function RootLayout({
   children,

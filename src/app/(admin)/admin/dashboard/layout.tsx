@@ -3,7 +3,7 @@ export const metadata = {
   description: "Admin Portal Dashboard",
 };
 
-export default function DashboardLayout({
+export default function AdminDashboardLayout({
   children,
 }: {
   children: React.ReactNode;

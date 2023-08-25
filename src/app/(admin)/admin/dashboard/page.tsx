@@ -12,11 +12,11 @@ const AdminDashboard: FC<adminDashboardProps> = ({}) => {
   const [date, setDate] = React.useState<Date | undefined>(new Date());
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
-      <section className="col-span-2">
-        <Heading size="sm">Admin Dashboard</Heading>
+    <div className="md:flex">
+      <section className="grow">
+        <Heading size="sm">Welcome, Admin!</Heading>
       </section>
-      <section className="mx-auto">
+      <section className="hidden md:flex flex-none w-auto object-contain p-4 mx-auto">
         <Calendar
           mode="single"
           selected={date}
