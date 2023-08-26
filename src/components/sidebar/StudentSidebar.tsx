@@ -5,41 +5,13 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 import { cn } from "@/lib/utils";
-import Icons from "@/components/ui/icons";
+import { studentRoutes } from "@/lib/routes";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "../ui/tooltip";
-
-const routes = [
-  {
-    label: "Dashboard",
-    icon: Icons.LayoutDashboard,
-    href: "/student/dashboard",
-  },
-  {
-    label: "Enrollment",
-    icon: Icons.FileText,
-    href: "/student/enrollment",
-  },
-  {
-    label: "Report Card",
-    icon: Icons.Star,
-    href: "/student/grades",
-  },
-  {
-    label: "Document Request",
-    icon: Icons.FolderOpen,
-    href: "/student/request",
-  },
-  {
-    label: "Settings",
-    icon: Icons.Settings,
-    href: "/settings",
-  },
-];
 
 export const StudentSidebar = () => {
   const pathname = usePathname();
@@ -57,7 +29,7 @@ export const StudentSidebar = () => {
         </Link>
         <div className="space-y-1">
           <TooltipProvider>
-            {routes.map((route) => (
+            {studentRoutes.map((route) => (
               <Tooltip key={route.href}>
                 <TooltipTrigger className="w-full">
                   <Link

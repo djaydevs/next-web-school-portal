@@ -2,6 +2,7 @@ import { FC } from "react";
 import Link from "next/link";
 import ScrollLink from "../ui/scroll-link";
 import dynamic from "next/dynamic";
+import { usePathname } from "next/navigation";
 
 import {
   Sheet,
@@ -12,28 +13,9 @@ import {
 import { Button } from "@/components/ui/button";
 import Icons from "@/components/ui/icons";
 import { cn } from "@/lib/utils";
-import { usePathname } from "next/navigation";
+import { homeRoutes } from "@/lib/routes";
 
 interface MobileNavProps {}
-
-const routes = [
-  {
-    label: "Home",
-    href: "/",
-  },
-  {
-    label: "Programs",
-    href: "#programs",
-  },
-  {
-    label: "About",
-    href: "#about",
-  },
-  {
-    label: "Contacts",
-    href: "#contacts",
-  },
-];
 
 const MobileNav: FC<MobileNavProps> = ({}) => {
   const pathname = usePathname();
@@ -49,7 +31,7 @@ const MobileNav: FC<MobileNavProps> = ({}) => {
         <div className="mt-6 mx-4 flow-root">
           <div className="-my-6 divide-y divide-gray-500/10">
             <div className="w-full space-y-4 py-20 flex flex-col gap-10 text-center">
-              {routes.map((route) => (
+              {homeRoutes.map((route) => (
                 <ScrollLink
                   key={route.href}
                   href={route.href}
