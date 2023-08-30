@@ -1,6 +1,5 @@
 import { FC } from "react";
 import Link from "next/link";
-import ScrollLink from "../ui/scroll-link";
 import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 
@@ -14,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import Icons from "@/components/ui/icons";
 import { cn } from "@/lib/utils";
 import { homeRoutes } from "@/lib/routes";
+import ScrollLink from "@/components/ui/scroll-link";
 
 interface MobileNavProps {}
 
