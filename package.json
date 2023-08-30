@@ -19,7 +19,7 @@
     "@types/react": "18.2.11",
     "@types/react-dom": "18.2.4",
     "autoprefixer": "10.4.14",
-    "bcrypt": "^5.1.0",
+    "bcrypt": "^5.1.1",
     "class-variance-authority": "^0.6.1",
     "clsx": "^1.2.1",
     "date-fns": "^2.30.0",
@@ -41,6 +41,7 @@
   "description": "This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).",
   "main": "next.config.js",
   "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
     "@types/node": "^20.3.2",
     "nodemon": "^2.0.22",
     "prisma": "^5.1.1",

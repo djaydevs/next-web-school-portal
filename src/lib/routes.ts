@@ -41,9 +41,9 @@ export const adminRoutes = [
       href: "/admin/request",
     },
     {
-      label: "Account Settings",
-      icon: Icons.Settings,
-      href: "/admin/account-settings",
+      label: "Manage Accounts",
+      icon: Icons.Users2,
+      href: "/admin/manage-accounts",
     },
 ];
 

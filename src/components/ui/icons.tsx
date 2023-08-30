@@ -13,6 +13,7 @@ import {
   FolderOpen,
   Users,
   Library,
+  Users2,
   Settings,
 } from "lucide-react";
 
@@ -31,6 +32,7 @@ export const Icons = {
   FolderOpen,
   Users,
   Library,
+  Users2,
   Settings,
 };
 
