@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 
 import { cn } from "@/lib/utils";
 import ScrollLink from "@/components/ui/scroll-link";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import ThemeToggle from "@/components/ui/ThemeToggle";
 import MobileNav from "@/components/home/MobileNav";
 import { homeRoutes } from "@/lib/routes";
@@ -73,9 +73,12 @@ export default function Navbar() {
           <ScrollLink
             key={route.href}
             href={route.href}
-            className={cn("", pathname === route.href)}
+            className={cn(
+              buttonVariants({ variant: "link" }),
+              pathname === route.href
+            )}
           >
-            <Button variant="link">{route.label}</Button>
+            {route.label}
           </ScrollLink>
         ))}
       </div>
@@ -83,9 +86,15 @@ export default function Navbar() {
         <ThemeToggle />
         <MobileNav />
       </div>
-      <Button className="hidden lg:block">
-        <Link href="/login">Log In</Link>
-      </Button>
+      <Link
+        href="/signin"
+        className={cn(
+          buttonVariants({ variant: "default" }),
+          "hidden lg:block"
+        )}
+      >
+        Sign In
+      </Link>
     </nav>
   );
 }

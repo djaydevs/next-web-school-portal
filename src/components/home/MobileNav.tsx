@@ -9,7 +9,7 @@ import {
   SheetContent,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import Icons from "@/components/ui/icons";
 import { cn } from "@/lib/utils";
 import { homeRoutes } from "@/lib/routes";
@@ -35,16 +35,20 @@ const MobileNav: FC<MobileNavProps> = ({}) => {
                 <ScrollLink
                   key={route.href}
                   href={route.href}
-                  className={cn("", pathname === route.href)}
+                  className={cn(
+                    buttonVariants({ variant: "link" }),
+                    pathname === route.href
+                  )}
                 >
-                  <SheetClose>
-                    <Button variant="link">{route.label}</Button>
-                  </SheetClose>
+                  <SheetClose>{route.label}</SheetClose>
                 </ScrollLink>
               ))}
-              <Button>
-                <Link href="/login">Log In</Link>
-              </Button>
+              <Link
+                href="/signin"
+                className={cn(buttonVariants({ variant: "default" }))}
+              >
+                Sign In
+              </Link>
             </div>
           </div>
         </div>

@@ -17,10 +17,8 @@ export default function AdminPortalLayout({
           <AdminSidebar />
         </aside>
         <main className="md:pl-20 lg:pl-64 pb-10 bg-background">
-          <Providers>
-            <AdminNavbar />
-          </Providers>
-          {children}
+          <AdminNavbar />
+          <Providers>{children}</Providers>
         </main>
       </body>
     </html>

@@ -14,7 +14,7 @@ const AdminDashboard: FC<adminDashboardProps> = ({}) => {
   return (
     <div className="md:flex">
       <section className="grow">
-        <Heading size="sm">Welcome, Admin!</Heading>
+        <Heading size="sm">Welcome back, Admin!</Heading>
       </section>
       <section className="hidden md:flex flex-none w-auto object-contain p-4 mx-auto">
         <Calendar

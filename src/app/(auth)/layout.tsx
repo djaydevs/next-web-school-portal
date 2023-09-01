@@ -1,11 +1,18 @@
+import "@/styles/globals.css";
+
+import { poppins } from "@/lib/fonts";
+import Providers from "@/components/Providers";
+
 export default function AuthLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex items-center justify-center h-full w-full">
-      {children}
-    </div>
+    <html lang="en" className={poppins.className}>
+      <body>
+        <Providers>{children}</Providers>
+      </body>
+    </html>
   );
 }
