@@ -1,6 +1,9 @@
 import "@/styles/globals.css";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
 
 import { poppins } from "@/lib/fonts";
+import { authOptions } from "@/lib/auth";
 import { StudentSidebar } from "@/components/sidebar/StudentSidebar";
 import Providers from "@/components/Providers";
 import StudentNavbar from "@/components/navbar/StudentNavbar";
@@ -10,6 +13,9 @@ const StudentPortalLayout = async ({
 }: {
   children: React.ReactNode;
 }) => {
+  const session = await getServerSession(authOptions);
+  if (!session) return redirect("/signin");
+
   return (
     <html lang="en" className={poppins.className}>
       <body className="h-full relative">
@@ -18,7 +24,7 @@ const StudentPortalLayout = async ({
         </aside>
         <main className="md:pl-20 lg:pl-64 pb-10 bg-background">
           <Providers>
-            <StudentNavbar />
+            <StudentNavbar user={session?.user} />
           </Providers>
           {children}
         </main>
