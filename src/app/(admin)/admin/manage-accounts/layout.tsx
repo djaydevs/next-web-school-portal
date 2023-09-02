@@ -1,6 +1,6 @@
 export const metadata = {
-  title: "Dashboard | Admin Portal",
-  description: "Admin Portal Dashboard",
+  title: "Manage Accounts | Admin Portal",
+  description: "Admin Portal Account Settings",
 };
 
 export default function AdminDashboardLayout({

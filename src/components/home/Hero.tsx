@@ -7,9 +7,10 @@ import Link from "next/link";
 
 import Heading from "@/components/ui/heading";
 import Paragraph from "@/components/ui/paragraph";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import ScrollLink from "@/components/ui/scroll-link";
 import Icons from "@/components/ui/icons";
+import { cn } from "@/lib/utils";
 
 interface HeroProps {}
 
@@ -37,25 +38,31 @@ const Hero: FC<HeroProps> = ({}) => {
           </Paragraph>
         </div>
         <div className="z-10 flex flex-col justify-center items-center space-y-[5rem]">
-          <Button
-            asChild
-            variant="default"
-            size="lg"
-            transition="d300"
-            className="py-4 rounded-full tracking-wider hover:bg-secondary hover:text-primary hover:-translate-y-1 hover:scale-110 focus:text-primary focus:-translate-y-1 focus:scale-110 lg:mt-[5rem]"
+          <Link
+            href="/signin"
+            className={cn(
+              buttonVariants({
+                variant: "default",
+                size: "lg",
+                transition: "d300",
+              }),
+              "py-4 rounded-full tracking-wider hover:-translate-y-1 hover:scale-110 focus:text-primary focus:-translate-y-1 focus:scale-110 lg:mt-[5rem]"
+            )}
           >
-            <Link href="/login">Login to School Portal</Link>
-          </Button>
-          <Button
-            asChild
-            variant="none"
-            transition="d300"
-            className="w-full text-primary hover:translate-y-4 hover:text-secondary-foreground"
+            Sign In to School Portal
+          </Link>
+          <ScrollLink
+            href="#message"
+            className={cn(
+              buttonVariants({
+                variant: "none",
+                transition: "d300",
+              }),
+              "w-full text-primary hover:translate-y-4 hover:text-primary-foreground"
+            )}
           >
-            <ScrollLink href="#message">
-              <Icons.ChevronsDown className="w-12 h-12 mx-auto" />
-            </ScrollLink>
-          </Button>
+            <Icons.ChevronsDown className="w-12 h-12 mx-auto" />
+          </ScrollLink>
         </div>
       </div>
     </div>

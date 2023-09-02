@@ -3,13 +3,17 @@
 import { useState, useEffect, Fragment } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
+import { cn } from "@/lib/utils";
 import ScrollLink from "@/components/ui/scroll-link";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import ThemeToggle from "@/components/ui/ThemeToggle";
 import MobileNav from "@/components/home/MobileNav";
+import { homeRoutes } from "@/lib/routes";
 
 export default function Navbar() {
+  const pathname = usePathname();
   const [show, setShow] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
 
@@ -65,26 +69,32 @@ export default function Navbar() {
         </div>
       </Link>
       <div className="flex-auto hidden z-50 lg:flex lg:justify-center lg:gap-x-12">
-        <Button variant="link">
-          <Link href="/">Home</Link>
-        </Button>
-        <Button variant="link">
-          <ScrollLink href="#programs">Programs</ScrollLink>
-        </Button>
-        <Button variant="link">
-          <ScrollLink href="#about">About</ScrollLink>
-        </Button>
-        <Button variant="link">
-          <ScrollLink href="#contacts">Contacts</ScrollLink>
-        </Button>
+        {homeRoutes.map((route) => (
+          <ScrollLink
+            key={route.href}
+            href={route.href}
+            className={cn(
+              buttonVariants({ variant: "link" }),
+              pathname === route.href
+            )}
+          >
+            {route.label}
+          </ScrollLink>
+        ))}
       </div>
       <div className="flex-center place-content-end">
         <ThemeToggle />
         <MobileNav />
       </div>
-      <Button className="hidden lg:block">
-        <Link href="/login">Log In</Link>
-      </Button>
+      <Link
+        href="/signin"
+        className={cn(
+          buttonVariants({ variant: "default" }),
+          "hidden lg:block"
+        )}
+      >
+        Sign In
+      </Link>
     </nav>
   );
 }

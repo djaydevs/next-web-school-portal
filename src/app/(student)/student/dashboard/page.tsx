@@ -1,14 +1,31 @@
+"use client";
+
 import { FC } from "react";
+import * as React from "react";
 
-export const metadata = {
-  title: "Dashboard | Student Portal",
-  description: "Student Portal Dashboard",
-};
+import { Calendar } from "@/components/ui/calendar";
+import Heading from "@/components/ui/heading";
 
-interface studDashboardProps {}
+interface studentDashboardProps {}
 
-const StudentDashboard: FC<studDashboardProps> = ({}) => {
-  return <div>Student Dashboard</div>;
+const StudentDashboard: FC<studentDashboardProps> = ({}) => {
+  const [date, setDate] = React.useState<Date | undefined>(new Date());
+
+  return (
+    <div className="md:flex">
+      <section className="grow">
+        <Heading size="sm">Welcome, Student!</Heading>
+      </section>
+      <section className="hidden md:flex flex-none w-auto object-contain p-4 mx-auto">
+        <Calendar
+          mode="single"
+          selected={date}
+          onSelect={setDate}
+          className="rounded-md border"
+        />
+      </section>
+    </div>
+  );
 };
 
 export default StudentDashboard;

@@ -12,6 +12,7 @@ package-lock.json
 .pnp.cjs
 .pnp.loader.mjs
 yarn.lock
+pnpm-lock.yaml
 
 # testing
 /coverage

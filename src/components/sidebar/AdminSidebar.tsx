@@ -5,41 +5,13 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 import { cn } from "@/lib/utils";
-import Icons from "@/components/ui/icons";
+import { adminRoutes } from "@/lib/routes";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "../ui/tooltip";
-
-const routes = [
-  {
-    label: "Dashboard",
-    icon: Icons.LayoutDashboard,
-    href: "/admin/dashboard",
-  },
-  {
-    label: "Student Record",
-    icon: Icons.Star,
-    href: "/admin/student-record",
-  },
-  {
-    label: "Enrollment",
-    icon: Icons.FileText,
-    href: "/admin/enrollment",
-  },
-  {
-    label: "Document Request",
-    icon: Icons.FolderOpen,
-    href: "/admin/request",
-  },
-  {
-    label: "Account Settings",
-    icon: Icons.Settings,
-    href: "/admin/account-settings",
-  },
-];
 
 export const AdminSidebar = () => {
   const pathname = usePathname();
@@ -57,7 +29,7 @@ export const AdminSidebar = () => {
         </Link>
         <div className="space-y-1">
           <TooltipProvider>
-            {routes.map((route) => (
+            {adminRoutes.map((route) => (
               <Tooltip key={route.href}>
                 <TooltipTrigger className="w-full">
                   <Link
