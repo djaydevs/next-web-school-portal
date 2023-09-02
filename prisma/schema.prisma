@@ -16,15 +16,37 @@ datasource db {
 }
 
 model Account {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  password  String
-  createdAt DateTime @default(now())
-  role      Role     @default(STUDENT)
+  id                String   @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refreshToken      String?
+  accessToken       String?
+  expiresAt         Int?
+  tokenType         String?
+  scope             String?
+  idToken           String?
+  sessionState      String?
+  email             String   @unique
+  password          String
+  createdAt         DateTime @default(now())
+  role              Role     @default(STUDENT)
 
   Student Student[]
   Faculty Faculty[]
   Admin   Admin[]
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  // createdAt    DateTime @default(now())
+  // updatedAt    DateTime @updatedAt
 }
 
 model Student {

@@ -1,15 +1,21 @@
 import "@/styles/globals.css";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
 
 import { poppins } from "@/lib/fonts";
+import { authOptions } from "@/lib/auth";
 import { AdminSidebar } from "@/components/sidebar/AdminSidebar";
 import AdminNavbar from "@/components/navbar/AdminNavbar";
 import Providers from "@/components/Providers";
 
-export default function AdminPortalLayout({
+export default async function AdminPortalLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const session = await getServerSession(authOptions);
+  if (!session) return redirect("/signin");
+
   return (
     <html lang="en" className={poppins.className}>
       <body className="h-full relative">
@@ -17,7 +23,7 @@ export default function AdminPortalLayout({
           <AdminSidebar />
         </aside>
         <main className="md:pl-20 lg:pl-64 pb-10 bg-background">
-          <AdminNavbar />
+          <AdminNavbar user={session?.user} />
           <Providers>{children}</Providers>
         </main>
       </body>

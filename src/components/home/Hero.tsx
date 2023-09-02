@@ -46,7 +46,7 @@ const Hero: FC<HeroProps> = ({}) => {
                 size: "lg",
                 transition: "d300",
               }),
-              "py-4 rounded-full tracking-wider hover:bg-secondary hover:text-primary hover:-translate-y-1 hover:scale-110 focus:text-primary focus:-translate-y-1 focus:scale-110 lg:mt-[5rem]"
+              "py-4 rounded-full tracking-wider hover:-translate-y-1 hover:scale-110 focus:text-primary focus:-translate-y-1 focus:scale-110 lg:mt-[5rem]"
             )}
           >
             Sign In to School Portal
@@ -58,7 +58,7 @@ const Hero: FC<HeroProps> = ({}) => {
                 variant: "none",
                 transition: "d300",
               }),
-              "w-full text-primary hover:translate-y-4 hover:text-secondary-foreground"
+              "w-full text-primary hover:translate-y-4 hover:text-primary-foreground"
             )}
           >
             <Icons.ChevronsDown className="w-12 h-12 mx-auto" />
