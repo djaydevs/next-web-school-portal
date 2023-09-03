@@ -17,7 +17,7 @@ export function GoogleSignInButton() {
     }, 3000);
 
     signIn("google", {
-      callbackUrl: "http://localhost:3000/student/dashboard",
+      callbackUrl: "http://localhost:3000/student/dahboard",
     });
   };
 

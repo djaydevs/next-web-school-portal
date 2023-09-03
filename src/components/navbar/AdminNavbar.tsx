@@ -13,12 +13,14 @@ export default async function AdminNavbar({ user }: Props) {
       <MobileAdminSide />
       <div className="flex items-center w-full justify-end">
         <h3 className="me-2">{user?.name}</h3>
-        {user?.image ? (
-          <Avatar>
+
+        <Avatar>
+          {user?.image ? (
             <AvatarImage src={user?.image} alt="avatar image" />
-            <AvatarFallback>{user?.name}</AvatarFallback>
-          </Avatar>
-        ) : null}
+          ) : null}
+          <AvatarFallback>{user?.name}</AvatarFallback>
+        </Avatar>
+
         {/* <UserButton afterSignOutUrl="/" /> */}
       </div>
     </div>
