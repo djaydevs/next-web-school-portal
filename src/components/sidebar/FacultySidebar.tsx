@@ -12,6 +12,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "../ui/tooltip";
+import BottomSidebar from "@/components/sidebar/BottomSidebar";
 
 export const FacultySidebar = () => {
   const pathname = usePathname();
@@ -63,6 +64,7 @@ export const FacultySidebar = () => {
             ))}
           </TooltipProvider>
         </div>
+        <BottomSidebar />
       </div>
     </div>
   );

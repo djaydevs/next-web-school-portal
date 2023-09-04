@@ -1,5 +1,7 @@
+import bcrypt from "bcrypt"
 import { type NextAuthOptions } from 'next-auth'
-import GoogleProvider from 'next-auth/providers/google'
+import GoogleProvider, { GoogleProfile } from 'next-auth/providers/google'
+import CredentialsProvider from 'next-auth/providers/credentials'
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { Adapter } from 'next-auth/adapters';
 
@@ -10,45 +12,58 @@ export const authOptions: NextAuthOptions = ({
     session: {
         strategy: "jwt",
     },
-    pages: {
-        signIn: "/signin",
-        error: "/signin",
-    },
+    // pages: {
+    //     signIn: "/signin",
+    //     error: "/error",
+    // },
     providers: [
         GoogleProvider({
+            // profile(profile: GoogleProfile) {
+            //     return {
+            //         ...profile,
+            //         role: profile.role ?? "STUDENT",
+            //         id: profile.id.toString(),
+            //         name: profile.name,
+            //         email: profile.email,
+            //         image: profile.picture,
+            //     }
+            // },
             clientId: process.env.GOOGLE_CLIENT_ID as string,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
         }),
         // CredentialsProvider({
-        //     name: "Credentials",
+        //     name: 'credentials',
         //     credentials: {
-        //         email: {
-        //             label: "Email:",
-        //             type: "email",
-        //             placeholder: "example@example.com"
-        //         },
-        //         password: {
-        //             label: "Password:",
-        //             type: "password"
-        //         }
+        //       email: { label: 'email', type: 'text' },
+        //       password: { label: 'password', type: 'password' }
         //     },
         //     async authorize(credentials) {
-        //         if (!credentials || !credentials.email || !credentials.password) {
-        //             return null
+        //       if (!credentials?.email || !credentials?.password) {
+        //         throw new Error('Invalid credentials');
+        //       }
+      
+        //       const user = await prisma.user.findUnique({
+        //         where: {
+        //           email: credentials.email
         //         }
-
-        //         const dbUser = await prisma.user.findFirst({ 
-        //             where: { email: credentials.email },
-        //         })
-                
-        //         if (dbUser && dbUser.password === credentials.password) {
-        //             const { password, createdAt, id, ...dbUserWithoutPassword } = dbUser
-        //             return dbUserWithoutPassword as User
-        //         }
-
-        //         return null
+        //       });
+      
+        //       if (!user || !user?.hashedPassword) {
+        //         throw new Error('Invalid credentials');
+        //       }
+      
+        //       const isCorrectPassword = await bcrypt.compare(
+        //         credentials.password,
+        //         user.hashedPassword
+        //       );
+      
+        //       if (!isCorrectPassword) {
+        //         throw new Error('Invalid credentials');
+        //       }
+      
+        //       return user;
         //     }
-        // })
+        //   })
     ],
     callbacks: {
         async jwt({ token, user }) {

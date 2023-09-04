@@ -1,29 +1,49 @@
 "use client";
 
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { useState } from "react";
 
 import { Icons } from "@/components/ui/icons";
 import { Button } from "@/components/ui/button";
+import { redirect } from "next/navigation";
+import { toast } from "@/components/ui/use-toast";
 
 export function GoogleSignInButton() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { data: session } = useSession();
 
-  const handleClick = () => {
+  const loginWithGoogle = async () => {
     setIsLoading(true);
-
-    setTimeout(() => {
+    try {
+      await signIn("google");
+      // if (session?.user.role === "ADMIN") {
+      //   signIn("google", {
+      //     callbackUrl: "http://localhost:3000/admin/dashboard",
+      //   });
+      // }
+      // if (session?.user.role === "STUDENT") {
+      //   signIn("google", {
+      //     callbackUrl: "http://localhost:3000/student/dashboard",
+      //   });
+      // }
+      // if (session?.user.role === "FACULTY") {
+      //   signIn("google", {
+      //     callbackUrl: "http://localhost:3000/faculty/dashboard",
+      //   });
+      // }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "There was an error logging in with Google",
+      });
+    } finally {
       setIsLoading(false);
-    }, 3000);
-
-    signIn("google", {
-      callbackUrl: "http://localhost:3000/student/dahboard",
-    });
+    }
   };
 
   return (
     <Button
-      onClick={handleClick}
+      onClick={loginWithGoogle}
       variant="outline"
       type="button"
       disabled={isLoading}

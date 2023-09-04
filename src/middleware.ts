@@ -9,15 +9,15 @@ export default withAuth(
 
     if (req.nextUrl.pathname.startsWith("/admin") && req.nextauth.token?.role !== "ADMIN")
       return NextResponse.rewrite(
-        new URL("/auth/signin?message=You Are Not Authorized!", req.url)
+        new URL("api/auth/signin?message=You Are Not Authorized!", req.url)
       );
     if (req.nextUrl.pathname.startsWith("/faculty") && req.nextauth.token?.role !== "FACULTY")
       return NextResponse.rewrite(
-        new URL("/auth/signin?message=You Are Not Authorized!", req.url)
+        new URL("api/auth/signin?message=You Are Not Authorized!", req.url)
       );
     if (req.nextUrl.pathname.startsWith("/student") && req.nextauth.token?.role !== "STUDENT")
       return NextResponse.rewrite(
-        new URL("/auth/signin?message=You Are Not Authorized!", req.url)
+        new URL("api/auth/signin?message=You Are Not Authorized!", req.url)
       );
   },
   {

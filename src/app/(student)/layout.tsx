@@ -7,6 +7,7 @@ import { authOptions } from "@/lib/auth";
 import { StudentSidebar } from "@/components/sidebar/StudentSidebar";
 import Providers from "@/components/Providers";
 import StudentNavbar from "@/components/navbar/StudentNavbar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const StudentPortalLayout = async ({
   children,
@@ -14,7 +15,19 @@ const StudentPortalLayout = async ({
   children: React.ReactNode;
 }) => {
   const session = await getServerSession(authOptions);
-  if (!session) return redirect("/signin");
+  // if (!session) {
+  //   return {
+  //     redirect: {
+  //       destination: "/signin",
+  //       permanent: false,
+  //     },
+  //   };
+  // }
+
+  if (session?.user.role !== "STUDENT") {
+    throw new Error("User is not a student");
+    // return redirect("/signin");
+  }
 
   return (
     <html lang="en" className={poppins.className}>
@@ -26,6 +39,12 @@ const StudentPortalLayout = async ({
           <Providers>
             <StudentNavbar user={session?.user} />
           </Providers>
+          <Avatar>
+            {session?.user?.image && (
+              <AvatarImage src={session?.user?.image} alt="avatar image" />
+            )}
+            <AvatarFallback>{session?.user?.name}</AvatarFallback>
+          </Avatar>
           {children}
         </main>
       </body>

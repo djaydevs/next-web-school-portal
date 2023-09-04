@@ -47,6 +47,9 @@ model User {
   name          String?
   email         String    @unique
   emailVerified DateTime?
+  // hashedPassword String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
   image         String?
   role          Role      @default(STUDENT)
 

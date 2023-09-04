@@ -1,4 +1,4 @@
-import type { User } from "next-auth";
+import { User } from "next-auth";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { MobileAdminSide } from "@/components/sidebar/MobileAdminSide";
@@ -13,7 +13,6 @@ export default async function AdminNavbar({ user }: Props) {
       <MobileAdminSide />
       <div className="flex items-center w-full justify-end">
         <h3 className="me-2">{user?.name}</h3>
-
         <Avatar>
           {user?.image ? (
             <AvatarImage src={user?.image} alt="avatar image" />

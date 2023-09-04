@@ -14,7 +14,9 @@ export default async function AdminPortalLayout({
   children: React.ReactNode;
 }) {
   const session = await getServerSession(authOptions);
-  if (!session) return redirect("/signin");
+  if (session?.user.role !== "ADMIN") {
+    return redirect("/signin");
+  }
 
   return (
     <html lang="en" className={poppins.className}>

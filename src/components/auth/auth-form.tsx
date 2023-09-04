@@ -35,7 +35,6 @@ export function AuthForm({ className, ...props }: authFormProps) {
 
     const signInResponse = await signIn("credentials", {
       email: data.get("email"),
-      password: data.get("password"),
       redirect: false,
     });
 
@@ -56,7 +55,7 @@ export function AuthForm({ className, ...props }: authFormProps) {
         </div>
         <div className="relative flex justify-center text-xs uppercase">
           <span className="bg-background px-2 text-muted-foreground">
-            or continue with email and password
+            or continue with email
           </span>
         </div>
       </div>
@@ -73,17 +72,6 @@ export function AuthForm({ className, ...props }: authFormProps) {
               type="email"
               autoCapitalize="none"
               autoComplete="email"
-              autoCorrect="off"
-              disabled={isLoading}
-            />
-          </div>
-          <div className="grid gap-2">
-            <Label htmlFor="email">Password</Label>
-            <Input
-              id="password"
-              type="password"
-              autoCapitalize="none"
-              autoComplete="password"
               autoCorrect="off"
               disabled={isLoading}
             />
