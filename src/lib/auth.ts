@@ -9,13 +9,6 @@ import { prisma } from '@/lib/prisma'
 
 export const authOptions: NextAuthOptions = ({
     adapter: PrismaAdapter(prisma) as Adapter,
-    session: {
-        strategy: "jwt",
-    },
-    // pages: {
-    //     signIn: "/signin",
-    //     error: "/error",
-    // },
     providers: [
         GoogleProvider({
             // profile(profile: GoogleProfile) {
@@ -99,5 +92,13 @@ export const authOptions: NextAuthOptions = ({
             // if (session?.user) session.user.role = token.role
             return session
         },
-    }
+    },    
+    session: {
+        strategy: "jwt",
+    },
+    pages: {
+        signIn: "/signin",
+        error: "/error",
+    },
+    secret: process.env.NEXTAUTH_SECRET
 })

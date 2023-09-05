@@ -1,26 +1,27 @@
-import type { User } from "next-auth";
-
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { MobileFacultySide } from "@/components/sidebar/MobileFacultySide";
+import { SafeUser } from "@/types";
 
-type Props = {
-  user: User;
-};
+interface facultyNavbarProps {
+  currentUser?: SafeUser | null;
+}
 
-export default async function FacultyNavbar({ user }: Props) {
+const FacultyNavbar: React.FC<facultyNavbarProps> = ({ currentUser }) => {
   return (
     <div className="flex items-center p-4">
       <MobileFacultySide />
       <div className="flex items-center w-full justify-end">
-        <h3 className="me-2">{user?.name}</h3>
-        {user?.image ? (
-          <Avatar>
-            <AvatarImage src={user?.image} alt="avatar image" />
-            <AvatarFallback>{user?.name}</AvatarFallback>
-          </Avatar>
-        ) : null}
+        <Avatar>
+          {currentUser?.image && (
+            <AvatarImage src={currentUser?.image} alt="avatar image" />
+          )}
+          <AvatarFallback>J{currentUser?.name}</AvatarFallback>
+        </Avatar>
+        <h3 className="ms-2">{currentUser?.name}</h3>
         {/* <UserButton afterSignOutUrl="/" /> */}
       </div>
     </div>
   );
-}
+};
+
+export default FacultyNavbar;

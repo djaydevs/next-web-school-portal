@@ -1,26 +1,27 @@
-import type { User } from "next-auth";
-
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { MobileStudentSide } from "@/components/sidebar/MobileStudentSide";
+import { SafeUser } from "@/types";
 
-type Props = {
-  user: User;
-};
+interface studentNavbarProps {
+  currentUser?: SafeUser | null;
+}
 
-export default async function StudentNavbar({ user }: Props) {
+const StudentNavbar: React.FC<studentNavbarProps> = ({ currentUser }) => {
   return (
     <div className="flex items-center p-4">
       <MobileStudentSide />
       <div className="flex items-center w-full justify-end">
-        <h3 className="me-2">{user?.name}</h3>
         <Avatar>
-          {user?.image ? (
-            <AvatarImage src={user?.image} alt="avatar image" />
-          ) : null}
-          <AvatarFallback>{user?.name}</AvatarFallback>
+          {currentUser?.image && (
+            <AvatarImage src={currentUser?.image} alt="avatar image" />
+          )}
+          <AvatarFallback>J{currentUser?.name}</AvatarFallback>
         </Avatar>
+        <h3 className="ms-2">{currentUser?.name}</h3>
         {/* <UserButton afterSignOutUrl="/" /> */}
       </div>
     </div>
   );
-}
+};
+
+export default StudentNavbar;

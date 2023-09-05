@@ -1,49 +1,48 @@
 "use client";
 
 import { signIn, useSession } from "next-auth/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 import { Icons } from "@/components/ui/icons";
 import { Button } from "@/components/ui/button";
-import { redirect } from "next/navigation";
 import { toast } from "@/components/ui/use-toast";
+import { ToastProvider } from "../ui/toast";
 
 export function GoogleSignInButton() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
+  const router = useRouter();
 
-  const loginWithGoogle = async () => {
-    setIsLoading(true);
-    try {
-      await signIn("google");
-      // if (session?.user.role === "ADMIN") {
-      //   signIn("google", {
-      //     callbackUrl: "http://localhost:3000/admin/dashboard",
-      //   });
-      // }
-      // if (session?.user.role === "STUDENT") {
-      //   signIn("google", {
-      //     callbackUrl: "http://localhost:3000/student/dashboard",
-      //   });
-      // }
-      // if (session?.user.role === "FACULTY") {
-      //   signIn("google", {
-      //     callbackUrl: "http://localhost:3000/faculty/dashboard",
-      //   });
-      // }
-    } catch (error) {
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      setIsLoading(false);
       toast({
         title: "Error",
         description: "There was an error logging in with Google",
       });
-    } finally {
-      setIsLoading(false);
     }
-  };
+
+    if (status === "loading") {
+      setIsLoading(true);
+    }
+
+    if (status === "authenticated") {
+      if (session?.user.role === "ADMIN") {
+        router.push("/admin/dashboard");
+      }
+      if (session?.user.role === "FACULTY") {
+        router.push("/faculty/dashboard");
+      }
+      if (session?.user.role === "STUDENT") {
+        router.push("/student/dashboard");
+      }
+    }
+  }, [router, session, status]);
 
   return (
     <Button
-      onClick={loginWithGoogle}
+      onClick={() => signIn("google")}
       variant="outline"
       type="button"
       disabled={isLoading}

@@ -39,7 +39,7 @@ const Hero: FC<HeroProps> = ({}) => {
         </div>
         <div className="z-10 flex flex-col justify-center items-center space-y-[5rem]">
           <Link
-            href="/api/auth/signin"
+            href="/signin"
             className={cn(
               buttonVariants({
                 variant: "default",

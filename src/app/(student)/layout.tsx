@@ -1,33 +1,17 @@
 import "@/styles/globals.css";
-import { getServerSession } from "next-auth";
-import { redirect } from "next/navigation";
 
 import { poppins } from "@/lib/fonts";
-import { authOptions } from "@/lib/auth";
 import { StudentSidebar } from "@/components/sidebar/StudentSidebar";
 import Providers from "@/components/Providers";
 import StudentNavbar from "@/components/navbar/StudentNavbar";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import getCurrentUser from "@/app/actions/getCurrentUser";
 
 const StudentPortalLayout = async ({
   children,
 }: {
   children: React.ReactNode;
 }) => {
-  const session = await getServerSession(authOptions);
-  // if (!session) {
-  //   return {
-  //     redirect: {
-  //       destination: "/signin",
-  //       permanent: false,
-  //     },
-  //   };
-  // }
-
-  if (session?.user.role !== "STUDENT") {
-    throw new Error("User is not a student");
-    // return redirect("/signin");
-  }
+  const user = await getCurrentUser();
 
   return (
     <html lang="en" className={poppins.className}>
@@ -37,15 +21,9 @@ const StudentPortalLayout = async ({
         </aside>
         <main className="md:pl-20 lg:pl-64 pb-10 bg-background">
           <Providers>
-            <StudentNavbar user={session?.user} />
+            <StudentNavbar currentUser={user} />
+            {children}
           </Providers>
-          <Avatar>
-            {session?.user?.image && (
-              <AvatarImage src={session?.user?.image} alt="avatar image" />
-            )}
-            <AvatarFallback>{session?.user?.name}</AvatarFallback>
-          </Avatar>
-          {children}
         </main>
       </body>
     </html>

@@ -1,27 +1,27 @@
-import { User } from "next-auth";
-
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { MobileAdminSide } from "@/components/sidebar/MobileAdminSide";
+import { SafeUser } from "@/types";
 
-type Props = {
-  user: User;
-};
+interface adminNavbarProps {
+  currentUser?: SafeUser | null;
+}
 
-export default async function AdminNavbar({ user }: Props) {
+const AdminNavbar: React.FC<adminNavbarProps> = ({ currentUser }) => {
   return (
     <div className="flex items-center p-4">
       <MobileAdminSide />
       <div className="flex items-center w-full justify-end">
-        <h3 className="me-2">{user?.name}</h3>
         <Avatar>
-          {user?.image ? (
-            <AvatarImage src={user?.image} alt="avatar image" />
-          ) : null}
-          <AvatarFallback>{user?.name}</AvatarFallback>
+          {currentUser?.image && (
+            <AvatarImage src={currentUser?.image} alt="avatar image" />
+          )}
+          <AvatarFallback>J{currentUser?.name}</AvatarFallback>
         </Avatar>
-
+        <h3 className="ms-2">{currentUser?.name}</h3>
         {/* <UserButton afterSignOutUrl="/" /> */}
       </div>
     </div>
   );
-}
+};
+
+export default AdminNavbar;

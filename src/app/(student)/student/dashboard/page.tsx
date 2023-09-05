@@ -1,31 +1,17 @@
-"use client";
+import getCurrentUser from "@/app/actions/getCurrentUser";
+import StudentDashboard from "@/components/student/dashboard/student-dashboard";
 
-import { FC } from "react";
-import * as React from "react";
-
-import { Calendar } from "@/components/ui/calendar";
-import Heading from "@/components/ui/heading";
-
-interface studentDashboardProps {}
-
-const StudentDashboard: FC<studentDashboardProps> = ({}) => {
-  const [date, setDate] = React.useState<Date | undefined>(new Date());
-
-  return (
-    <div className="md:flex">
-      <section className="grow">
-        <Heading size="sm">Welcome, Student!</Heading>
-      </section>
-      <section className="hidden md:flex flex-none w-auto object-contain p-4 mx-auto">
-        <Calendar
-          mode="single"
-          selected={date}
-          onSelect={setDate}
-          className="rounded-md border"
-        />
-      </section>
-    </div>
-  );
+export const metadata = {
+  title: "Dashboard | Student Portal",
+  description: "Student Portal Dashboard",
 };
 
-export default StudentDashboard;
+export default async function StudentDashboardLayout() {
+  const user = await getCurrentUser();
+
+  return (
+    <div>
+      <StudentDashboard currentUser={user} />
+    </div>
+  );
+}

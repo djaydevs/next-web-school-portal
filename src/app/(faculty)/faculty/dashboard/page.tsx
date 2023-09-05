@@ -1,31 +1,17 @@
-"use client";
+import getCurrentUser from "@/app/actions/getCurrentUser";
+import FacultyDashboard from "@/components/faculty/dashboard/faculty-dashboard";
 
-import { FC } from "react";
-import * as React from "react";
-
-import { Calendar } from "@/components/ui/calendar";
-import Heading from "@/components/ui/heading";
-
-interface facultyDashboardProps {}
-
-const FacultyDashboard: FC<facultyDashboardProps> = ({}) => {
-  const [date, setDate] = React.useState<Date | undefined>(new Date());
-
-  return (
-    <div className="md:flex">
-      <section className="grow">
-        <Heading size="sm">Welcome, Faculty!</Heading>
-      </section>
-      <section className="hidden md:flex flex-none w-auto object-contain p-4 mx-auto">
-        <Calendar
-          mode="single"
-          selected={date}
-          onSelect={setDate}
-          className="rounded-md border"
-        />
-      </section>
-    </div>
-  );
+export const metadata = {
+  title: "Dashboard | Faculty Portal",
+  description: "Faculty Portal Dashboard",
 };
 
-export default FacultyDashboard;
+export default async function FacultyDashboardLayout() {
+  const user = await getCurrentUser();
+
+  return (
+    <div>
+      <FacultyDashboard currentUser={user} />
+    </div>
+  );
+}
