@@ -46,7 +46,7 @@ export function GoogleSignInButton() {
       variant="outline"
       type="button"
       disabled={isLoading}
-      className="p-4"
+      className="p-4 text-md font-semibold"
     >
       {isLoading ? (
         <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />

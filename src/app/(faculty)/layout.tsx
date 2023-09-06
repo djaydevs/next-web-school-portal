@@ -1,6 +1,6 @@
 import "@/styles/globals.css";
 
-import { poppins } from "@/lib/fonts";
+import { mulish } from "@/lib/fonts";
 import { FacultySidebar } from "@/components/sidebar/FacultySidebar";
 import Providers from "@/components/Providers";
 import FacultyNavbar from "@/components/navbar/FacultyNavbar";
@@ -14,7 +14,7 @@ const FacultyPortalLayout = async ({
   const user = await getCurrentUser();
 
   return (
-    <html lang="en" className={poppins.className}>
+    <html lang="en" className={mulish.className}>
       <body className="h-full relative">
         <aside className="hidden h-full md:flex md:w-20 lg:w-64 md:flex-col md:fixed md:inset-y-0 z-80 bg-background">
           <FacultySidebar />

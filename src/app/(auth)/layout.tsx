@@ -1,6 +1,6 @@
 import "@/styles/globals.css";
 
-import { poppins } from "@/lib/fonts";
+import { mulish } from "@/lib/fonts";
 import Providers from "@/components/Providers";
 
 export default function AuthLayout({
@@ -9,7 +9,7 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={poppins.className}>
+    <html lang="en" className={mulish.className}>
       <body>
         <Providers>{children}</Providers>
       </body>
