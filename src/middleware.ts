@@ -1,10 +1,16 @@
 // export { default } from "next-auth/middleware";
+import { getToken } from "next-auth/jwt";
 import { withAuth, NextRequestWithAuth  } from "next-auth/middleware";
 import { NextRequest, NextResponse } from "next/server";
 
 export default withAuth(
   // `withAuth` augments your `Request` with the user's token.
-  function middleware(req: NextRequestWithAuth) {
+  async function middleware(req: NextRequestWithAuth) {
+    const token = await getToken({ req })
+
+    if (!token) {
+      return NextResponse.redirect(new URL('/sign-in', req.nextUrl))
+    }
     console.log("token: ", req.nextauth.token);
 
     if (req.nextUrl.pathname.startsWith("/admin") && req.nextauth.token?.role !== "ADMIN")

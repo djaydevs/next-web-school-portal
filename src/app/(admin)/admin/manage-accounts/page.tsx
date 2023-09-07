@@ -1,11 +1,15 @@
-import { FC } from "react";
-
+import getAllUsers from "@/app/actions/getAllUsers";
 import Heading from "@/components/ui/heading";
 import AccountTable from "@/components/admin/manage-accounts/account-table";
 
-interface adminACProps {}
+export const metadata = {
+  title: "Manage Accounts | Admin Portal",
+  description: "Admin Portal Account Settings",
+};
 
-const AdminAccountSettings: FC<adminACProps> = ({}) => {
+export default async function ManageAccountsLayout() {
+  const users = await getAllUsers();
+
   return (
     <section className="grow">
       <Heading size="sm">Manage Accounts</Heading>
@@ -14,6 +18,4 @@ const AdminAccountSettings: FC<adminACProps> = ({}) => {
       </div>
     </section>
   );
-};
-
-export default AdminAccountSettings;
+}

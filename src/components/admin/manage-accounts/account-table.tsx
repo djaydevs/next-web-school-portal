@@ -8,49 +8,24 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { SafeUser } from "@/types";
 
-const accounts = [
-  {
-    id: "101010101010",
-    name: "Taylor Swift",
-    email: "swift.taylor@gmail.com",
-    role: "STUDENT",
-  },
-  {
-    id: "101010101010",
-    name: "Taylor Swift",
-    email: "swift.taylor@gmail.com",
-    role: "STUDENT",
-  },
-  {
-    id: "101010101010",
-    name: "Taylor Swift",
-    email: "swift.taylor@gmail.com",
-    role: "STUDENT",
-  },
-  {
-    id: "101010101010",
-    name: "Taylor Swift",
-    email: "swift.taylor@gmail.com",
-    role: "STUDENT",
-  },
-  {
-    id: "101010101010",
-    name: "Taylor Swift",
-    email: "swift.taylor@gmail.com",
-    role: "STUDENT",
-  },
-  {
-    id: "101010101010",
-    name: "Taylor Swift",
-    email: "swift.taylor@gmail.com",
-    role: "STUDENT",
-  },
-];
+interface accountTableProps {
+  allUsers?: SafeUser | null;
+}
 
-interface accountTableProps {}
+const AccountTable: FC<accountTableProps> = ({ allUsers }) => {
+  const accounts = [
+    {
+      id: allUsers?.id,
+      name: allUsers?.name,
+      email: allUsers?.email,
+      role: allUsers?.role,
+      image: allUsers?.image,
+    },
+  ];
 
-const AccountTable: FC<accountTableProps> = ({}) => {
   return (
     <Table>
       <TableHeader>
@@ -65,7 +40,15 @@ const AccountTable: FC<accountTableProps> = ({}) => {
         {accounts.map((account) => (
           <TableRow key={account.id}>
             <TableCell className="font-medium">{account.id}</TableCell>
-            <TableCell>{account.name}</TableCell>
+            <TableCell className="flex items-center justify-start">
+              <Avatar>
+                {account?.image && (
+                  <AvatarImage src={account?.image} alt="avatar image" />
+                )}
+                <AvatarFallback>J{account?.name}</AvatarFallback>
+              </Avatar>
+              <p className="ms-2">{account.name}</p>
+            </TableCell>
             <TableCell>{account.email}</TableCell>
             <TableCell>{account.role}</TableCell>
           </TableRow>

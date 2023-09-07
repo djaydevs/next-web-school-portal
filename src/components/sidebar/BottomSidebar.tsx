@@ -3,7 +3,7 @@ import Link from "next/link";
 import { FC } from "react";
 
 import { buttonVariants } from "@/components/ui/button";
-import SignoutButton from "@/components/auth/sign-out";
+import SignoutModal from "@/components/auth/signout-modal";
 
 interface BottomSidebarProps {}
 
@@ -16,7 +16,7 @@ const BottomSidebar: FC<BottomSidebarProps> = ({}) => {
       >
         Help
       </Link>
-      <SignoutButton />
+      <SignoutModal className="w-full px-4 py-2 justify-start" />
     </div>
   );
 };

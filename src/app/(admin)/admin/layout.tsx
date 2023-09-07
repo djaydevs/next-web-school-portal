@@ -20,7 +20,7 @@ export default async function AdminPortalLayout({
         </aside>
         <main className="md:pl-20 lg:pl-64 pb-10 bg-background">
           <Providers>
-            <AdminNavbar currentUser={user} />
+            <AdminNavbar />
             {children}
           </Providers>
         </main>

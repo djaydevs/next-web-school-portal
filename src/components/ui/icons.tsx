@@ -11,6 +11,7 @@ import {
   FileText,
   Star,
   FolderOpen,
+  User,
   Users,
   Library,
   Users2,
@@ -34,6 +35,7 @@ export const Icons = {
   FolderOpen,
   Users,
   Library,
+  User,
   Users2,
   Settings,
   google: (props: IconProps) => (
