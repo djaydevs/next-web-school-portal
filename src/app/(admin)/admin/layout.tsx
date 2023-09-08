@@ -4,7 +4,7 @@ import { mulish } from "@/lib/fonts";
 import { AdminSidebar } from "@/components/sidebar/AdminSidebar";
 import AdminNavbar from "@/components/navbar/AdminNavbar";
 import Providers from "@/components/Providers";
-import getCurrentUser from "@/app/actions/getCurrentUser";
+import getCurrentUser from "@/actions/getCurrentUser";
 
 export default async function AdminPortalLayout({
   children,

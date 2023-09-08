@@ -1,4 +1,4 @@
-import getAllUsers from "@/app/actions/getAllUsers";
+import getAllUsers from "@/actions/getAllUsers";
 import Heading from "@/components/ui/heading";
 import AccountTable from "@/components/admin/manage-accounts/account-table";
 

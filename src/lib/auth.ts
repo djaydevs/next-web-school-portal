@@ -1,7 +1,6 @@
 import bcrypt from "bcrypt"
 import { type NextAuthOptions } from 'next-auth'
-import GoogleProvider, { GoogleProfile } from 'next-auth/providers/google'
-import CredentialsProvider from 'next-auth/providers/credentials'
+import GoogleProvider from 'next-auth/providers/google'
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { Adapter } from 'next-auth/adapters';
 
@@ -11,52 +10,9 @@ export const authOptions: NextAuthOptions = ({
     adapter: PrismaAdapter(prisma) as Adapter,
     providers: [
         GoogleProvider({
-            // profile(profile: GoogleProfile) {
-            //     return {
-            //         ...profile,
-            //         role: profile.role ?? "STUDENT",
-            //         id: profile.id.toString(),
-            //         name: profile.name,
-            //         email: profile.email,
-            //         image: profile.picture,
-            //     }
-            // },
             clientId: process.env.GOOGLE_CLIENT_ID as string,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
         }),
-        // CredentialsProvider({
-        //     name: 'credentials',
-        //     credentials: {
-        //       email: { label: 'email', type: 'text' },
-        //       password: { label: 'password', type: 'password' }
-        //     },
-        //     async authorize(credentials) {
-        //       if (!credentials?.email || !credentials?.password) {
-        //         throw new Error('Invalid credentials');
-        //       }
-      
-        //       const user = await prisma.user.findUnique({
-        //         where: {
-        //           email: credentials.email
-        //         }
-        //       });
-      
-        //       if (!user || !user?.hashedPassword) {
-        //         throw new Error('Invalid credentials');
-        //       }
-      
-        //       const isCorrectPassword = await bcrypt.compare(
-        //         credentials.password,
-        //         user.hashedPassword
-        //       );
-      
-        //       if (!isCorrectPassword) {
-        //         throw new Error('Invalid credentials');
-        //       }
-      
-        //       return user;
-        //     }
-        //   })
     ],
     callbacks: {
         async jwt({ token, user }) {
@@ -78,8 +34,6 @@ export const authOptions: NextAuthOptions = ({
                 email: dbUser.email,
                 image: dbUser.image,
             }
-            // if (user) token.role = user.role
-            // return token
         },
         async session({ session, token }) {
             if (token) {
@@ -89,7 +43,7 @@ export const authOptions: NextAuthOptions = ({
                 session.user.image = token.picture
                 session.user.role = token.role
             }
-            // if (session?.user) session.user.role = token.role
+
             return session
         },
     },    
@@ -98,7 +52,6 @@ export const authOptions: NextAuthOptions = ({
     },
     pages: {
         signIn: "/signin",
-        error: "/error",
     },
     secret: process.env.NEXTAUTH_SECRET
 })

@@ -6,12 +6,12 @@ import { NextRequest, NextResponse } from "next/server";
 export default withAuth(
   // `withAuth` augments your `Request` with the user's token.
   async function middleware(req: NextRequestWithAuth) {
-    const token = await getToken({ req })
+    // const token = await getToken({ req })
 
-    if (!token) {
-      return NextResponse.redirect(new URL('/sign-in', req.nextUrl))
-    }
-    console.log("token: ", req.nextauth.token);
+    // if (!token) {
+    //   return NextResponse.redirect(new URL('/sign-in', req.nextUrl))
+    // }
+    // console.log("token: ", req.nextauth.token);
 
     if (req.nextUrl.pathname.startsWith("/admin") && req.nextauth.token?.role !== "ADMIN")
       return NextResponse.rewrite(
