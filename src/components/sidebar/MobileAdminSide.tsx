@@ -15,7 +15,6 @@ import {
   SheetContent,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import BottomSidebar from "@/components/sidebar/BottomSidebar";
 
 export const MobileAdminSide = () => {
   const pathname = usePathname();
@@ -75,7 +74,6 @@ export const MobileAdminSide = () => {
                 </Link>
               ))}
             </div>
-            <BottomSidebar />
           </div>
         </div>
       </SheetContent>

@@ -4,15 +4,12 @@ import { mulish } from "@/lib/fonts";
 import { FacultySidebar } from "@/components/sidebar/FacultySidebar";
 import Providers from "@/components/Providers";
 import FacultyNavbar from "@/components/navbar/FacultyNavbar";
-import getCurrentUser from "@/app/actions/getCurrentUser";
 
 const FacultyPortalLayout = async ({
   children,
 }: {
   children: React.ReactNode;
 }) => {
-  const user = await getCurrentUser();
-
   return (
     <html lang="en" className={mulish.className}>
       <body className="h-full relative">
@@ -21,7 +18,7 @@ const FacultyPortalLayout = async ({
         </aside>
         <main className="md:pl-20 lg:pl-64 pb-10 bg-background">
           <Providers>
-            <FacultyNavbar currentUser={user} />
+            <FacultyNavbar />
             {children}
           </Providers>
         </main>

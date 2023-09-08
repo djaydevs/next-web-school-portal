@@ -40,6 +40,12 @@ export default async function UserAccountDrop() {
         <DropdownMenuItem asChild className="cursor-pointer">
           <Link href="/profile">My Profile</Link>
         </DropdownMenuItem>
+        <DropdownMenuItem asChild className="cursor-pointer">
+          <Link href="/help">Help</Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild className="cursor-pointer">
+          <Link href="/settings">Settings</Link>
+        </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild className="cursor-pointer">
           <SignoutModal className="w-full justify-start" />

@@ -1,4 +1,3 @@
-import getCurrentUser from "@/app/actions/getCurrentUser";
 import AdminDashboard from "@/components/admin/dashboard/admin-dashboard";
 
 export const metadata = {
@@ -7,11 +6,9 @@ export const metadata = {
 };
 
 export default async function AdminDashboardLayout() {
-  const user = await getCurrentUser();
-
   return (
     <div>
-      <AdminDashboard currentUser={user} />
+      <AdminDashboard />
     </div>
   );
 }
