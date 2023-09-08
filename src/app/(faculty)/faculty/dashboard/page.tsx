@@ -1,4 +1,3 @@
-import getCurrentUser from "@/actions/getCurrentUser";
 import FacultyDashboard from "@/components/faculty/dashboard/faculty-dashboard";
 
 export const metadata = {
@@ -7,11 +6,9 @@ export const metadata = {
 };
 
 export default async function FacultyDashboardLayout() {
-  const user = await getCurrentUser();
-
   return (
     <div>
-      <FacultyDashboard currentUser={user} />
+      <FacultyDashboard />
     </div>
   );
 }
