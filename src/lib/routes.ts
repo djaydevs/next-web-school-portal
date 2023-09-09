@@ -23,7 +23,7 @@ export const adminRoutes = [
     {
       label: "Dashboard",
       icon: Icons.LayoutDashboard,
-      href: "/admin/dashboard",
+      href: "/admin",
     },
     {
       label: "Student Record",
@@ -51,7 +51,7 @@ export const facultyRoutes = [
     {
       label: "Dashboard",
       icon: Icons.LayoutDashboard,
-      href: "/faculty/dashboard",
+      href: "/faculty",
     },
     {
       label: "Advisory Class",
@@ -74,7 +74,7 @@ export const studentRoutes = [
     {
       label: "Dashboard",
       icon: Icons.LayoutDashboard,
-      href: "/student/dashboard",
+      href: "/student",
     },
     {
       label: "Enrollment",

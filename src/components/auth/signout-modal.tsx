@@ -28,7 +28,15 @@ const SignoutModal: FC<signoutModalProps> = ({ ...props }) => {
           <DialogTitle>Are you sure you want to sign out?</DialogTitle>
         </DialogHeader>
         <DialogFooter>
-          <Button onClick={() => signOut()}>Yes</Button>
+          <Button
+            onClick={() =>
+              signOut({
+                callbackUrl: `${window.location.origin}/signin`,
+              })
+            }
+          >
+            Yes
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

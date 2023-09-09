@@ -38,7 +38,7 @@ export const MobileStudentSide = () => {
       <SheetContent side="left" className="p-0">
         <div className="space-y-4 py-4 flex flex-col h-full bg-black/5 dark:bg-white/5 text-primary">
           <div className="px-3 py-2 flex-1">
-            <Link href="/admin/dashboard" className="flex items-center mb-14">
+            <Link href="/student" className="flex items-center mb-14">
               <div className="relative h-14 w-14 me-4">
                 <Image fill alt="Logo" src="/mja-logo.png" />
               </div>

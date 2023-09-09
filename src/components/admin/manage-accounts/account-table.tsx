@@ -1,4 +1,20 @@
-import { FC } from "react";
+"use client";
+
+import * as React from "react";
+import {
+  ColumnDef,
+  ColumnFiltersState,
+  SortingState,
+  VisibilityState,
+  flexRender,
+  getCoreRowModel,
+  getFacetedRowModel,
+  getFacetedUniqueValues,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
 
 import {
   Table,
@@ -11,21 +27,15 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { SafeUser } from "@/types";
 
-interface accountTableProps {
-  allUsers?: SafeUser | null;
+interface accountTableProps<TData, TValue> {
+  columns: ColumnDef<TData, TValue>[];
+  data: TData[];
 }
 
-const AccountTable: FC<accountTableProps> = ({ allUsers }) => {
-  const accounts = [
-    {
-      id: allUsers?.id,
-      name: allUsers?.name,
-      email: allUsers?.email,
-      role: allUsers?.role,
-      image: allUsers?.image,
-    },
-  ];
-
+export function AccountTable<TData, TValue>({
+  columns,
+  data,
+}: accountTableProps<TData, TValue>) {
   return (
     <Table>
       <TableHeader>
@@ -36,7 +46,7 @@ const AccountTable: FC<accountTableProps> = ({ allUsers }) => {
           <TableHead>Role</TableHead>
         </TableRow>
       </TableHeader>
-      <TableBody>
+      {/* <TableBody>
         {accounts.map((account) => (
           <TableRow key={account.id}>
             <TableCell className="font-medium">{account.id}</TableCell>
@@ -53,9 +63,7 @@ const AccountTable: FC<accountTableProps> = ({ allUsers }) => {
             <TableCell>{account.role}</TableCell>
           </TableRow>
         ))}
-      </TableBody>
+      </TableBody> */}
     </Table>
   );
-};
-
-export default AccountTable;
+}

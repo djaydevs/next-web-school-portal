@@ -5,7 +5,7 @@ export const metadata = {
   description: "Admin Portal Dashboard",
 };
 
-export default async function AdminDashboardLayout() {
+export default async function AdminDashboardPage() {
   return (
     <div>
       <AdminDashboard />

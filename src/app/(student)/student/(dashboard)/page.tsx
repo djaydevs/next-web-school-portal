@@ -5,7 +5,7 @@ export const metadata = {
   description: "Student Portal Dashboard",
 };
 
-export default async function StudentDashboardLayout() {
+export default async function StudentDashboardPage() {
   return (
     <div>
       <StudentDashboard />

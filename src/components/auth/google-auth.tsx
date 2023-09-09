@@ -29,13 +29,13 @@ export function GoogleSignInButton() {
 
     if (status === "authenticated") {
       if (session?.user.role === "ADMIN") {
-        router.push("/admin/dashboard");
+        router.push("/admin");
       }
       if (session?.user.role === "FACULTY") {
-        router.push("/faculty/dashboard");
+        router.push("/faculty");
       }
       if (session?.user.role === "STUDENT") {
-        router.push("/student/dashboard");
+        router.push("/student");
       }
     }
   }, [router, session, status]);
