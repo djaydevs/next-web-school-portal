@@ -4,14 +4,12 @@ import { mulish } from "@/lib/fonts";
 import { AdminSidebar } from "@/components/sidebar/AdminSidebar";
 import AdminNavbar from "@/components/navbar/AdminNavbar";
 import Providers from "@/components/Providers";
-import getCurrentUser from "@/actions/getCurrentUser";
 
 export default async function AdminPortalLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const user = await getCurrentUser();
   return (
     <html lang="en" className={mulish.className}>
       <body className="h-full relative">

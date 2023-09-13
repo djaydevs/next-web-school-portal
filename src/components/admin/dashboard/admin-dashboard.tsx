@@ -1,6 +1,6 @@
 import Heading from "@/components/ui/heading";
 import DashboardCalendar from "@/components/dashboard-calendar";
-import getCurrentUser from "@/actions/getCurrentUser";
+import { getCurrentUser } from "@/hooks/getUsers";
 
 export default async function AdminDashboard() {
   const currentUser = await getCurrentUser();

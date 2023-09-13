@@ -1,4 +1,3 @@
-import getAllUsers from "@/actions/getAllUsers";
 import { AccountTable } from "@/components/admin/manage-accounts/account-table";
 
 export const metadata = {
@@ -7,8 +6,6 @@ export const metadata = {
 };
 
 export default async function ManageAccountsLayout() {
-  const users = await getAllUsers();
-
   return (
     <section className="grow">
       <div className="h-full flex-1 flex-col space-y-8 p-6 md:flex">
@@ -19,7 +16,7 @@ export default async function ManageAccountsLayout() {
             admin/registrar.
           </p>
         </div>
-        {/* <AccountTable data={tasks} columns={columns} /> */}
+        <AccountTable />
       </div>
     </section>
   );

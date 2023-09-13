@@ -15,6 +15,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import { useQuery } from "@tanstack/react-query";
 
 import {
   Table,
@@ -24,18 +25,20 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { SafeUser } from "@/types";
+import { User } from "@prisma/client";
+import { UserAvatar } from "@/components/user-avatar";
+import { fetchUsers } from "@/hooks/getUsers";
 
-interface accountTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
-  data: TData[];
-}
+export function AccountTable() {
+  const { data, isLoading } = useQuery({
+    queryFn: () => fetchUsers(),
+    queryKey: ["users"],
+  });
 
-export function AccountTable<TData, TValue>({
-  columns,
-  data,
-}: accountTableProps<TData, TValue>) {
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <Table>
       <TableHeader>
@@ -46,24 +49,25 @@ export function AccountTable<TData, TValue>({
           <TableHead>Role</TableHead>
         </TableRow>
       </TableHeader>
-      {/* <TableBody>
-        {accounts.map((account) => (
-          <TableRow key={account.id}>
-            <TableCell className="font-medium">{account.id}</TableCell>
+      <TableBody>
+        {data.users.map((user: User) => (
+          <TableRow key={user.id}>
+            <TableCell className="font-medium">{user.id}</TableCell>
             <TableCell className="flex items-center justify-start">
-              <Avatar>
-                {account?.image && (
-                  <AvatarImage src={account?.image} alt="avatar image" />
-                )}
-                <AvatarFallback>J{account?.name}</AvatarFallback>
-              </Avatar>
-              <p className="ms-2">{account.name}</p>
+              <UserAvatar
+                user={{
+                  name: user?.name || null,
+                  image: user?.image || null,
+                }}
+                className="h-10 w-10"
+              />
+              <p className="ms-2">{user.name}</p>
             </TableCell>
-            <TableCell>{account.email}</TableCell>
-            <TableCell>{account.role}</TableCell>
+            <TableCell>{user.email}</TableCell>
+            <TableCell>{user.role}</TableCell>
           </TableRow>
         ))}
-      </TableBody> */}
+      </TableBody>
     </Table>
   );
 }

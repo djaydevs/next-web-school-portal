@@ -7,7 +7,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { UserAvatar } from "@/components/user-avatar";
-import getCurrentUser from "@/actions/getCurrentUser";
+import { getCurrentUser } from "@/hooks/getUsers";
 import SignoutModal from "@/components/auth/signout-modal";
 
 export default async function UserAccountDrop() {
