@@ -1,7 +1,7 @@
 "use client";
 
 import React, { FC } from "react";
-import { Calendar } from "./ui/calendar";
+import { Calendar } from "@/components/ui/calendar";
 
 interface dashboardCalendarProps {}
 

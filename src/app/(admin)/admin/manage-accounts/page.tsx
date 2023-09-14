@@ -1,4 +1,4 @@
-import { AccountTable } from "@/components/admin/manage-accounts/account-table";
+import AccountTable from "@/components/admin/manage-accounts/account-table";
 
 export const metadata = {
   title: "Manage Accounts | Admin Portal",

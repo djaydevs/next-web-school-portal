@@ -28,31 +28,32 @@ import {
 import { User } from "@prisma/client";
 import { UserAvatar } from "@/components/user-avatar";
 import { fetchUsers } from "@/hooks/getUsers";
+import { SkeletonTable } from "@/components/loading";
 
-export function AccountTable() {
+export default function AccountTable() {
   const { data, isLoading } = useQuery({
     queryFn: () => fetchUsers(),
     queryKey: ["users"],
   });
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <SkeletonTable />;
   }
 
   return (
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead className="w-[100px]">Id</TableHead>
           <TableHead>Name</TableHead>
-          <TableHead>E-mail</TableHead>
-          <TableHead>Role</TableHead>
+          <TableHead className="hidden md:table-cell">E-mail</TableHead>
+          <TableHead className="hidden md:table-cell">Status</TableHead>
+          <TableHead className="hidden md:table-cell">Role</TableHead>
+          <TableHead>Action</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
         {data.users.map((user: User) => (
           <TableRow key={user.id}>
-            <TableCell className="font-medium">{user.id}</TableCell>
             <TableCell className="flex items-center justify-start">
               <UserAvatar
                 user={{
@@ -63,8 +64,9 @@ export function AccountTable() {
               />
               <p className="ms-2">{user.name}</p>
             </TableCell>
-            <TableCell>{user.email}</TableCell>
-            <TableCell>{user.role}</TableCell>
+            <TableCell className="hidden md:table-cell">{user.email}</TableCell>
+            <TableCell className="hidden md:table-cell">{user.role}</TableCell>
+            <TableCell className="hidden md:table-cell">{user.role}</TableCell>
           </TableRow>
         ))}
       </TableBody>
