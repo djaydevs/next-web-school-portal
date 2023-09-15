@@ -1,4 +1,5 @@
 import Link from "next/link";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -6,6 +7,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import Icons from "@/components/ui/icons";
 import { UserAvatar } from "@/components/user-avatar";
 import { getCurrentUser } from "@/hooks/getUsers";
 import SignoutModal from "@/components/auth/signout-modal";
@@ -38,13 +40,22 @@ export default async function UserAccountDrop() {
         </div>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild className="cursor-pointer">
-          <Link href="/profile">My Profile</Link>
+          <Link href="/profile">
+            <Icons.UserSquare2 className="w-4 h-4 mr-2" />
+            My Profile
+          </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild className="cursor-pointer">
-          <Link href="/help">Help</Link>
+          <Link href="/help">
+            <Icons.HelpCircle className="w-4 h-4 mr-2" />
+            Help
+          </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild className="cursor-pointer">
-          <Link href="/settings">Settings</Link>
+          <Link href="/settings">
+            <Icons.Settings className="w-4 h-4 mr-2" />
+            Settings
+          </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild className="cursor-pointer">
