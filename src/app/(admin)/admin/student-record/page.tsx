@@ -1,9 +1,9 @@
 import { FC } from "react";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import ExistingStudents from "@/components/admin/student-record/existing";
-import NewStudents from "@/components/admin/student-record/new-students";
-import AlumniStudents from "@/components/admin/student-record/alumni";
+import ExistingStudents from "@/components/existing";
+import NewStudents from "@/components/new-students";
+import AlumniStudents from "@/components/alumni";
 
 export const metadata = {
   title: "Student Record | Admin Portal",

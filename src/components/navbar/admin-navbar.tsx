@@ -1,10 +1,10 @@
-import { MobileFacultySide } from "@/components/sidebar/MobileFacultySide";
+import { MobileAdminSide } from "@/components/sidebar/mobile-admin-sidebar";
 import UserAccountDrop from "@/components/user-dropdown";
 
-export default function FacultyNavbar() {
+export default function AdminNavbar() {
   return (
     <div className="flex items-center p-4">
-      <MobileFacultySide />
+      <MobileAdminSide />
       <div className="flex items-center w-full justify-end">
         <UserAccountDrop />
       </div>

@@ -4,7 +4,7 @@ import Link from "next/link";
 
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
-import { AuthForm } from "@/components/auth/auth-form";
+import { AuthForm } from "@/components/auth-form";
 
 export const metadata: Metadata = {
   title: "Sign In | Mary Josette Academy",

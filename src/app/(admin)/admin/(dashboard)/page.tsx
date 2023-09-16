@@ -1,5 +1,5 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import AdminDashboardOverview from "@/components/admin/dashboard/dash-overview";
+import AdminDashboardOverview from "@/components/dash-overview";
 
 export const metadata = {
   title: "Dashboard | Admin Portal",

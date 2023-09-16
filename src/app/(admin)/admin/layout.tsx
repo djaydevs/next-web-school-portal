@@ -1,9 +1,9 @@
 import "@/styles/globals.css";
 
 import { mulish } from "@/lib/fonts";
-import { AdminSidebar } from "@/components/sidebar/AdminSidebar";
-import AdminNavbar from "@/components/navbar/AdminNavbar";
-import Providers from "@/components/Providers";
+import { AdminSidebar } from "@/components/sidebar/admin-sidebar";
+import AdminNavbar from "@/components/navbar/admin-navbar";
+import Providers from "@/components/providers";
 
 export default async function AdminPortalLayout({
   children,

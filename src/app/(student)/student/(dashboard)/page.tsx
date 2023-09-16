@@ -1,4 +1,4 @@
-import StudentDashboard from "@/components/student/dashboard/student-dashboard";
+import StudentDashboard from "@/components/student-dashboard";
 
 export const metadata = {
   title: "Dashboard | Student Portal",

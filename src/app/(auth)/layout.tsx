@@ -1,7 +1,7 @@
 import "@/styles/globals.css";
 
 import { mulish } from "@/lib/fonts";
-import Providers from "@/components/Providers";
+import Providers from "@/components/providers";
 
 export default function AuthLayout({
   children,

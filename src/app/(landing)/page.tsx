@@ -1,11 +1,11 @@
 import { Metadata } from "next";
-import Providers from "@/components/Providers";
-import Navbar from "@/components/home/Navbar";
-import Hero from "@/components/home/Hero";
-import SectionMessage from "@/components/home/SectionMessage";
-import SectionPrograms from "@/components/home/SectionPrograms";
-import SectionAbout from "@/components/home/SectionAbout";
-import SectionContacts from "@/components/home/SectionContacts";
+import Providers from "@/components/providers";
+import Navbar from "@/components/navbar";
+import Hero from "@/components/hero";
+import SectionMessage from "@/components/section-message";
+import SectionPrograms from "@/components/section-programs";
+import SectionAbout from "@/components/section-about";
+import SectionContacts from "@/components/section-contacts";
 
 export const metadata: Metadata = {
   title: "Mary Josette Academy | Home",

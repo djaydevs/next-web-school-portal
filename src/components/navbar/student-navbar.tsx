@@ -1,4 +1,4 @@
-import { MobileStudentSide } from "@/components/sidebar/MobileStudentSide";
+import { MobileStudentSide } from "@/components/sidebar/mobile-student-sidebar";
 import UserAccountDrop from "@/components/user-dropdown";
 
 export default function StudentNavbar() {

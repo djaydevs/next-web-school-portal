@@ -2,7 +2,7 @@ import "@/styles/globals.css";
 
 import { mulish } from "@/lib/fonts";
 import { StudentSidebar } from "@/components/sidebar/StudentSidebar";
-import Providers from "@/components/Providers";
+import Providers from "@/components/providers";
 import StudentNavbar from "@/components/navbar/StudentNavbar";
 
 const StudentPortalLayout = async ({

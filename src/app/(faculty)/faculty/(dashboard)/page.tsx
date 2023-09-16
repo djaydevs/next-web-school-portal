@@ -1,4 +1,4 @@
-import FacultyDashboard from "@/components/faculty/dashboard/faculty-dashboard";
+import FacultyDashboard from "@/components/faculty-dashboard";
 
 export const metadata = {
   title: "Dashboard | Faculty Portal",

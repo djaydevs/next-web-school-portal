@@ -10,7 +10,7 @@ import {
 import Icons from "@/components/ui/icons";
 import { UserAvatar } from "@/components/user-avatar";
 import { getCurrentUser } from "@/hooks/getUsers";
-import SignoutModal from "@/components/auth/signout-modal";
+import SignoutModal from "@/components/signout-modal";
 
 export default async function UserAccountDrop() {
   const currentUser = await getCurrentUser();

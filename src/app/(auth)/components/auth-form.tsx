@@ -10,7 +10,7 @@ import { Icons } from "@/components/ui/icons";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { GoogleSignInButton } from "@/components/auth/google-auth";
+import { GoogleSignInButton } from "@/components/google-auth";
 
 interface authFormProps extends React.HTMLAttributes<HTMLDivElement> {
   csrfToken?: string;
