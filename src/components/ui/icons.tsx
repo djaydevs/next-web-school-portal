@@ -1,4 +1,5 @@
 import {
+  Bell,
   ChevronLeft,
   ChevronRight,
   ChevronsDown,
@@ -24,6 +25,7 @@ import {
 type IconProps = React.HTMLAttributes<SVGElement>;
 
 export const Icons = {
+  Bell,
   ChevronLeft,
   ChevronRight,
   ChevronsDown,
@@ -44,7 +46,7 @@ export const Icons = {
   UserSquare2,
   HelpCircle,
   LogOut,
-  google: (props: IconProps) => (
+  Google: (props: IconProps) => (
     <svg role="img" viewBox="0 0 24 24" {...props}>
       <path
         fill="currentColor"
@@ -52,7 +54,7 @@ export const Icons = {
       />
     </svg>
   ),
-  spinner: (props: IconProps) => (
+  Spinner: (props: IconProps) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width="24"

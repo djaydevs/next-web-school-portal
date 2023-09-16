@@ -6,13 +6,13 @@ import { useRouter } from "next/navigation";
 
 import { Icons } from "@/components/ui/icons";
 import { Button } from "@/components/ui/button";
-import { toast } from "@/components/ui/use-toast";
-import { ToastProvider } from "../ui/toast";
+import { useToast } from "@/components/ui/use-toast";
 
 export function GoogleSignInButton() {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState(false);
   const { data: session, status } = useSession();
   const router = useRouter();
+  const { toast } = useToast();
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -38,7 +38,7 @@ export function GoogleSignInButton() {
         router.push("/student");
       }
     }
-  }, [router, session, status]);
+  }, [router, session, status, toast]);
 
   return (
     <Button
@@ -49,9 +49,9 @@ export function GoogleSignInButton() {
       className="p-4 text-md font-semibold"
     >
       {isLoading ? (
-        <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+        <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" />
       ) : (
-        <Icons.google className="mr-2 h-4 w-4" />
+        <Icons.Google className="mr-2 h-4 w-4" />
       )}{" "}
       Continue with Google
     </Button>
