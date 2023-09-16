@@ -8,7 +8,7 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import ScrollLink from "@/components/ui/scroll-link";
 import { Button, buttonVariants } from "@/components/ui/button";
-import ThemeToggle from "@/components/ui/ThemeToggle";
+import ThemeToggle from "@/components/ui/theme-toggle";
 import MobileNav from "@/app/(landing)/components/mobile-nav";
 import { homeRoutes } from "@/lib/routes";
 

@@ -1,9 +1,9 @@
 import "@/styles/globals.css";
 
 import { mulish } from "@/lib/fonts";
-import { StudentSidebar } from "@/components/sidebar/StudentSidebar";
+import { StudentSidebar } from "@/components/sidebar/student-sidebar";
 import Providers from "@/components/providers";
-import StudentNavbar from "@/components/navbar/StudentNavbar";
+import StudentNavbar from "@/components/navbar/student-navbar";
 
 const StudentPortalLayout = async ({
   children,

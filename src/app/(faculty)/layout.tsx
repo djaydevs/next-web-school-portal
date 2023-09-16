@@ -1,9 +1,9 @@
 import "@/styles/globals.css";
 
 import { mulish } from "@/lib/fonts";
-import { FacultySidebar } from "@/components/sidebar/FacultySidebar";
+import { FacultySidebar } from "@/components/sidebar/faculty-sidebar";
 import Providers from "@/components/providers";
-import FacultyNavbar from "@/components/navbar/FacultyNavbar";
+import FacultyNavbar from "@/components/navbar/faculty-navbar";
 
 const FacultyPortalLayout = async ({
   children,
