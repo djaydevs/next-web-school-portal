@@ -1,7 +1,5 @@
-// export { default } from "next-auth/middleware";
-import { getToken } from "next-auth/jwt";
 import { withAuth, NextRequestWithAuth  } from "next-auth/middleware";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
 export default withAuth(
   // `withAuth` augments your `Request` with the user's token.
@@ -13,17 +11,28 @@ export default withAuth(
     // }
     // console.log("token: ", req.nextauth.token);
 
+    //protect api routes from student and faculty roles
+    if (req.nextUrl.pathname.startsWith("/api") && req.nextauth.token?.role === "STUDENT")
+      return NextResponse.rewrite(
+        new URL("/student", req.url)
+      );
+    if (req.nextUrl.pathname.startsWith("/api") && req.nextauth.token?.role === "FACULTY")
+      return NextResponse.rewrite(
+        new URL("/faculty", req.url)
+      );
+
+
     if (req.nextUrl.pathname.startsWith("/admin") && req.nextauth.token?.role !== "ADMIN")
       return NextResponse.rewrite(
-        new URL("api/auth/signin?message=You Are Not Authorized!", req.url)
+        new URL("/signin", req.url)
       );
     if (req.nextUrl.pathname.startsWith("/faculty") && req.nextauth.token?.role !== "FACULTY")
       return NextResponse.rewrite(
-        new URL("api/auth/signin?message=You Are Not Authorized!", req.url)
+        new URL("/signin", req.url)
       );
     if (req.nextUrl.pathname.startsWith("/student") && req.nextauth.token?.role !== "STUDENT")
       return NextResponse.rewrite(
-        new URL("api/auth/signin?message=You Are Not Authorized!", req.url)
+        new URL("/signin", req.url)
       );
   },
   {
