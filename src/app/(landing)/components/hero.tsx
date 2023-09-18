@@ -16,7 +16,7 @@ interface HeroProps {}
 
 const Hero: FC<HeroProps> = ({}) => {
   return (
-    <div className="static w-full h-screen">
+    <div className="static h-screen w-full">
       <Image
         priority
         fill
@@ -25,11 +25,11 @@ const Hero: FC<HeroProps> = ({}) => {
         style={{ objectFit: "cover" }}
         className="hero-image"
       />
-      <div className="py-40 px-10 w-full h-screen flex flex-col justify-center items-center space-y-[8rem]">
-        <div className="z-10 pt-36 space-y-3">
+      <div className="flex h-screen w-full flex-col items-center justify-center space-y-[8rem] px-10 py-40">
+        <div className="z-10 space-y-3 pt-36">
           <Heading
             size="lg"
-            className="text-secondary dark:text-secondary-foreground three-d"
+            className="three-d text-secondary dark:text-secondary-foreground"
           >
             Welcome MJAIANS!
           </Heading>
@@ -37,7 +37,7 @@ const Hero: FC<HeroProps> = ({}) => {
             "Unwavering commitment towards academic distinction."
           </Paragraph>
         </div>
-        <div className="z-10 flex flex-col justify-center items-center space-y-[5rem]">
+        <div className="z-10 flex flex-col items-center justify-center space-y-[5rem]">
           <Link
             href="/signin"
             className={cn(
@@ -46,7 +46,7 @@ const Hero: FC<HeroProps> = ({}) => {
                 size: "lg",
                 transition: "d300",
               }),
-              "py-4 rounded-full tracking-wider hover:-translate-y-1 hover:scale-110 focus:text-primary focus:-translate-y-1 focus:scale-110 lg:mt-[5rem]"
+              "rounded-full py-4 tracking-wider hover:-translate-y-1 hover:scale-110 focus:-translate-y-1 focus:scale-110 focus:text-primary lg:mt-[5rem]",
             )}
           >
             Sign In to School Portal
@@ -58,10 +58,10 @@ const Hero: FC<HeroProps> = ({}) => {
                 variant: "none",
                 transition: "d300",
               }),
-              "w-full text-primary hover:translate-y-4 hover:text-primary-foreground"
+              "w-full text-primary hover:translate-y-4 hover:text-primary-foreground",
             )}
           >
-            <Icons.ChevronsDown className="w-12 h-12 mx-auto" />
+            <Icons.ChevronsDown className="mx-auto h-12 w-12" />
           </ScrollLink>
         </div>
       </div>

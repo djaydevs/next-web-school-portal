@@ -11,7 +11,7 @@ export default withAuth(
     // }
     // console.log("token: ", req.nextauth.token);
 
-    //protect api routes from student and faculty roles
+    //protect api routes
     if (req.nextUrl.pathname.startsWith("/api") && req.nextauth.token?.role === "STUDENT")
       return NextResponse.rewrite(
         new URL("/student", req.url)
@@ -20,8 +20,12 @@ export default withAuth(
       return NextResponse.rewrite(
         new URL("/faculty", req.url)
       );
+    if (req.nextUrl.pathname.startsWith("/api") && req.nextauth.token?.role === "ADMIN")
+      return NextResponse.rewrite(
+        new URL("/admin", req.url)
+      );
 
-
+    //protect routes per role
     if (req.nextUrl.pathname.startsWith("/admin") && req.nextauth.token?.role !== "ADMIN")
       return NextResponse.rewrite(
         new URL("/signin", req.url)
@@ -43,5 +47,7 @@ export default withAuth(
 );
 
 export const config = {
-  matcher: ["/api/:path*", "/admin/:path*", "/faculty/:path*", "/student/:path*"],
+  // REMINDER: add api route to the matcher if you're done testing
+  // matcher: ["/api/:path*", "/admin/:path*", "/faculty/:path*", "/student/:path*"],
+  matcher: ["/admin/:path*", "/faculty/:path*", "/student/:path*"],
 };

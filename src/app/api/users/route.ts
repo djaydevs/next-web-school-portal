@@ -10,8 +10,9 @@ export async function GET(request: Request) {
       return null;
     }
   
-    return NextResponse.json({ users })
+    return NextResponse.json({ message: "OK", users }, { status: 200 });
   } catch (error: any) {
-    return [];
+    return NextResponse.json(
+      { message: "Error", error }, { status: 500 });
   }
 }

@@ -15,7 +15,6 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { useQuery } from "@tanstack/react-query";
 
 import {
   Table,
@@ -25,51 +24,101 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { User } from "@prisma/client";
 import { UserAvatar } from "@/components/user-avatar";
-import { fetchUsers } from "@/hooks/getUsers";
-import { SkeletonTable } from "@/components/loading";
 
-export default function AccountTable() {
-  const { data, isLoading } = useQuery({
-    queryFn: () => fetchUsers(),
-    queryKey: ["users"],
+import { AccountTableToolbar } from "@/components/account-toolbar";
+
+interface AccountTableProps<TData, TValue> {
+  columns: ColumnDef<TData, TValue>[];
+  data: TData[];
+}
+
+export default function AccountTable<TData, TValue>({
+  columns,
+  data,
+}: AccountTableProps<TData, TValue>) {
+  const [rowSelection, setRowSelection] = React.useState({});
+  const [columnVisibility, setColumnVisibility] =
+    React.useState<VisibilityState>({});
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+    [],
+  );
+  const [sorting, setSorting] = React.useState<SortingState>([]);
+  const table = useReactTable({
+    data,
+    columns,
+    state: {
+      sorting,
+      columnVisibility,
+      rowSelection,
+      columnFilters,
+    },
+    enableRowSelection: true,
+    onRowSelectionChange: setRowSelection,
+    onSortingChange: setSorting,
+    onColumnFiltersChange: setColumnFilters,
+    onColumnVisibilityChange: setColumnVisibility,
+    getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFacetedRowModel: getFacetedRowModel(),
+    getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
-  if (isLoading) {
-    return <SkeletonTable />;
-  }
-
   return (
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead>Name</TableHead>
-          <TableHead className="hidden md:table-cell">E-mail</TableHead>
-          <TableHead className="hidden md:table-cell">Status</TableHead>
-          <TableHead className="hidden md:table-cell">Role</TableHead>
-          <TableHead>Action</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {data.users.map((user: User) => (
-          <TableRow key={user.id}>
-            <TableCell className="flex items-center justify-start">
-              <UserAvatar
-                user={{
-                  name: user?.name || null,
-                  image: user?.image || null,
-                }}
-                className="h-10 w-10"
-              />
-              <p className="ms-2">{user.name}</p>
-            </TableCell>
-            <TableCell className="hidden md:table-cell">{user.email}</TableCell>
-            <TableCell className="hidden md:table-cell">{user.role}</TableCell>
-            <TableCell className="hidden md:table-cell">{user.role}</TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+    <div className="space-y-4">
+      <AccountTableToolbar table={table} />
+      <div className="rounded-md border">
+        <Table>
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => {
+                  return (
+                    <TableHead key={header.id}>
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext(),
+                          )}
+                    </TableHead>
+                  );
+                })}
+              </TableRow>
+            ))}
+          </TableHeader>
+          <TableBody>
+            {table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map((row) => (
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && "selected"}
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext(),
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center"
+                >
+                  No results.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </div>
+    </div>
   );
 }

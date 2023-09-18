@@ -44,13 +44,13 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`z-50 fixed top-0 left-0 w-full p-2 flex-between gap-2 text-primary text-xs md:text-sm backdrop-blur-md bg-white/80 dark:bg-brown-800/80 dark:text-primary transition duration-150 ease-linear ${
+      className={`flex-between fixed left-0 top-0 z-50 w-full gap-2 bg-white/80 p-2 text-xs text-primary backdrop-blur-md transition duration-150 ease-linear dark:bg-brown-800/80 dark:text-primary md:text-sm ${
         show || "-translate-y-full"
       }`}
       aria-label="Global"
     >
-      <Link href={"/"} className="relative flex-center">
-        <div className="w-14 h-14">
+      <Link href={"/"} className="flex-center relative">
+        <div className="h-14 w-14">
           <Image
             priority
             width="100"
@@ -68,14 +68,14 @@ export default function Navbar() {
           </span>
         </div>
       </Link>
-      <div className="flex-auto hidden z-50 lg:flex lg:justify-center lg:gap-x-12">
+      <div className="z-50 hidden flex-auto lg:flex lg:justify-center lg:gap-x-12">
         {homeRoutes.map((route) => (
           <ScrollLink
             key={route.href}
             href={route.href}
             className={cn(
               buttonVariants({ variant: "link" }),
-              pathname === route.href
+              pathname === route.href,
             )}
           >
             {route.label}
@@ -90,7 +90,7 @@ export default function Navbar() {
         href="/signin"
         className={cn(
           buttonVariants({ variant: "default" }),
-          "hidden lg:block"
+          "hidden lg:block",
         )}
       >
         Sign In
