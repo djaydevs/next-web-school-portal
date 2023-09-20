@@ -18,8 +18,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-// import { labels } from "../data/data"
-// import { taskSchema } from "../data/schema"
+import { roles } from "@/lib/options";
+import { user } from "@/types";
 
 interface AccountTableRowActionsProps<TData> {
   row: Row<TData>;
@@ -28,7 +28,7 @@ interface AccountTableRowActionsProps<TData> {
 export function AccountTableRowActions<TData>({
   row,
 }: AccountTableRowActionsProps<TData>) {
-  //   const task = taskSchema.parse(row.original);
+  //   const userRole = user.parse(row.original);
 
   return (
     <DropdownMenu>
@@ -42,27 +42,21 @@ export function AccountTableRowActions<TData>({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[160px]">
-        <DropdownMenuItem>Edit</DropdownMenuItem>
-        <DropdownMenuItem>Make a copy</DropdownMenuItem>
-        <DropdownMenuItem>Favorite</DropdownMenuItem>
-        <DropdownMenuSeparator />
-        {/* <DropdownMenuSub>
-          <DropdownMenuSubTrigger>Labels</DropdownMenuSubTrigger>
-          <DropdownMenuSubContent>
-            <DropdownMenuRadioGroup value={task.label}>
-              {labels.map((label) => (
-                <DropdownMenuRadioItem key={label.value} value={label.value}>
-                  {label.label}
+        <DropdownMenuItem>Details</DropdownMenuItem>
+        <DropdownMenuSub>
+          <DropdownMenuSubTrigger>Change Roles</DropdownMenuSubTrigger>
+          {/* <DropdownMenuSubContent>
+            <DropdownMenuRadioGroup value={userRole.role}>
+              {roles.map((role) => (
+                <DropdownMenuRadioItem key={role.value} value={role.value}>
+                  {role.label}
                 </DropdownMenuRadioItem>
               ))}
             </DropdownMenuRadioGroup>
-          </DropdownMenuSubContent>
-        </DropdownMenuSub> */}
+          </DropdownMenuSubContent> */}
+        </DropdownMenuSub>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          Delete
-          <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
-        </DropdownMenuItem>
+        <DropdownMenuItem>Delete</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

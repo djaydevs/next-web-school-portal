@@ -41,7 +41,7 @@ export function AccountTableColumnHeader<TData, TValue>({
             ) : column.getIsSorted() === "asc" ? (
               <Icons.ArrowUp className="ml-2 h-4 w-4" />
             ) : (
-              <Icons.EyeOff className="ml-2 h-4 w-4" />
+              <Icons.ChevronsUpDown className="ml-2 h-4 w-4" />
             )}
           </Button>
         </DropdownMenuTrigger>
