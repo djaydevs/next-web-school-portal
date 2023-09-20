@@ -1,5 +1,3 @@
-import { NextResponse } from "next/server";
-
 import { prisma } from "@/lib/prisma";
 
 export async function GET(request: Request) {
@@ -10,7 +8,7 @@ export async function GET(request: Request) {
       return null;
     }
   
-    return NextResponse.json({users});
+    return Response.json({users});
   } catch (error: any) {
     return [];
   }
