@@ -27,7 +27,7 @@ export function AccountTableToolbar<TData>({
           onChange={(event) =>
             table.getColumn("email")?.setFilterValue(event.target.value)
           }
-          className="h-8 w-full md:w-[200px] lg:w-[250px]"
+          className="h-8 w-full md:w-[300px]"
         />
         <div className="flex w-full items-center justify-start space-x-2 py-4">
           {table.getColumn("status") && (

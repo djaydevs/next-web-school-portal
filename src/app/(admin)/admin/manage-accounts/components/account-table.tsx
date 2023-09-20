@@ -67,7 +67,7 @@ export default function AccountTable<TData, TValue>({
   });
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-2">
       <AccountTableToolbar table={table} />
       <div className="rounded-md border">
         <Table>
@@ -112,7 +112,7 @@ export default function AccountTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  No results or an error occured.
                 </TableCell>
               </TableRow>
             )}
