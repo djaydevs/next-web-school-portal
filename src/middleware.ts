@@ -48,6 +48,6 @@ export default withAuth(
 
 export const config = {
   // REMINDER: add api route to the matcher if you're done testing
-  // matcher: ["/api/:path*", "/admin/:path*", "/faculty/:path*", "/student/:path*"],
-  matcher: ["/admin/:path*", "/faculty/:path*", "/student/:path*"],
+  matcher: ["/api/:path*", "/admin/:path*", "/faculty/:path*", "/student/:path*"],
+  // matcher: ["/admin/:path*", "/faculty/:path*", "/student/:path*"],
 };
