@@ -2,7 +2,6 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 
-import { Checkbox } from "@/components/ui/checkbox";
 import { statuses, roles } from "@/lib/options";
 import { AccountTableColumnHeader } from "@/components/account-table-column-header";
 import { AccountTableRowActions } from "@/components/account-table-row-actions";

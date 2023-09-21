@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { roles } from "@/lib/options";
-import { user } from "@/types";
+import { userSchema } from "@/types";
 
 interface AccountTableRowActionsProps<TData> {
   row: Row<TData>;
@@ -28,7 +28,7 @@ interface AccountTableRowActionsProps<TData> {
 export function AccountTableRowActions<TData>({
   row,
 }: AccountTableRowActionsProps<TData>) {
-  //   const userRole = user.parse(row.original);
+  const userRole = userSchema.parse(row.original);
 
   return (
     <DropdownMenu>
@@ -45,7 +45,7 @@ export function AccountTableRowActions<TData>({
         <DropdownMenuItem>Details</DropdownMenuItem>
         <DropdownMenuSub>
           <DropdownMenuSubTrigger>Change Roles</DropdownMenuSubTrigger>
-          {/* <DropdownMenuSubContent>
+          <DropdownMenuSubContent>
             <DropdownMenuRadioGroup value={userRole.role}>
               {roles.map((role) => (
                 <DropdownMenuRadioItem key={role.value} value={role.value}>
@@ -53,7 +53,7 @@ export function AccountTableRowActions<TData>({
                 </DropdownMenuRadioItem>
               ))}
             </DropdownMenuRadioGroup>
-          </DropdownMenuSubContent> */}
+          </DropdownMenuSubContent>
         </DropdownMenuSub>
         <DropdownMenuSeparator />
         <DropdownMenuItem>Delete</DropdownMenuItem>

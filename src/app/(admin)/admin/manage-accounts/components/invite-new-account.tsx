@@ -33,10 +33,13 @@ import {
 interface InviteNewAccountProps {}
 
 const formSchema = z.object({
-  email: z.string().min(2, {
-    message: "E-mail should have @ symbol",
-  }),
-  type: z.enum(["STUDENT", "FACULTY", "ADMIN"], {
+  email: z
+    .string({
+      required_error: "Email field is required",
+      invalid_type_error: "This field must be in email format",
+    })
+    .email(),
+  role: z.enum(["STUDENT", "FACULTY", "ADMIN"], {
     required_error: "You need to select a role.",
   }),
 });
@@ -44,9 +47,6 @@ const formSchema = z.object({
 const InviteNewAccount: FC<InviteNewAccountProps> = ({}) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      email: "",
-    },
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
@@ -87,7 +87,7 @@ const InviteNewAccount: FC<InviteNewAccountProps> = ({}) => {
             />
             <FormField
               control={form.control}
-              name="type"
+              name="role"
               render={({ field }) => (
                 <FormItem className="space-y-3">
                   <FormLabel>Choose a role</FormLabel>
@@ -99,19 +99,19 @@ const InviteNewAccount: FC<InviteNewAccountProps> = ({}) => {
                     >
                       <FormItem className="flex items-center space-x-3 space-y-0">
                         <FormControl>
-                          <RadioGroupItem value="student" />
+                          <RadioGroupItem value="STUDENT" />
                         </FormControl>
                         <FormLabel className="font-normal">Student</FormLabel>
                       </FormItem>
                       <FormItem className="flex items-center space-x-3 space-y-0">
                         <FormControl>
-                          <RadioGroupItem value="faculty" />
+                          <RadioGroupItem value="FACULTY" />
                         </FormControl>
                         <FormLabel className="font-normal">Faculty</FormLabel>
                       </FormItem>
                       <FormItem className="flex items-center space-x-3 space-y-0">
                         <FormControl>
-                          <RadioGroupItem value="admin" />
+                          <RadioGroupItem value="ADMIN" />
                         </FormControl>
                         <FormLabel className="font-normal">Admin</FormLabel>
                       </FormItem>

@@ -24,8 +24,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { UserAvatar } from "@/components/user-avatar";
-
 import { AccountTableToolbar } from "@/components/account-toolbar";
 
 interface AccountTableProps<TData, TValue> {
