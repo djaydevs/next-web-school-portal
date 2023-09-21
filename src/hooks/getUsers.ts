@@ -38,7 +38,7 @@ export const getCurrentUser = async () => {
 }
 
 export const fetchUsers = async () => {
-  const response = await fetch("/api/users");
-  const data = await response.json();
+  const res = await fetch("/api/users");
+  const data = res.json();
   return data;
 };

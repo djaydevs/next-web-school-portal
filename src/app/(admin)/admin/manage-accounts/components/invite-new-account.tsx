@@ -1,13 +1,16 @@
 "use client";
 
-import { FC, useState } from "react";
+import { FC } from "react";
+import * as z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 
 import { cn } from "@/lib/utils";
 import { statuses, roles } from "@/lib/options";
 import { Button } from "@/components/ui/button";
 import Icons from "@/components/ui/icons";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
   Dialog,
   DialogContent,
@@ -18,23 +21,39 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-} from "@/components/ui/command";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 
 interface InviteNewAccountProps {}
 
+const formSchema = z.object({
+  email: z.string().min(2, {
+    message: "E-mail should have @ symbol",
+  }),
+  type: z.enum(["STUDENT", "FACULTY", "ADMIN"], {
+    required_error: "You need to select a role.",
+  }),
+});
+
 const InviteNewAccount: FC<InviteNewAccountProps> = ({}) => {
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState("");
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: "",
+    },
+  });
+
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    // Do something with the form values.
+    // ✅ This will be type-safe and validated.
+    console.log(values);
+  }
 
   return (
     <Dialog>
@@ -51,59 +70,62 @@ const InviteNewAccount: FC<InviteNewAccountProps> = ({}) => {
             Add new user by inviting them with invitation link.
           </DialogDescription>
         </DialogHeader>
-        <div className="flex w-full flex-col justify-between space-y-5">
-          <div className="space-y-2">
-            <Label htmlFor="email" className="text-left">
-              E-mail
-            </Label>
-            <Input id="email" placeholder="some@example.com" />
-          </div>
-          <div>
-            <Popover open={open} onOpenChange={setOpen}>
-              <PopoverTrigger asChild>
-                <Button
-                  variant="outline"
-                  role="combobox"
-                  aria-expanded={open}
-                  className="w-full justify-between"
-                >
-                  {value
-                    ? roles.find((role) => role.value === value)?.label
-                    : "Select role..."}
-                  <Icons.ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-[200px] p-0">
-                <Command>
-                  <CommandInput placeholder="Search roles..." />
-                  <CommandEmpty>No roles found.</CommandEmpty>
-                  <CommandGroup>
-                    {roles.map((role) => (
-                      <CommandItem
-                        key={role.value}
-                        onSelect={(currentValue) => {
-                          setValue(currentValue === value ? "" : currentValue);
-                          setOpen(false);
-                        }}
-                      >
-                        <Icons.Check
-                          className={cn(
-                            "mr-2 h-4 w-4",
-                            value === role.value ? "opacity-100" : "opacity-0",
-                          )}
-                        />
-                        {role.label}
-                      </CommandItem>
-                    ))}
-                  </CommandGroup>
-                </Command>
-              </PopoverContent>
-            </Popover>
-          </div>
-        </div>
-        <DialogFooter>
-          <Button type="submit">Invite</Button>
-        </DialogFooter>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>E-mail</FormLabel>
+                  <FormControl>
+                    <Input placeholder="some@example.com" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="type"
+              render={({ field }) => (
+                <FormItem className="space-y-3">
+                  <FormLabel>Choose a role</FormLabel>
+                  <FormControl>
+                    <RadioGroup
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      className="flex flex-col space-y-1"
+                    >
+                      <FormItem className="flex items-center space-x-3 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="student" />
+                        </FormControl>
+                        <FormLabel className="font-normal">Student</FormLabel>
+                      </FormItem>
+                      <FormItem className="flex items-center space-x-3 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="faculty" />
+                        </FormControl>
+                        <FormLabel className="font-normal">Faculty</FormLabel>
+                      </FormItem>
+                      <FormItem className="flex items-center space-x-3 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="admin" />
+                        </FormControl>
+                        <FormLabel className="font-normal">Admin</FormLabel>
+                      </FormItem>
+                    </RadioGroup>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <DialogFooter>
+              <Button type="submit">Invite</Button>
+            </DialogFooter>
+          </form>
+        </Form>
       </DialogContent>
     </Dialog>
   );
