@@ -1,6 +1,7 @@
 "use client";
 
 import { Row } from "@tanstack/react-table";
+import { useState } from "react";
 
 import Icons from "@/components/ui/icons";
 import { Button } from "@/components/ui/button";
@@ -11,7 +12,6 @@ import {
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuSub,
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import { roles } from "@/lib/options";
+import { updateRole } from "@/hooks/updateRole";
 import { userSchema } from "@/types";
 
 interface AccountTableRowActionsProps<TData> {
@@ -28,7 +29,18 @@ interface AccountTableRowActionsProps<TData> {
 export function AccountTableRowActions<TData>({
   row,
 }: AccountTableRowActionsProps<TData>) {
-  const userRole = userSchema.parse(row.original);
+  const user = userSchema.parse(row.original);
+  const [selectedRole, setSelectedRole] = useState(user.role);
+
+  const handleRoleChange = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const newRole = event.target.value as "STUDENT" | "FACULTY" | "ADMIN";
+    setSelectedRole(newRole);
+    await updateRole(user.id, newRole);
+
+    console.log(newRole);
+  };
 
   return (
     <DropdownMenu>
@@ -46,7 +58,10 @@ export function AccountTableRowActions<TData>({
         <DropdownMenuSub>
           <DropdownMenuSubTrigger>Change Roles</DropdownMenuSubTrigger>
           <DropdownMenuSubContent>
-            <DropdownMenuRadioGroup value={userRole.role}>
+            <DropdownMenuRadioGroup
+              value={selectedRole}
+              onChange={handleRoleChange}
+            >
               {roles.map((role) => (
                 <DropdownMenuRadioItem key={role.value} value={role.value}>
                   {role.label}
