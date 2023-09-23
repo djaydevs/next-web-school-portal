@@ -5,10 +5,10 @@ import { ColumnDef } from "@tanstack/react-table";
 import { statuses, roles } from "@/lib/options";
 import { AccountTableColumnHeader } from "@/components/account-table-column-header";
 import { AccountTableRowActions } from "@/components/account-table-row-actions";
-import { user } from "@/types";
+import { User } from "@/types";
 import { UserAvatar } from "@/components/user-avatar";
 
-export const columns: ColumnDef<user>[] = [
+export const columns: ColumnDef<User>[] = [
   //   {
   //     id: "select",
   //     header: ({ table }) => (

@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { User } from "@prisma/client";
 
 export const userSchema = z.object({
     id: z.string(),
@@ -11,5 +10,5 @@ export const userSchema = z.object({
     role: z.enum(["STUDENT", "FACULTY", "ADMIN"]),
 });
 
-export type user = z.infer<typeof userSchema>
+export type User = z.infer<typeof userSchema>
 // export type user = User
