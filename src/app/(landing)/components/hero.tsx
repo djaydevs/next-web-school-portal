@@ -1,4 +1,3 @@
-/* eslint-disable react/no-unescaped-entities */
 "use client";
 
 import { FC } from "react";
@@ -34,7 +33,7 @@ const Hero: FC<HeroProps> = ({}) => {
             Welcome MJAIANS!
           </Heading>
           <Paragraph>
-            "Unwavering commitment towards academic distinction."
+            &ldquo;Unwavering commitment towards academic distinction.&rdquo;
           </Paragraph>
         </div>
         <div className="z-10 flex flex-col items-center justify-center space-y-[5rem]">

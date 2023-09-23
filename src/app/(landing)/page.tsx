@@ -1,5 +1,4 @@
 import { Metadata } from "next";
-import Providers from "@/components/providers";
 import Navbar from "@/components/navbar";
 import Hero from "@/components/hero";
 import SectionMessage from "@/components/section-message";
@@ -16,12 +15,10 @@ export default function Home() {
   return (
     <>
       <header className="h-screen bg-background dark:bg-background">
-        <Providers>
-          <Navbar />
-        </Providers>
+        <Navbar />
         <Hero />
       </header>
-      <main className="-mt-1 z-20 bg-background max-w-[1300px] mx-auto dark:bg-background">
+      <main className="z-20 mx-auto -mt-1 max-w-[1300px] bg-background dark:bg-background">
         <SectionMessage />
         <SectionPrograms />
         <SectionAbout />

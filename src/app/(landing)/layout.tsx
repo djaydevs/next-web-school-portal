@@ -1,6 +1,8 @@
 import "@/styles/globals.css";
 import { montserrat } from "@/lib/fonts";
 
+import Providers from "@/components/providers";
+
 export default function RootLayout({
   children,
 }: {
@@ -8,7 +10,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={montserrat.className}>
-      <body>{children}</body>
+      <body>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }
