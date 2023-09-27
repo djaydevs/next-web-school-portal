@@ -29,10 +29,11 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { error } from "console";
 
 interface InviteNewAccountProps {}
 
-const formSchema = z.object({
+export const formSchema = z.object({
   email: z
     .string({
       required_error: "Email field is required",
@@ -49,12 +50,29 @@ const InviteNewAccount: FC<InviteNewAccountProps> = ({}) => {
     resolver: zodResolver(formSchema),
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
-  }
+  // function onSubmit(values: z.infer<typeof formSchema>) {
+  //   // Do something with the form values.
+  //   // ✅ This will be type-safe and validated.
+  //   console.log(values);
+  // }
 
+  const onSubmit = async function InviteUsers(data:z.infer<typeof formSchema>) {
+    const response = await fetch ("/api/invite-new-account", {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const responseData = await response.json;
+    if (!response.ok) {
+      alert("Submitting form failed!");
+      return;
+    }
+
+  }
+ 
   return (
     <Dialog>
       <DialogTrigger asChild>
