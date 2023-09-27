@@ -23,7 +23,13 @@ const MobileNav: FC<MobileNavProps> = ({}) => {
   return (
     <Sheet>
       <SheetTrigger>
-        <Button variant="ghost" size="icon" className="lg:hidden">
+        <Button
+          title="Mobile menu"
+          aria-label="Mobile menu"
+          variant="ghost"
+          size="icon"
+          className="lg:hidden"
+        >
           <Icons.Menu className="h-8 w-8" />
         </Button>
       </SheetTrigger>

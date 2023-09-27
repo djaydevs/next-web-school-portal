@@ -39,6 +39,7 @@ const Hero: FC<HeroProps> = ({}) => {
         <div className="z-10 flex flex-col items-center justify-center space-y-[5rem]">
           <Link
             href="/signin"
+            aria-label="Sign In to School Portal"
             className={cn(
               buttonVariants({
                 variant: "default",
@@ -52,6 +53,7 @@ const Hero: FC<HeroProps> = ({}) => {
           </Link>
           <ScrollLink
             href="#message"
+            aria-label="Scroll down"
             className={cn(
               buttonVariants({
                 variant: "none",

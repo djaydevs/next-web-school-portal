@@ -88,6 +88,7 @@ export default function Navbar() {
       </div>
       <Link
         href="/signin"
+        aria-label="Sign In to School Portal"
         className={cn(
           buttonVariants({ variant: "default" }),
           "hidden lg:block",

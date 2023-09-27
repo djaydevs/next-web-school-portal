@@ -30,16 +30,16 @@ export function AccountTableRowActions<TData>({
   row,
 }: AccountTableRowActionsProps<TData>) {
   const user = userSchema.parse(row.original);
-  const [selectedRole, setSelectedRole] = useState(user.role);
+  const [selectedRole, setSelectedRole] = useState({ role: user.role });
 
   const handleRoleChange = async (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    const newRole = event.target.value as "STUDENT" | "FACULTY" | "ADMIN";
-    setSelectedRole(newRole);
-    await updateRole(user.id, newRole);
-
-    console.log(newRole);
+    setSelectedRole((prev) => ({
+      ...prev,
+      role: event.target.value as "STUDENT" | "FACULTY" | "ADMIN",
+    }));
+    await updateRole(user.id, user.role);
   };
 
   return (
@@ -59,7 +59,7 @@ export function AccountTableRowActions<TData>({
           <DropdownMenuSubTrigger>Change Roles</DropdownMenuSubTrigger>
           <DropdownMenuSubContent>
             <DropdownMenuRadioGroup
-              value={selectedRole}
+              value={selectedRole.role.toString()}
               onChange={handleRoleChange}
             >
               {roles.map((role) => (
