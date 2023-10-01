@@ -1,33 +1,27 @@
 import "@/styles/globals.css";
-import { getServerSession } from "next-auth";
-import { redirect } from "next/navigation";
 
-import { poppins } from "@/lib/fonts";
-import { authOptions } from "@/lib/auth";
-import { FacultySidebar } from "@/components/sidebar/FacultySidebar";
-import Providers from "@/components/Providers";
-import FacultyNavbar from "@/components/navbar/FacultyNavbar";
+import { mulish } from "@/lib/fonts";
+import { FacultySidebar } from "@/components/sidebar/faculty-sidebar";
+import Providers from "@/components/providers";
+import FacultyNavbar from "@/components/navbar/faculty-navbar";
 
 const FacultyPortalLayout = async ({
   children,
 }: {
   children: React.ReactNode;
 }) => {
-  const session = await getServerSession(authOptions);
-  if (!session) return redirect("/signin");
-
   return (
-    <html lang="en" className={poppins.className}>
-      <body className="h-full relative">
-        <aside className="hidden h-full md:flex md:w-20 lg:w-64 md:flex-col md:fixed md:inset-y-0 z-80 bg-background">
-          <FacultySidebar />
-        </aside>
-        <main className="md:pl-20 lg:pl-64 pb-10 bg-background">
-          <Providers>
-            <FacultyNavbar user={session?.user} />
-          </Providers>
-          {children}
-        </main>
+    <html lang="en" className={mulish.className}>
+      <body className="relative h-full">
+        <Providers>
+          <aside className="z-80 hidden h-full bg-background md:fixed md:inset-y-0 md:flex md:w-20 md:flex-col lg:w-64">
+            <FacultySidebar />
+          </aside>
+          <main className="bg-background pb-10 md:pl-20 lg:pl-64">
+            <FacultyNavbar />
+            {children}
+          </main>
+        </Providers>
       </body>
     </html>
   );

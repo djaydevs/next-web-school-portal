@@ -1,23 +1,42 @@
-// export { default } from "next-auth/middleware";
 import { withAuth, NextRequestWithAuth  } from "next-auth/middleware";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
 export default withAuth(
   // `withAuth` augments your `Request` with the user's token.
-  function middleware(req: NextRequestWithAuth) {
-    console.log("token: ", req.nextauth.token);
+  async function middleware(req: NextRequestWithAuth) {
+    // const token = await getToken({ req })
 
+    // if (!token) {
+    //   return NextResponse.redirect(new URL('/sign-in', req.nextUrl))
+    // }
+    // console.log("token: ", req.nextauth.token);
+
+    //protect api routes
+    if (req.nextUrl.pathname.startsWith("/api") && req.nextauth.token?.role === "STUDENT")
+      return NextResponse.rewrite(
+        new URL("/student", req.url)
+      );
+    if (req.nextUrl.pathname.startsWith("/api") && req.nextauth.token?.role === "FACULTY")
+      return NextResponse.rewrite(
+        new URL("/faculty", req.url)
+      );
+    if (req.nextUrl.pathname.startsWith("/api") && req.nextauth.token?.role === "ADMIN")
+      return NextResponse.rewrite(
+        new URL("/admin", req.url)
+      );
+
+    //protect routes per role
     if (req.nextUrl.pathname.startsWith("/admin") && req.nextauth.token?.role !== "ADMIN")
       return NextResponse.rewrite(
-        new URL("/auth/signin?message=You Are Not Authorized!", req.url)
+        new URL("/signin", req.url)
       );
     if (req.nextUrl.pathname.startsWith("/faculty") && req.nextauth.token?.role !== "FACULTY")
       return NextResponse.rewrite(
-        new URL("/auth/signin?message=You Are Not Authorized!", req.url)
+        new URL("/signin", req.url)
       );
     if (req.nextUrl.pathname.startsWith("/student") && req.nextauth.token?.role !== "STUDENT")
       return NextResponse.rewrite(
-        new URL("/auth/signin?message=You Are Not Authorized!", req.url)
+        new URL("/signin", req.url)
       );
   },
   {
@@ -28,5 +47,7 @@ export default withAuth(
 );
 
 export const config = {
+  // REMINDER: add api route to the matcher if you're done testing
+  // matcher: ["/api/:path*", "/admin/:path*", "/faculty/:path*", "/student/:path*"],
   matcher: ["/admin/:path*", "/faculty/:path*", "/student/:path*"],
 };

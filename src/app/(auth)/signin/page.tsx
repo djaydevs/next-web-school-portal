@@ -4,7 +4,7 @@ import Link from "next/link";
 
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
-import { AuthForm } from "@/components/auth/auth-form";
+import { AuthForm } from "@/components/auth-form";
 
 export const metadata: Metadata = {
   title: "Sign In | Mary Josette Academy",
@@ -38,7 +38,7 @@ export default function AuthenticationPage() {
           <div className="relative z-20 flex items-center text-lg font-medium">
             <Link
               href="/"
-              className="flex-center text-2xl font-semibold tracking-tight"
+              className="flex-center text-2xl font-bold tracking-tight"
             >
               <div className="w-14 h-14 me-2">
                 <Image

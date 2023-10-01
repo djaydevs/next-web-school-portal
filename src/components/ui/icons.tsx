@@ -1,7 +1,15 @@
 import {
+  ArrowUp,
+  ArrowDown,
+  Bell,
+  Check,
   ChevronLeft,
   ChevronRight,
   ChevronsDown,
+  ChevronsUpDown,
+  Eye,
+  EyeOff,
+  MoreHorizontal,
   Moon,
   Sun,
   Laptop,
@@ -11,19 +19,34 @@ import {
   FileText,
   Star,
   FolderOpen,
+  User,
+  UserPlus2,
   Users,
   Library,
   Users2,
   Settings,
+  UserSquare2,
+  PlusCircle,
+  HelpCircle,
+  LogOut,
+  View,
 } from "lucide-react";
 
 type IconProps = React.HTMLAttributes<SVGElement>;
 
 export const Icons = {
+  ArrowUp,
+  ArrowDown,
+  Bell,
+  Check,
   ChevronLeft,
   ChevronRight,
   ChevronsDown,
+  ChevronsUpDown,
+  Eye,
+  EyeOff,
   Sun,
+  MoreHorizontal,
   Moon,
   Laptop,
   Menu,
@@ -34,9 +57,16 @@ export const Icons = {
   FolderOpen,
   Users,
   Library,
+  User,
+  UserPlus2,
   Users2,
   Settings,
-  google: (props: IconProps) => (
+  UserSquare2,
+  PlusCircle,
+  HelpCircle,
+  LogOut,
+  View,
+  Google: (props: IconProps) => (
     <svg role="img" viewBox="0 0 24 24" {...props}>
       <path
         fill="currentColor"
@@ -44,7 +74,7 @@ export const Icons = {
       />
     </svg>
   ),
-  spinner: (props: IconProps) => (
+  Spinner: (props: IconProps) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width="24"
