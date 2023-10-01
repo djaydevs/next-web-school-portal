@@ -13,15 +13,15 @@ export default function AdminPortalLayout({
   return (
     <html lang="en" className={mulish.className}>
       <body className="relative h-full">
-        <aside className="z-80 hidden h-full bg-background md:fixed md:inset-y-0 md:flex md:w-20 md:flex-col lg:w-64">
-          <AdminSidebar />
-        </aside>
-        <main className="bg-background pb-10 md:pl-20 lg:pl-64">
-          <Providers>
+        <Providers>
+          <aside className="z-80 hidden h-full bg-background md:fixed md:inset-y-0 md:flex md:w-20 md:flex-col lg:w-64">
+            <AdminSidebar />
+          </aside>
+          <main className="bg-background pb-10 md:pl-20 lg:pl-64">
             <AdminNavbar />
             {children}
-          </Providers>
-        </main>
+          </main>
+        </Providers>
       </body>
     </html>
   );

@@ -6,10 +6,10 @@ export const metadata = {
   description: "Admin Portal Dashboard",
 };
 
-export default async function AdminDashboard() {
+export default function AdminDashboard() {
   return (
     <Tabs defaultValue="overview" className="w-full p-4">
-      <TabsList className="grid w-full md:w-[400px] grid-cols-2">
+      <TabsList className="grid w-full grid-cols-2 md:w-[400px]">
         <TabsTrigger value="overview">Overview</TabsTrigger>
         <TabsTrigger value="reports">Reports</TabsTrigger>
       </TabsList>

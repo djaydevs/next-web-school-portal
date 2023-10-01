@@ -17,10 +17,6 @@ export function GoogleSignInButton() {
   useEffect(() => {
     if (status === "unauthenticated") {
       setIsLoading(false);
-      toast({
-        title: "Error",
-        description: "There was an error logging in with Google",
-      });
     }
 
     if (status === "loading") {
@@ -28,6 +24,10 @@ export function GoogleSignInButton() {
     }
 
     if (status === "authenticated") {
+      toast({
+        description: "Signed in as " + session?.user.email,
+      });
+
       if (session?.user.role === "ADMIN") {
         router.push("/admin");
       }
