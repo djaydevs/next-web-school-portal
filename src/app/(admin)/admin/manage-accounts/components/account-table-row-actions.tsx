@@ -2,6 +2,7 @@
 
 import { Row } from "@tanstack/react-table";
 import { useState } from "react";
+import { Role } from "@prisma/client";
 
 import Icons from "@/components/ui/icons";
 import { Button } from "@/components/ui/button";
@@ -24,22 +25,41 @@ import { userSchema } from "@/types";
 
 interface AccountTableRowActionsProps<TData> {
   row: Row<TData>;
+  selectedRole: Role;
+  onRoleChange: (role: Role) => void;
 }
 
 export function AccountTableRowActions<TData>({
   row,
+  selectedRole,
+  onRoleChange,
 }: AccountTableRowActionsProps<TData>) {
   const user = userSchema.parse(row.original);
-  const [selectedRole, setSelectedRole] = useState({ role: user.role });
+  const [isOpen, setIsOpen] = useState(false);
 
   const handleRoleChange = async (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    setSelectedRole((prev) => ({
-      ...prev,
-      role: event.target.value as "STUDENT" | "FACULTY" | "ADMIN",
-    }));
-    await updateRole(user.id, user.role);
+    const newRole = event.target.value as Role;
+    onRoleChange(newRole);
+    setIsOpen(false);
+
+    try {
+      const response = await fetch(`/api/user/${user.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ role: newRole } as unknown as Role),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update user role");
+      }
+    } catch (error) {
+      console.error(error);
+      // handle error
+    }
   };
 
   return (
@@ -59,7 +79,7 @@ export function AccountTableRowActions<TData>({
           <DropdownMenuSubTrigger>Change Roles</DropdownMenuSubTrigger>
           <DropdownMenuSubContent>
             <DropdownMenuRadioGroup
-              value={selectedRole.role.toString()}
+              value={selectedRole}
               onChange={handleRoleChange}
             >
               {roles.map((role) => (
