@@ -48,31 +48,46 @@ model User {
   email         String    @unique
   // hashedPassword String?
   emailVerified DateTime?
-  status        Status    @default(PENDING)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   image         String?
   role          Role      @default(STUDENT)
-  
-  accounts Account[]
-  sessions Session[]
+  isVerified    Boolean   @default(false)
+
+  studentProfile    StudentProfile[]
+  facultyProfile    FacultyProfile[]
+  adminProfile      AdminProfile[]
+  accounts          Account[]
+  sessions          Session[]
   verificationToken VerificationToken[]
+  invitations       Invitation[]
 }
 
 model VerificationToken {
-  id         String     @id @default(cuid())
-  token      String     @unique
-  createdAt  DateTime   @default(now())   
+  id          String    @id @default(cuid())
+  token       String    @unique
+  createdAt   DateTime  @default(now())
   activatedAt DateTime?
-  expiresAt  DateTime?  
+  expiresAt   DateTime?
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
 
   @@unique([id, token])
+}
 
-  user User @relation(fields: [userId], references: [id])
+model Invitation {
+  id          String    @id @default(cuid())
+  token       String    @unique
+  createdAt   DateTime  @default(now())
+  activatedAt DateTime?
+  expiresAt   DateTime?
+
+  user   User   @relation(fields: [userId], references: [id])
   userId String
 }
 
-model Student {
+model StudentProfile {
   id                    String      @id @default(cuid())
   lrn                   Int         @unique
   lastName              String
@@ -91,9 +106,12 @@ model Student {
   section               Section?
   subjects              Subject[]
   grades                Grades[]
+
+  user   User?   @relation(fields: [userId], references: [id])
+  userId String? @unique
 }
 
-model Faculty {
+model FacultyProfile {
   id            String    @id @default(cuid())
   lastName      String
   firstName     String
@@ -105,9 +123,12 @@ model Faculty {
   contactNumber String?
   section       Section[]
   subjects      Subject[]
+
+  user   User?   @relation(fields: [userId], references: [id])
+  userId String? @unique
 }
 
-model Admin {
+model AdminProfile {
   id            String   @id @default(cuid())
   lastName      String
   firstName     String
@@ -117,6 +138,9 @@ model Admin {
   gender        String
   address       String
   contactNumber String?
+
+  user   User?   @relation(fields: [userId], references: [id])
+  userId String? @unique
 }
 
 model SchoolYear {
@@ -132,10 +156,10 @@ model Strand {
   strandCode String
   strandName String
 
-  SchoolYear   SchoolYear @relation(fields: [schoolYearId], references: [id])
+  schoolYear   SchoolYear     @relation(fields: [schoolYearId], references: [id])
   schoolYearId String
-  Student      Student    @relation(fields: [studentId], references: [id])
-  studentId    String     @unique
+  student      StudentProfile @relation(fields: [studentId], references: [id])
+  studentId    String         @unique
 }
 
 model GradeLevel {
@@ -143,8 +167,8 @@ model GradeLevel {
   gradeLevel   Int
   gradeSection String
 
-  Student   Student? @relation(fields: [studentId], references: [id])
-  studentId String?  @unique
+  student   StudentProfile? @relation(fields: [studentId], references: [id])
+  studentId String?         @unique
 }
 
 model Enrollment {
@@ -152,8 +176,8 @@ model Enrollment {
   status         EnrollmentStatus @default(PENDING)
   enrollmentDate DateTime         @default(now())
 
-  Student   Student? @relation(fields: [studentId], references: [id])
-  studentId String?  @unique
+  student   StudentProfile? @relation(fields: [studentId], references: [id])
+  studentId String?         @unique
 }
 
 model Section {
@@ -161,9 +185,9 @@ model Section {
   sectionName String
   room        String
 
-  Student   Student? @relation(fields: [studentId], references: [id])
-  studentId String?  @unique
-  Faculty   Faculty? @relation(fields: [facultyId], references: [id])
+  Student   StudentProfile? @relation(fields: [studentId], references: [id])
+  studentId String?         @unique
+  faculty   FacultyProfile? @relation(fields: [facultyId], references: [id])
   facultyId String?
 }
 
@@ -172,9 +196,9 @@ model Subject {
   subjectCode String @unique
   subjectName String
 
-  Student   Student? @relation(fields: [studentId], references: [id])
+  student   StudentProfile? @relation(fields: [studentId], references: [id])
   studentId String?
-  Faculty   Faculty? @relation(fields: [facultyId], references: [id])
+  faculty   FacultyProfile? @relation(fields: [facultyId], references: [id])
   facultyId String?
 }
 
@@ -186,14 +210,8 @@ model Grades {
   fourthGrading Decimal?
   finalGrade    Decimal?
 
-  Student   Student? @relation(fields: [studentId], references: [id])
+  student   StudentProfile? @relation(fields: [studentId], references: [id])
   studentId String?
-}
-
-enum Status {
-  PENDING
-  INVITED
-  VERIFIED
 }
 
 enum Role {
