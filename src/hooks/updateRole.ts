@@ -1,7 +1,6 @@
 import { prisma } from '@/lib/prisma';
-import { Role } from '@prisma/client';
 
-export async function updateRole(userId: string, newRole: Role) {
+export async function updateRole(userId: string, newRole: string) {
     try {
         await prisma.user.update({
             where: { id: userId },
