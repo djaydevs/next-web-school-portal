@@ -28,13 +28,13 @@ export function GoogleSignInButton() {
         description: "Signed in as " + session?.user.email,
       });
 
-      if (session?.user.role === "ADMIN") {
+      if (session?.user.role === "admin") {
         router.push("/admin");
       }
-      if (session?.user.role === "FACULTY") {
+      if (session?.user.role === "faculty") {
         router.push("/faculty");
       }
-      if (session?.user.role === "STUDENT") {
+      if (session?.user.role === "student") {
         router.push("/student");
       }
     }

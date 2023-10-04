@@ -7,7 +7,6 @@ import { AccountTableColumnHeader } from "@/components/account-table-column-head
 import { AccountTableRowActions } from "@/components/account-table-row-actions";
 import { User } from "@/types";
 import { UserAvatar } from "@/components/user-avatar";
-import { $Enums } from "@prisma/client";
 
 export const columns: ColumnDef<User>[] = [
   //   {
@@ -114,10 +113,10 @@ export const columns: ColumnDef<User>[] = [
     cell: ({ row }) => (
       <AccountTableRowActions
         row={row}
-        selectedRole={"STUDENT"}
-        onRoleChange={function (role: $Enums.Role): void {
-          throw new Error("Function not implemented.");
-        }}
+        // selectedRole={"STUDENT"}
+        // onRoleChange={function (role: $Enums.Role): void {
+        //   throw new Error("Function not implemented.");
+        // }}
       />
     ),
   },
