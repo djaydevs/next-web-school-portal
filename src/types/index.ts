@@ -7,7 +7,7 @@ export const userSchema = z.object({
     createdAt: z.string().nullish(),
     updatedAt: z.string().nullish(),
     image: z.string().url().nullish(),
-    role: z.enum(["STUDENT", "FACULTY", "ADMIN"]),
+    role: z.string(),
 });
 
 export type User = z.infer<typeof userSchema>

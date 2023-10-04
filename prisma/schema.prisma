@@ -51,7 +51,7 @@ model User {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   image         String?
-  role          Role      @default(STUDENT)
+  role          String    @default("student")
   isVerified    Boolean   @default(false)
 
   studentProfile    StudentProfile[]
@@ -172,9 +172,9 @@ model GradeLevel {
 }
 
 model Enrollment {
-  id             String           @id @default(cuid())
-  status         EnrollmentStatus @default(PENDING)
-  enrollmentDate DateTime         @default(now())
+  id             String   @id @default(cuid())
+  status         String?
+  enrollmentDate DateTime @default(now())
 
   student   StudentProfile? @relation(fields: [studentId], references: [id])
   studentId String?         @unique
@@ -214,18 +214,18 @@ model Grades {
   studentId String?
 }
 
-enum Role {
-  STUDENT
-  FACULTY
-  ADMIN
-}
+// enum Role {
+//   STUDENT
+//   FACULTY
+//   ADMIN
+// }
 
-enum EnrollmentStatus {
-  PENDING
-  ENROLLED
-  DROPPED
-  COMPLETED
-  WITHDRAWN
-  ON_HOLD
-  GRADUATED
-}
+// enum EnrollmentStatus {
+//   PENDING
+//   ENROLLED
+//   DROPPED
+//   COMPLETED
+//   WITHDRAWN
+//   ON_HOLD
+//   GRADUATED
+// }

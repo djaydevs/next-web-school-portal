@@ -1,4 +1,4 @@
-import { withAuth, NextRequestWithAuth  } from "next-auth/middleware";
+import { withAuth, NextRequestWithAuth } from "next-auth/middleware";
 import { NextResponse } from "next/server";
 
 export default withAuth(
@@ -12,29 +12,29 @@ export default withAuth(
     // console.log("token: ", req.nextauth.token);
 
     //protect api routes
-    if (req.nextUrl.pathname.startsWith("/api") && req.nextauth.token?.role === "STUDENT")
+    if (req.nextUrl.pathname.startsWith("/api") && req.nextauth.token?.role === "student")
       return NextResponse.rewrite(
         new URL("/student", req.url)
       );
-    if (req.nextUrl.pathname.startsWith("/api") && req.nextauth.token?.role === "FACULTY")
+    if (req.nextUrl.pathname.startsWith("/api") && req.nextauth.token?.role === "faculty")
       return NextResponse.rewrite(
         new URL("/faculty", req.url)
       );
-    if (req.nextUrl.pathname.startsWith("/api") && req.nextauth.token?.role === "ADMIN")
+    if (req.nextUrl.pathname.startsWith("/api") && req.nextauth.token?.role === "admin")
       return NextResponse.rewrite(
         new URL("/admin", req.url)
       );
 
     //protect routes per role
-    if (req.nextUrl.pathname.startsWith("/admin") && req.nextauth.token?.role !== "ADMIN")
+    if (req.nextUrl.pathname.startsWith("/admin") && req.nextauth.token?.role !== "admin")
       return NextResponse.rewrite(
         new URL("/signin", req.url)
       );
-    if (req.nextUrl.pathname.startsWith("/faculty") && req.nextauth.token?.role !== "FACULTY")
+    if (req.nextUrl.pathname.startsWith("/faculty") && req.nextauth.token?.role !== "faculty")
       return NextResponse.rewrite(
         new URL("/signin", req.url)
       );
-    if (req.nextUrl.pathname.startsWith("/student") && req.nextauth.token?.role !== "STUDENT")
+    if (req.nextUrl.pathname.startsWith("/student") && req.nextauth.token?.role !== "student")
       return NextResponse.rewrite(
         new URL("/signin", req.url)
       );
