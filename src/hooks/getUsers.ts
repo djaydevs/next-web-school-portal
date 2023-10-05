@@ -1,3 +1,4 @@
+import axios from "axios";
 import { getServerSession } from "next-auth/next"
 
 import { authOptions } from "@/lib/auth";
@@ -36,7 +37,6 @@ export const getCurrentUser = async () => {
 }
 
 export const fetchUsers = async () => {
-  const res = await fetch("/api/user");
-  const data = res.json();
-  return data;
+  const res = await axios.get("/api/user");
+  return res.data;
 };

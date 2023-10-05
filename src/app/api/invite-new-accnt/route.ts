@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
+import { userSchema } from "@/types";
+
 import { prisma } from "@/lib/prisma";
-import { formSchema } from "@/app/(admin)/admin/manage-accounts/components/invite-new-account";
-import { ZodEnum } from "zod";
 
 export async function POST(request: NextRequest) {
 
     const body: unknown = await request.json();
-    const result = formSchema.safeParse(body);
+    const result = userSchema.safeParse(body);
 
     // check out Zod's .flatten() method for an easier way to process errors
     let zodErrors = {};
