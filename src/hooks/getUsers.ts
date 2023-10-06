@@ -40,3 +40,8 @@ export const fetchUsers = async () => {
   const res = await axios.get("/api/user");
   return res.data;
 };
+
+export const fetchUserById = async (userId: string) => {
+  const res = await axios.get(`/api/user/${userId}`)
+  return res.data
+}

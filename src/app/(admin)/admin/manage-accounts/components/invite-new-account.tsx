@@ -29,25 +29,13 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { error } from "console";
+import { User, userSchema } from "@/types";
 
 interface InviteNewAccountProps {}
 
-export const formSchema = z.object({
-  email: z
-    .string({
-      required_error: "Email field is required",
-      invalid_type_error: "This field must be in email format",
-    })
-    .email(),
-  role: z.enum(["STUDENT", "FACULTY", "ADMIN"], {
-    required_error: "You need to select a role.",
-  }),
-});
-
 const InviteNewAccount: FC<InviteNewAccountProps> = ({}) => {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<User>({
+    resolver: zodResolver(userSchema),
   });
 
   // function onSubmit(values: z.infer<typeof formSchema>) {
@@ -56,8 +44,10 @@ const InviteNewAccount: FC<InviteNewAccountProps> = ({}) => {
   //   console.log(values);
   // }
 
-  const onSubmit = async function InviteUsers(data:z.infer<typeof formSchema>) {
-    const response = await fetch ("/api/invite-new-account", {
+  const onSubmit = async function InviteUsers(
+    data: z.infer<typeof userSchema>,
+  ) {
+    const response = await fetch("/api/invite-new-account", {
       method: "POST",
       body: JSON.stringify(data),
       headers: {
@@ -70,9 +60,8 @@ const InviteNewAccount: FC<InviteNewAccountProps> = ({}) => {
       alert("Submitting form failed!");
       return;
     }
+  };
 
-  }
- 
   return (
     <Dialog>
       <DialogTrigger asChild>

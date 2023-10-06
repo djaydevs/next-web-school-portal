@@ -113,10 +113,10 @@ export const columns: ColumnDef<User>[] = [
     cell: ({ row }) => (
       <AccountTableRowActions
         row={row}
-        // selectedRole={"STUDENT"}
-        // onRoleChange={function (role: $Enums.Role): void {
-        //   throw new Error("Function not implemented.");
-        // }}
+        selectedRole={row.original.role}
+        onRoleChange={function (role: string): void {
+          throw new Error("Function not implemented.");
+        }}
       />
     ),
   },

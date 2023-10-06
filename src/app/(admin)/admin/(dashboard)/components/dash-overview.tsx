@@ -16,9 +16,13 @@ export default async function AdminDashboardOverview() {
 
   return (
     <div>
-      {currentUser?.name && (
+      {currentUser?.name ? (
         <Heading size="sm" className="grow">
           Welcome, {currentUser.name}
+        </Heading>
+      ) : (
+        <Heading size="sm" className="grow">
+          Welcome, Admin
         </Heading>
       )}
       <div className="flex w-full flex-auto flex-col flex-wrap justify-around">

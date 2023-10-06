@@ -110,7 +110,7 @@ export default function AccountTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results or an error occured.
+                  No users found or an error occured.
                 </TableCell>
               </TableRow>
             )}
