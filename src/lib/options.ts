@@ -1,10 +1,10 @@
 export const statuses = [
   {
-    value: "invited",
-    label: "Invited",
+    value: false,
+    label: "Not verified",
   },
   {
-    value: "verified",
+    value: true,
     label: "Verified",
   },
 ]

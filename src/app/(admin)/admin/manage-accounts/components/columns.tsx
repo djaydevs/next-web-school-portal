@@ -4,7 +4,7 @@ import { ColumnDef } from "@tanstack/react-table";
 
 import { statuses, roles } from "@/lib/options";
 import { AccountTableColumnHeader } from "@/components/account-table-column-header";
-import { AccountTableRowActions } from "@/components/account-table-row-actions";
+import { AccountTableRowDetails } from "@/components/account-table-row-details";
 import { User } from "@/types";
 import { UserAvatar } from "@/components/user-avatar";
 
@@ -63,7 +63,7 @@ export const columns: ColumnDef<User>[] = [
     },
   },
   {
-    accessorKey: "status",
+    accessorKey: "isVerified",
     header: ({ column }) => (
       <AccountTableColumnHeader
         column={column}
@@ -73,7 +73,7 @@ export const columns: ColumnDef<User>[] = [
     ),
     cell: ({ row }) => {
       const status = statuses.find(
-        (status) => status.value === row.getValue("status"),
+        (status) => status.value === row.getValue("isVerified"),
       );
 
       if (!status) {
@@ -110,14 +110,6 @@ export const columns: ColumnDef<User>[] = [
   },
   {
     id: "actions",
-    cell: ({ row }) => (
-      <AccountTableRowActions
-        row={row}
-        selectedRole={row.original.role}
-        onRoleChange={function (role: string): void {
-          throw new Error("Function not implemented.");
-        }}
-      />
-    ),
+    cell: ({ row }) => <AccountTableRowDetails row={row} />,
   },
 ];
