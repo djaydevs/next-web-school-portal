@@ -56,7 +56,7 @@ export const columns: ColumnDef<User>[] = [
   {
     accessorKey: "email",
     header: ({ column }) => (
-      <AccountTableColumnHeader column={column} title="E-mail" />
+      <AccountTableColumnHeader column={column} title="Email" />
     ),
     cell: ({ row }) => {
       return <div className="w-full">{row.getValue("email")}</div>;

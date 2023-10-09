@@ -9,7 +9,6 @@ import { useForm } from "react-hook-form";
 
 import { fetchUserById } from "@/hooks/getUsers";
 import { User, userSchema } from "@/types";
-import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -26,13 +25,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
-import { Badge } from "@/components/ui/badge";
-import { UserAvatar } from "@/components/user-avatar";
-import Link from "next/link";
-import { cn } from "@/lib/utils";
-import { Label } from "@/components/ui/label";
+import UserInfoCard from "@/components/user-info-card";
 
 interface ManageAccountIdPageProps {
   params: {
@@ -67,64 +62,8 @@ const ManageAccountIdPage: FC<ManageAccountIdPageProps> = ({ params }) => {
       {isLoading ? (
         <div>Loading...</div>
       ) : (
-        <div className="flex w-full justify-between space-x-4 p-4">
-          <Card className="my-auto w-2/4">
-            <CardHeader className="space-y-4">
-              <UserAvatar
-                user={{
-                  name: userInfo?.name || null,
-                  image: userInfo?.image || null,
-                }}
-                className="mx-auto my-2 h-28 w-28"
-              />
-              <div className="flex flex-nowrap items-center justify-between">
-                <CardTitle>{userInfo?.name}</CardTitle>
-                {userInfo?.isVerified === true ? (
-                  <Badge variant="secondary">Verified</Badge>
-                ) : (
-                  <Badge variant="destructive">Not verified</Badge>
-                )}
-              </div>
-              <Badge variant="outline" className="my-2 p-2">
-                <p className="mx-auto">{userInfo?.role.toUpperCase()}</p>
-              </Badge>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="space-y-4">
-                <div className="flex flex-nowrap items-center justify-between">
-                  <Label>Email:</Label>
-                  <Label>{userInfo?.email}</Label>
-                </div>
-                <div className="flex flex-nowrap items-center justify-between">
-                  <Label>Email Verified:</Label>
-                  <Label>{userInfo?.emailVerified}</Label>
-                </div>
-                <div className="flex flex-nowrap items-center justify-between">
-                  <Label>Created:</Label>
-                  <Label>{userInfo?.createdAt}</Label>
-                </div>
-                <div className="flex flex-nowrap items-center justify-between">
-                  <Label>Updated:</Label>
-                  <Label>{userInfo?.updatedAt}</Label>
-                </div>
-              </div>
-              {userInfo?.role === "student" ? (
-                <Link
-                  href={`/admin/student-record`}
-                  aria-label="Manage account details"
-                  className={cn(
-                    buttonVariants({
-                      variant: "secondary",
-                      size: "sm",
-                    }),
-                    "w-full",
-                  )}
-                >
-                  Student Record
-                </Link>
-              ) : null}
-            </CardContent>
-          </Card>
+        <div className="w-full justify-between space-x-4 p-4 md:flex">
+          <UserInfoCard userInfo={userInfo} />
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
