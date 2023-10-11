@@ -25,8 +25,8 @@ export default async function AdminDashboardOverview() {
           Welcome, Admin
         </Heading>
       )}
-      <div className="flex w-full flex-auto flex-col flex-wrap justify-around">
-        <section>
+      <div className="flex w-full flex-col">
+        <section className="w-full py-2">
           <DashboardCards />
         </section>
         <section>
