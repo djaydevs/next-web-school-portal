@@ -1,6 +1,6 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 
 import { fetchUsers } from "@/hooks/getUsers";
 import AccountTable from "@/components/account-table";
@@ -8,6 +8,10 @@ import InviteNewAccount from "@/components/invite-new-account";
 import { SkeletonTable } from "@/components/loading";
 import { columns } from "@/components/columns";
 import { User } from "@/types";
+import { SubmitHandler } from "react-hook-form";
+import axios from "axios";
+import { error } from "console";
+import { useRouter } from "next/navigation";
 
 export default function ManageAccountsPage() {
   // TODO: 1 Add the ability to add a new account by integrating invitation links through email
@@ -20,6 +24,26 @@ export default function ManageAccountsPage() {
     queryKey: ["users"],
   });
 
+  const router = useRouter();
+
+ 
+
+  const { mutate: createUser, isLoading: isLoadingSubmit } = useMutation({
+    mutationFn: (newInvite: User) => {
+      return axios.post('/api/invite', newInvite);
+    },
+    onError: (error) => {
+      console.error(error);
+    },
+    onSuccess: () => {
+      router.push("/admin/manage-accounts");
+    },
+  })
+
+  const handleInvite: SubmitHandler<User> = async (data) => {
+    createUser(data);
+  }
+
   return (
     <div className="h-full flex-1 flex-col space-y-6 p-6 md:flex">
       <div>
@@ -29,7 +53,10 @@ export default function ManageAccountsPage() {
           admin/registrar.
         </p>
       </div>
-      <InviteNewAccount />
+      <InviteNewAccount 
+        onSubmit={handleInvite} 
+        isLoadingSubmit
+        isEditing={false} />
       {isLoading ? (
         <SkeletonTable />
       ) : (

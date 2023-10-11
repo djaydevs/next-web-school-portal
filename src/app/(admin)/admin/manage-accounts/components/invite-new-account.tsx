@@ -3,7 +3,7 @@
 import { FC } from "react";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 import { cn } from "@/lib/utils";
 import { statuses, roles } from "@/lib/options";
@@ -31,37 +31,24 @@ import {
 } from "@/components/ui/form";
 import { User, userSchema } from "@/types";
 
-interface InviteNewAccountProps {}
+interface InviteNewAccountProps {
+  onSubmit: SubmitHandler<User>;
+  isLoadingSubmit: boolean;
+  isEditing: boolean;
+}
 
-const InviteNewAccount: FC<InviteNewAccountProps> = ({}) => {
-  const form = useForm<User>({
-    resolver: zodResolver(userSchema),
+const InviteNewAccount: FC<InviteNewAccountProps> = ({
+  onSubmit,
+  isLoadingSubmit,
+  isEditing,
+}) => {
+    const form = useForm<User>({
+      resolver: zodResolver(userSchema),
   });
 
-  // function onSubmit(values: z.infer<typeof formSchema>) {
-  //   // Do something with the form values.
-  //   // ✅ This will be type-safe and validated.
-  //   console.log(values);
-  // }
+//  async function onSubmit(values: z.infer<typeof userSchema>) {
 
-  const onSubmit = async function InviteUsers(
-    data: z.infer<typeof userSchema>,
-  ) {
-    const response = await fetch("/api/invite-new-account", {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    const responseData = await response.json;
-    if (!response.ok) {
-      alert("Submitting form failed!");
-      return;
-    }
-  };
-
+//  }
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -108,19 +95,19 @@ const InviteNewAccount: FC<InviteNewAccountProps> = ({}) => {
                         <FormControl>
                           <RadioGroupItem value="STUDENT" />
                         </FormControl>
-                        <FormLabel className="font-normal">Student</FormLabel>
+                        <FormLabel className="font-normal">student</FormLabel>
                       </FormItem>
                       <FormItem className="flex items-center space-x-3 space-y-0">
                         <FormControl>
                           <RadioGroupItem value="FACULTY" />
                         </FormControl>
-                        <FormLabel className="font-normal">Faculty</FormLabel>
+                        <FormLabel className="font-normal">faculty</FormLabel>
                       </FormItem>
                       <FormItem className="flex items-center space-x-3 space-y-0">
                         <FormControl>
                           <RadioGroupItem value="ADMIN" />
                         </FormControl>
-                        <FormLabel className="font-normal">Admin</FormLabel>
+                        <FormLabel className="font-normal">admin</FormLabel>
                       </FormItem>
                     </RadioGroup>
                   </FormControl>
