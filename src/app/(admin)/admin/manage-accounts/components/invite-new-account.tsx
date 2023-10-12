@@ -5,8 +5,6 @@ import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 
-import { cn } from "@/lib/utils";
-import { statuses, roles } from "@/lib/options";
 import { Button } from "@/components/ui/button";
 import Icons from "@/components/ui/icons";
 import { Input } from "@/components/ui/input";
@@ -42,13 +40,10 @@ const InviteNewAccount: FC<InviteNewAccountProps> = ({
   isLoadingSubmit,
   isEditing,
 }) => {
-    const form = useForm<User>({
-      resolver: zodResolver(userSchema),
+  const form = useForm<z.infer<typeof userSchema>>({
+    resolver: zodResolver(userSchema),
   });
 
-//  async function onSubmit(values: z.infer<typeof userSchema>) {
-
-//  }
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -71,7 +66,7 @@ const InviteNewAccount: FC<InviteNewAccountProps> = ({
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>E-mail</FormLabel>
+                  <FormLabel>Email</FormLabel>
                   <FormControl>
                     <Input placeholder="some@example.com" {...field} />
                   </FormControl>
@@ -93,21 +88,21 @@ const InviteNewAccount: FC<InviteNewAccountProps> = ({
                     >
                       <FormItem className="flex items-center space-x-3 space-y-0">
                         <FormControl>
-                          <RadioGroupItem value="STUDENT" />
+                          <RadioGroupItem value="student" />
                         </FormControl>
-                        <FormLabel className="font-normal">student</FormLabel>
+                        <FormLabel className="font-normal">Student</FormLabel>
                       </FormItem>
                       <FormItem className="flex items-center space-x-3 space-y-0">
                         <FormControl>
-                          <RadioGroupItem value="FACULTY" />
+                          <RadioGroupItem value="faculty" />
                         </FormControl>
-                        <FormLabel className="font-normal">faculty</FormLabel>
+                        <FormLabel className="font-normal">Faculty</FormLabel>
                       </FormItem>
                       <FormItem className="flex items-center space-x-3 space-y-0">
                         <FormControl>
-                          <RadioGroupItem value="ADMIN" />
+                          <RadioGroupItem value="admin" />
                         </FormControl>
-                        <FormLabel className="font-normal">admin</FormLabel>
+                        <FormLabel className="font-normal">Admin</FormLabel>
                       </FormItem>
                     </RadioGroup>
                   </FormControl>
@@ -116,7 +111,12 @@ const InviteNewAccount: FC<InviteNewAccountProps> = ({
               )}
             />
             <DialogFooter>
-              <Button type="submit">Invite</Button>
+              <Button type="submit" disabled={!isEditing}>
+                {isLoadingSubmit ? (
+                  <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" />
+                ) : null}{" "}
+                Invite
+              </Button>
             </DialogFooter>
           </form>
         </Form>

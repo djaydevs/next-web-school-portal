@@ -25,7 +25,7 @@ export function GoogleSignInButton() {
 
     if (status === "authenticated") {
       toast({
-        description: "Signed in as " + session?.user.email,
+        title: "Signed in as " + session?.user.email,
       });
 
       if (session?.user.role === "admin") {
