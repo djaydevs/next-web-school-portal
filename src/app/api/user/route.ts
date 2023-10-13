@@ -1,4 +1,4 @@
-import { NextResponse, NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
 export async function GET(req: Request) {
@@ -17,11 +17,10 @@ export async function GET(req: Request) {
   }
 }
 
-export async function POST(req: NextRequest) {
+export async function POST(req: Request) {
   try {
 
     const body = await req.json();
-    console.log(body)
 
     // const parsedData = userSchema.parse(body)
     // console.log(parsedData);
@@ -36,6 +35,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(invite, { status: 200 })
 
   } catch (error: any) {
-    return NextResponse.json({ message: error.message }, { status: 500 })
+    console.log(error);
+    return NextResponse.json({ message: "Something went wrong!" }, { status: 500 });
   }
 }

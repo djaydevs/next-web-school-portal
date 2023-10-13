@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import Icons from "@/components/ui/icons";
+import { Input } from "@/components/ui/input";
 
 interface UserUpdateFormProps {
   onSubmit: SubmitHandler<User>;
@@ -62,6 +63,23 @@ const UserUpdateForm: FC<UserUpdateFormProps> = ({
                   <SelectItem value="admin">Admin</SelectItem>
                 </SelectContent>
               </Select>
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Name</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder={field.value ?? ""}
+                  {...field}
+                  value={field.value ?? ""}
+                />
+              </FormControl>
+              <FormMessage />
             </FormItem>
           )}
         />

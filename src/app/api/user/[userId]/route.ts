@@ -36,6 +36,7 @@ export async function PATCH(req: NextRequest, context: contextProps) {
         id: params.userId
       },
       data: {
+        name: body.name,
         role: body.role
       }
     });
@@ -65,7 +66,7 @@ export async function POST(req: NextRequest, context: contextProps) {
     const invitation = await prisma.invitation.create({
       data: {
         userId: params.userId,
-        token: hashToken,        
+        token: hashToken,
         expiresAt: expirationDate,
       },
     });
@@ -89,8 +90,8 @@ export async function POST(req: NextRequest, context: contextProps) {
 
     const result = await transporter.sendMail(messageData);
 
-    return NextResponse.json({ message: "Invitation sent successfully" }, { status: 200 });    
+    return NextResponse.json({ message: "Invitation sent successfully" }, { status: 200 });
   } catch (error: any) {
-    return NextResponse.json({ message: error.message }, { status: 500 });  
+    return NextResponse.json({ message: error.message }, { status: 500 });
   }
 }

@@ -16,7 +16,7 @@ export default async function UserAccountDrop() {
   const currentUser = await getCurrentUser();
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger>
+      <DropdownMenuTrigger title="Account" aria-label="Account">
         <UserAvatar
           user={{
             name: currentUser?.name || null,

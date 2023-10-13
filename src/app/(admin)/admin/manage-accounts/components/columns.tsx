@@ -72,8 +72,8 @@ export const columns: ColumnDef<User>[] = [
       />
     ),
     cell: ({ row }) => {
-      const status = statuses.find(
-        (status) => status.value === row.getValue("isVerified"),
+      const status = statuses.find((status) =>
+        status.value === row.getValue("isVerified") ? "true" : "false",
       );
 
       if (!status) {
