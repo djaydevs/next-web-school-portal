@@ -28,14 +28,25 @@ export function GoogleSignInButton() {
         title: "Signed in as " + session?.user.email,
       });
 
-      if (session?.user.role === "admin") {
-        router.push("/admin");
+      if (!session?.user.isVerified) {
+        toast({
+          title: "Error",
+          description: "Please verify your account.",
+          variant: "destructive",
+        });
+        router.push("/not-verified");
       }
-      if (session?.user.role === "faculty") {
-        router.push("/faculty");
-      }
-      if (session?.user.role === "student") {
-        router.push("/student");
+
+      if (session?.user.isVerified) {
+        if (session?.user.role === "admin") {
+          router.push("/admin");
+        }
+        if (session?.user.role === "faculty") {
+          router.push("/faculty");
+        }
+        if (session?.user.role === "student") {
+          router.push("/student");
+        }
       }
     }
   }, [router, session, status, toast]);
