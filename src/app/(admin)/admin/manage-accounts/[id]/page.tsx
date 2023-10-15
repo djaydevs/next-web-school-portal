@@ -4,7 +4,7 @@ import { FC } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { SubmitHandler } from "react-hook-form";
 import { useRouter } from "next/navigation";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 import { fetchUserById } from "@/hooks/getUsers";
 import { User } from "@/types";
@@ -33,11 +33,20 @@ const ManageAccountIdPage: FC<ManageAccountIdPageProps> = ({ params }) => {
       return axios.patch(`/api/user/${id}`, update);
     },
     onError: (error) => {
-      console.error(error);
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 500) {
+          toast({
+            title: "Error",
+            description: "Something went wrong! Please try again later.",
+            variant: "destructive",
+          });
+        }
+      }
     },
     onSuccess: () => {
       toast({
-        title: "User updated successfully!",
+        title: "Success",
+        description: "User updated successfully!",
       });
       router.push("/admin/manage-accounts");
       router.refresh();
@@ -61,7 +70,6 @@ const ManageAccountIdPage: FC<ManageAccountIdPageProps> = ({ params }) => {
           <UserUpdateForm
             onSubmit={handleUpdateUser}
             initialValue={userInfo}
-            isEditing
             isLoadingSubmit={isLoadingSubmit}
           />
         </div>

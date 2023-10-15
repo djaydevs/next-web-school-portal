@@ -1,6 +1,6 @@
 "use client";
 
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
@@ -29,11 +29,21 @@ export default function ManageAccountsPage() {
       return axios.post("/api/user", newInvite);
     },
     onError: (error) => {
-      console.error(error);
+      // console.error(error);
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 500) {
+          toast({
+            title: "Error",
+            description: "Something went wrong! Please try again later.",
+            variant: "destructive",
+          });
+        }
+      }
     },
     onSuccess: () => {
       toast({
-        title: "User added successfully!",
+        title: "Success",
+        description: "User added successfully!",
       });
       router.push("/admin/manage-accounts");
       router.refresh();
@@ -47,7 +57,7 @@ export default function ManageAccountsPage() {
   const { register, handleSubmit } = useForm();
 
   return (
-    <div className="h-full flex-1 flex-col space-y-6 p-6 md:flex">
+    <div className="h-full flex-1 flex-col space-y-6 px-4 md:flex">
       <div>
         <h2 className="text-2xl font-bold tracking-tight">Manage Accounts</h2>
         <p className="text-muted-foreground">
@@ -56,7 +66,11 @@ export default function ManageAccountsPage() {
         </p>
       </div>
       <form onSubmit={handleSubmit(handleInvite)}>
-        <input {...register("email")} placeholder="email" />
+        <input
+          {...register("email")}
+          type="email"
+          placeholder="some@example.com"
+        />
         <select {...register("role")}>
           <option value="">Select...</option>
           <option value="student">Student</option>
@@ -65,11 +79,10 @@ export default function ManageAccountsPage() {
         </select>
         <input type="submit" />
       </form>
-      {/* <InviteNewAccount
+      <InviteNewAccount
         onSubmit={handleInvite}
         isLoadingSubmit={isLoadingSubmit}
-        isEditing
-      /> */}
+      />
       {isLoading ? (
         <SkeletonTable />
       ) : (

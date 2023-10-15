@@ -26,14 +26,12 @@ import { Input } from "@/components/ui/input";
 
 interface UserUpdateFormProps {
   onSubmit: SubmitHandler<User>;
-  isEditing: boolean;
   isLoadingSubmit: boolean;
   initialValue?: User;
 }
 
 const UserUpdateForm: FC<UserUpdateFormProps> = ({
   onSubmit,
-  isEditing,
   isLoadingSubmit,
   initialValue,
 }) => {
@@ -83,7 +81,7 @@ const UserUpdateForm: FC<UserUpdateFormProps> = ({
             </FormItem>
           )}
         />
-        <Button type="submit" disabled={!isEditing}>
+        <Button type="submit" disabled={isLoadingSubmit}>
           {isLoadingSubmit ? (
             <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" />
           ) : null}{" "}
