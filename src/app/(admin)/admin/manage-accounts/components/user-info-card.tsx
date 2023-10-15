@@ -48,16 +48,20 @@ const UserInfoCard: FC<UserInfoCardProps> = ({ userInfo }) => {
           </div>
           <div className="flex flex-nowrap items-center justify-between">
             <Label>Created:</Label>
-            <Label>{userInfo?.createdAt}</Label>
+            <Label>
+              {new Date(userInfo?.createdAt as string).toLocaleDateString()}
+            </Label>
           </div>
           <div className="flex flex-nowrap items-center justify-between">
             <Label>Updated:</Label>
-            <Label>{userInfo?.updatedAt}</Label>
+            <Label>
+              {new Date(userInfo?.updatedAt as string).toLocaleDateString()}
+            </Label>
           </div>
         </div>
         {userInfo?.role === "student" ? (
           <Link
-            href={`/admin/student-record`}
+            href={`/admin/student-record/${userInfo?.id}`}
             aria-label="Manage account details"
             className={cn(
               buttonVariants({

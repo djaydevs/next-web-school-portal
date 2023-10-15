@@ -9,6 +9,7 @@ declare module "next-auth" {
     user: User & {
       id: UserId,
       role: string,
+      isVerified: boolean,
     } & DefaultSession
   }
 }
@@ -18,5 +19,6 @@ declare module "next-auth/jwt" {
     id: UserId,
     role: string,
     email: string,
+    isVerified: boolean,
   }
 }
