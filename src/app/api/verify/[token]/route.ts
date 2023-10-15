@@ -5,14 +5,14 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export default async function POST (req: NextRequest) {
+export default async function POST (req: NextRequest, { params}: { params: {token: string}}) {
   try {
-    const { token } = await req.json();
+    const { token } = params;
 
     // Find the invitation with the matching token
     const invitation = await prisma.invitation.findUnique({
       where: {
-        token: await hash(token, 10),
+        token: token,
       },
       include: {
         user: true,

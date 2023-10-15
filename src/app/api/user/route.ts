@@ -1,5 +1,6 @@
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { sendMail } from "@/hooks/sendMail";
 
 export async function GET(req: Request) {
   try {
@@ -17,10 +18,11 @@ export async function GET(req: Request) {
   }
 }
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
 
     const body = await req.json();
+    console.log(body)
 
     // const parsedData = userSchema.parse(body)
     // console.log(parsedData);
@@ -32,10 +34,11 @@ export async function POST(req: Request) {
       },
     });
 
+    await sendMail(invite.id, invite.email);
+
     return NextResponse.json(invite, { status: 200 })
 
   } catch (error: any) {
-    console.log(error);
-    return NextResponse.json({ message: "Something went wrong!" }, { status: 500 });
+    return NextResponse.json({ message: error.message }, { status: 500 })
   }
 }
