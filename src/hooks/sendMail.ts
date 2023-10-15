@@ -1,11 +1,12 @@
 import { prisma } from "@/lib/prisma";
 import { hash } from 'bcrypt'
+import { randomUUID } from "crypto";
 import nodemailer from 'nodemailer'
 
 export async function sendMail(userId: string, email: string) {
     try {
-    //   const { params } = context
-    //   const { email } = await req.json()
+      // const { params } = context
+      // const { email } = await req.json()
   
       // Generate a unique token
       const token = Math.random().toString(36).substring(2, 15);
@@ -25,6 +26,13 @@ export async function sendMail(userId: string, email: string) {
           expiresAt: expirationDate,
         },
       });
+
+      // const token = await prisma.invitation.create({
+      //   data: {
+      //     userId: userId,
+      //     token: `${randomUUID()}${randomUUID()}`.replace(/-/g, ''),
+      //   },
+      // })
   
       // Send an email to the user with the verification link
       const transporter = nodemailer.createTransport({
@@ -40,9 +48,9 @@ export async function sendMail(userId: string, email: string) {
         from: "schoolportal.project@gmail.com",
         to: email,
         subject: "VERIFY YOUR MJA ACCOUNT",
-        html: `<p> This is your activation link. Please click <a href="${process.env.NEXTAUTH_URL}/verify/${hashToken}">here</a> to verify or copy paste the link below in your browser. <br> ${process.env.NEXTAUTH_URL}/verify/${hashToken}</p>`,
+        html: `<p> This is your activation link. Please click <a href="${process.env.NEXTAUTH_URL}/verify/${invitation.token}">here</a> to verify or copy paste the link below in your browser. <br> ${process.env.NEXTAUTH_URL}/verify/${invitation.token}</p>` ,
       };
-  
+
       const result = await transporter.sendMail(messageData);
       return result;
   
@@ -50,3 +58,5 @@ export async function sendMail(userId: string, email: string) {
       throw new Error(error.message)
     }
   }
+
+ 
