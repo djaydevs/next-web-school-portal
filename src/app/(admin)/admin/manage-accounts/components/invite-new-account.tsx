@@ -30,7 +30,7 @@ import {
 import { User, userSchema } from "@/types";
 
 interface InviteNewAccountProps {
-  onSubmit: SubmitHandler<User>;
+  onSubmit: any;
   isLoadingSubmit: boolean;
 }
 
@@ -45,7 +45,6 @@ const InviteNewAccount: FC<InviteNewAccountProps> = ({
       role: "",
     },
   });
-  form.watch();
 
   return (
     <Dialog>

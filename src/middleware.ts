@@ -1,4 +1,3 @@
-import { ifError } from "assert";
 import { withAuth, NextRequestWithAuth } from "next-auth/middleware";
 import { NextResponse } from "next/server";
 

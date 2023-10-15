@@ -11,7 +11,8 @@ import InviteNewAccount from "@/components/invite-new-account";
 import { SkeletonTable } from "@/components/loading";
 import { columns } from "@/components/columns";
 import { useToast } from "@/components/ui/use-toast";
-import { User } from "@/types";
+import { User, userSchema } from "@/types";
+import { z } from "zod";
 
 export default function ManageAccountsPage() {
   // TODO: 4 Add the ability to delete accounts but not the ability to delete the account of the current user
@@ -19,7 +20,7 @@ export default function ManageAccountsPage() {
   const router = useRouter();
   const { toast } = useToast();
 
-  const { data, isLoading } = useQuery({
+  const { data: users, isLoading: isLoadingUserTable } = useQuery({
     queryFn: async () => fetchUsers(),
     queryKey: ["users"],
   });
@@ -50,8 +51,8 @@ export default function ManageAccountsPage() {
     },
   });
 
-  const handleInvite = (data: any) => {
-    createUser(data);
+  const handleInvite = (users: any) => {
+    createUser(users);
   };
 
   const { register, handleSubmit } = useForm();
@@ -83,10 +84,10 @@ export default function ManageAccountsPage() {
         onSubmit={handleInvite}
         isLoadingSubmit={isLoadingSubmit}
       />
-      {isLoading ? (
+      {isLoadingUserTable ? (
         <SkeletonTable />
       ) : (
-        <AccountTable columns={columns} data={data.users} />
+        <AccountTable columns={columns} data={users} />
       )}
     </div>
   );

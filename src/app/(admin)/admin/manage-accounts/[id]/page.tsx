@@ -11,6 +11,7 @@ import { User } from "@/types";
 import UserInfoCard from "@/components/user-info-card";
 import UserUpdateForm from "@/components/user-update-form";
 import { useToast } from "@/components/ui/use-toast";
+import { SkeletonCard } from "@/components/loading";
 
 interface ManageAccountIdPageProps {
   params: {
@@ -63,7 +64,9 @@ const ManageAccountIdPage: FC<ManageAccountIdPageProps> = ({ params }) => {
         Manage Account Details
       </h2>
       {infoLoading ? (
-        <div>Loading...</div>
+        <div className="m-auto">
+          <SkeletonCard />
+        </div>
       ) : (
         <div className="w-full justify-between space-x-4 p-4 md:flex">
           <UserInfoCard userInfo={userInfo} />
