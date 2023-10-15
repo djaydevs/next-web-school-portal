@@ -57,7 +57,7 @@ export async function GET (req: NextRequest, { params }: { params: {token: strin
       
       //redirect('/signin');
       
-    return NextResponse.redirect('/signin');
+    return Response.redirect('${process.env.NEXTAUTH_URL}/signin');
   } catch (error: any) {
     return NextResponse.json({ message: error.message }, {status: 500});
   }
