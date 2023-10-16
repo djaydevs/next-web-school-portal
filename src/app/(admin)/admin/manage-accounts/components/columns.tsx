@@ -35,11 +35,15 @@ export const columns: ColumnDef<User>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => (
-      <AccountTableColumnHeader column={column} title="Name" />
+      <AccountTableColumnHeader
+        column={column}
+        title="Name"
+        className="hidden md:table-cell"
+      />
     ),
     cell: ({ row }) => {
       return (
-        <div className="flex w-full items-center justify-start">
+        <div className="hidden w-full items-center justify-start md:flex">
           <UserAvatar
             user={{
               name: row.original.name || null,
@@ -80,7 +84,7 @@ export const columns: ColumnDef<User>[] = [
         return null;
       }
 
-      return <span>{status.label}</span>;
+      return <span className="hidden md:table-cell">{status.label}</span>;
     },
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));

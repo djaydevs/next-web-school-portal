@@ -58,7 +58,7 @@ export default function ManageAccountsPage() {
   const { register, handleSubmit } = useForm();
 
   return (
-    <div className="h-full flex-1 flex-col space-y-6 px-4 md:flex">
+    <div className="h-full flex-1 flex-col space-y-4 px-4 md:flex">
       <div>
         <h2 className="text-2xl font-bold tracking-tight">Manage Accounts</h2>
         <p className="text-muted-foreground">
