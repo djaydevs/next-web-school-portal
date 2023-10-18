@@ -31,6 +31,11 @@ export const adminRoutes = [
     href: "/admin/student-record",
   },
   {
+    label: "Section and Subject",
+    icon: Icons.Milestone,
+    href: "/admin/section-subject",
+  },
+  {
     label: "Enrollment",
     icon: Icons.FileText,
     href: "/admin/enrollment",

@@ -32,6 +32,7 @@ import {
   HelpCircle,
   LogOut,
   View,
+  Milestone,
 } from "lucide-react";
 
 type IconProps = React.HTMLAttributes<SVGElement>;
@@ -70,6 +71,7 @@ export const Icons = {
   HelpCircle,
   LogOut,
   View,
+  Milestone,
   Google: (props: IconProps) => (
     <svg role="img" viewBox="0 0 24 24" {...props}>
       <path
