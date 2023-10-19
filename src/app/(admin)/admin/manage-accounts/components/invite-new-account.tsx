@@ -30,7 +30,7 @@ import {
 import { User, userSchema } from "@/types";
 
 interface InviteNewAccountProps {
-  onSubmit: any;
+  onSubmit: () => void;
   isLoadingSubmit: boolean;
 }
 
@@ -39,6 +39,7 @@ const InviteNewAccount: FC<InviteNewAccountProps> = ({
   isLoadingSubmit,
 }) => {
   const form = useForm<z.infer<typeof userSchema>>({
+    mode: "onChange",
     resolver: zodResolver(userSchema),
     defaultValues: {
       email: "",
@@ -63,24 +64,17 @@ const InviteNewAccount: FC<InviteNewAccountProps> = ({
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="email"
-                      placeholder="some@example.com"
-                      {...field}
-                      defaultValue={field.value}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <FormItem>
+              <FormLabel>Email</FormLabel>
+              <FormControl>
+                <Input
+                  type="email"
+                  placeholder="some@example.com"
+                  {...form.register("email")}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
             <FormField
               control={form.control}
               name="role"

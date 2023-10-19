@@ -81,7 +81,7 @@ export default function ManageAccountsPage() {
         <input type="submit" />
       </form>
       <InviteNewAccount
-        onSubmit={handleInvite}
+        onSubmit={() => handleInvite}
         isLoadingSubmit={isLoadingSubmit}
       />
       {isLoadingUserTable ? (
