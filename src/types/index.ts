@@ -16,5 +16,22 @@ export const userSchema = z.object({
     }),
     isVerified: z.boolean(),
 });
-
 export type User = z.infer<typeof userSchema>
+
+export const gradeSectionSchema = z.object({
+    id: z.string(),
+    gradeLevel: z.number({
+        required_error: "Grade level is required",
+        invalid_type_error: "Grade level must be a number",
+    }).int(),
+    strandCode: z.string({
+        required_error: "Strand code is required",
+    }),
+    strandName: z.string({
+        required_error: "Strand name is required",
+    }),
+    sectionName: z.string({
+        required_error: "Grade section is required",
+    }),
+});
+export type GradeSection = z.infer<typeof gradeSectionSchema>
