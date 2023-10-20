@@ -23,3 +23,18 @@ export const roles = [
     value: "admin",
   },
 ]
+
+export const getStrandName = (strandCode: string): string => {
+  switch (strandCode) {
+    case "abm":
+      return "Accountancy and Business Management";
+    case "stem":
+      return "Science, Technology, Engineering, and Mathematics";
+    case "humss":
+      return "Humanities and Social Sciences";
+    case "gas":
+      return "General Academic Strand";
+    default:
+      return "";
+  }
+};

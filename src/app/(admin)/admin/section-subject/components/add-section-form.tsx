@@ -1,10 +1,11 @@
 "use client";
 
-import { FC } from "react";
+import { FC, useState } from "react";
 import * as z from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
+import { getStrandName } from "@/lib/options";
 import { GradeSection, gradeSectionSchema } from "@/types";
 import {
   Card,
@@ -23,6 +24,13 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import Icons from "@/components/ui/icons";
 import { Input } from "@/components/ui/input";
@@ -36,6 +44,8 @@ const AddSectionForm: FC<AddSectionFormProps> = ({
   onSubmit,
   isLoadingSubmit,
 }) => {
+  const [strandName, setStrandName] = useState("");
+
   const form = useForm<z.infer<typeof gradeSectionSchema>>({
     resolver: zodResolver(gradeSectionSchema),
     defaultValues: {
@@ -79,14 +89,25 @@ const AddSectionForm: FC<AddSectionFormProps> = ({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Strand Code</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="ABM, HUMSS, STEM, etc."
-                      {...field}
-                      value={field.value ?? ""}
-                    />
-                  </FormControl>
-                  <FormMessage />
+                  <Select
+                    onValueChange={(value) => {
+                      field.onChange(value);
+                      setStrandName(getStrandName(value)); // set the strandName based on the selected strandCode
+                    }}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select strand code option..." />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="abm">ABM</SelectItem>
+                      <SelectItem value="stem">STEM</SelectItem>
+                      <SelectItem value="humss">HUMSS</SelectItem>
+                      <SelectItem value="gas">GAS</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </FormItem>
               )}
             />
@@ -97,11 +118,7 @@ const AddSectionForm: FC<AddSectionFormProps> = ({
                 <FormItem>
                   <FormLabel>Strand Name</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="Accountancy and Business Management"
-                      {...field}
-                      value={field.value ?? ""}
-                    />
+                    <Input {...field} value={strandName} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

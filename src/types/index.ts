@@ -35,3 +35,15 @@ export const gradeSectionSchema = z.object({
     }),
 });
 export type GradeSection = z.infer<typeof gradeSectionSchema>
+
+export const subjectSchema = z.object({
+    id: z.string(),
+    strandCode: z.string(),
+    subjectCode: z.string({
+        required_error: "Subject code is required",
+    }),
+    subjectName: z.string({
+        required_error: "Subject name is required",
+    }),
+});
+export type Subject = z.infer<typeof subjectSchema>

@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 
-import { GradeSection } from "@/types";
+import { GradeSection, Subject } from "@/types";
 import { useToast } from "@/components/ui/use-toast";
 import AddSectionForm from "@/components/add-section-form";
 import AddSubjectForm from "./components/add-subject-form";
@@ -51,13 +51,20 @@ const SectionandSubjectPage: FC<SectionandSubjectPageProps> = ({}) => {
     addSection(data);
   };
 
+  const handleAddSubject: SubmitHandler<Subject> = async (data) => {
+    // addSection(data);
+  };
+
   return (
     <div className="w-full justify-between space-x-4 p-4 md:flex">
       <AddSectionForm
         onSubmit={handleAddSection}
         isLoadingSubmit={isLoadingSubmit}
       />
-      <AddSubjectForm />
+      <AddSubjectForm
+        onSubmit={handleAddSubject}
+        isLoadingSubmit={isLoadingSubmit}
+      />
     </div>
   );
 };
