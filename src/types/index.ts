@@ -38,7 +38,7 @@ export type GradeSection = z.infer<typeof gradeSectionSchema>
 
 export const subjectSchema = z.object({
     id: z.string(),
-    strandCode: z.string(),
+    strandId: z.string(),
     subjectCode: z.string({
         required_error: "Subject code is required",
     }),
