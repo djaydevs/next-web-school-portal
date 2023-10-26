@@ -30,7 +30,7 @@ import {
 import { User, userSchema } from "@/types";
 
 interface InviteNewAccountProps {
-  onSubmit: () => void;
+  onSubmit: SubmitHandler<User>;
   isLoadingSubmit: boolean;
 }
 
@@ -64,17 +64,23 @@ const InviteNewAccount: FC<InviteNewAccountProps> = ({
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            <FormItem>
-              <FormLabel>Email</FormLabel>
-              <FormControl>
-                <Input
-                  type="email"
-                  placeholder="some@example.com"
-                  {...form.register("email")}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="some@example.com"
+                      {...field}
+                      value={field.value ?? ""}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="role"

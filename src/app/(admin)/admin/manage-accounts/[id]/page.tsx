@@ -24,12 +24,12 @@ const ManageAccountIdPage: FC<ManageAccountIdPageProps> = ({ params }) => {
   const router = useRouter();
   const { toast } = useToast();
 
-  const { data: userInfo, isLoading: infoLoading } = useQuery<User>({
+  const { data: userInfo, isPending: infoLoading } = useQuery<User>({
     queryKey: ["user", id],
     queryFn: async () => fetchUserById(id),
   });
 
-  const { mutate: updateUser, isLoading: isLoadingSubmit } = useMutation({
+  const { mutate: updateUser, isPending: isLoadingSubmit } = useMutation({
     mutationFn: (update: User) => {
       return axios.patch(`/api/user/${id}`, update);
     },

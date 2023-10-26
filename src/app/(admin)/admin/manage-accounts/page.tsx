@@ -1,7 +1,7 @@
 "use client";
 
 import axios, { AxiosError } from "axios";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 
@@ -11,21 +11,25 @@ import InviteNewAccount from "@/components/invite-new-account";
 import { SkeletonTable } from "@/components/loading";
 import { columns } from "@/components/columns";
 import { useToast } from "@/components/ui/use-toast";
-import { User, userSchema } from "@/types";
-import { z } from "zod";
+import { User } from "@/types";
 
 export default function ManageAccountsPage() {
-  // TODO: 4 Add the ability to delete accounts but not the ability to delete the account of the current user
-  // TODO: 5 Add the ability to delete accounts but not the student/faculty details for archiving purposes
   const router = useRouter();
   const { toast } = useToast();
+  const queryClient = useQueryClient();
+  const { register, handleSubmit } = useForm();
 
-  const { data: users, isLoading: isLoadingUserTable } = useQuery({
-    queryFn: async () => fetchUsers(),
+  const {
+    data: users,
+    isPending: isLoadingUserTable,
+    isError: isErrorFetchingUsers,
+    error,
+  } = useQuery<User[]>({
     queryKey: ["users"],
+    queryFn: async () => fetchUsers(),
   });
 
-  const { mutate: createUser, isLoading: isLoadingSubmit } = useMutation({
+  const { mutate: createUser, isPending: isLoadingSubmit } = useMutation({
     mutationFn: (newInvite: User) => {
       return axios.post("/api/user", newInvite);
     },
@@ -42,11 +46,11 @@ export default function ManageAccountsPage() {
       }
     },
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["users"] });
       toast({
         title: "Success",
         description: "User added successfully!",
       });
-      router.push("/admin/manage-accounts");
       router.refresh();
     },
   });
@@ -55,7 +59,13 @@ export default function ManageAccountsPage() {
     createUser(users);
   };
 
-  const { register, handleSubmit } = useForm();
+  const handleInviteUser: SubmitHandler<User> = async (users) => {
+    createUser(users);
+  };
+
+  if (isErrorFetchingUsers) {
+    return <span>Error: {error.message}</span>;
+  }
 
   return (
     <div className="h-full flex-1 flex-col space-y-4 px-4 md:flex">
@@ -78,10 +88,10 @@ export default function ManageAccountsPage() {
           <option value="faculty">Faculty</option>
           <option value="admin">Admin</option>
         </select>
-        <input type="submit" />
+        <button type="submit">Submit</button>
       </form>
       <InviteNewAccount
-        onSubmit={() => handleInvite}
+        onSubmit={handleInviteUser}
         isLoadingSubmit={isLoadingSubmit}
       />
       {isLoadingUserTable ? (
