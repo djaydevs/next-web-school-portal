@@ -24,13 +24,13 @@ const SectionandSubjectPage: FC<SectionandSubjectPageProps> = ({ params }) => {
   const router = useRouter();
   const { toast } = useToast();
 
-  const { data: gradeSectionInfo, isLoading: infoLoading } = useQuery<User>({
+  const { data: gradeSectionInfo, isPending: infoLoading } = useQuery<User>({
     queryKey: ["gradeSection", id],
     queryFn: async () => fetchUserById(id),
   });
 
   //Create a new grade section and strand
-  const { mutate: addSection, isLoading: isLoadingSubmit } = useMutation({
+  const { mutate: addSection, isPending: isLoadingSubmit } = useMutation({
     mutationFn: (add: GradeSection) => {
       return axios.post(`/api/section`, add);
     },
@@ -55,12 +55,14 @@ const SectionandSubjectPage: FC<SectionandSubjectPageProps> = ({ params }) => {
     },
   });
 
-  const handleAddSection: SubmitHandler<GradeSection> = async (gradeSectionInfo) => {
+  const handleAddSection: SubmitHandler<GradeSection> = async (
+    gradeSectionInfo,
+  ) => {
     addSection(gradeSectionInfo);
   };
 
   //Create a new subject
-  const { mutate: addSubject, isLoading: loadingSubmit } = useMutation({
+  const { mutate: addSubject, isPending: loadingSubmit } = useMutation({
     mutationFn: (addSub: Subject) => {
       return axios.post(`/api/subject`, addSub);
     },
@@ -89,10 +91,9 @@ const SectionandSubjectPage: FC<SectionandSubjectPageProps> = ({ params }) => {
     addSubject(data);
   };
 
-
   return (
-    <div className="w-full justify-between space-x-4 p-4 md:flex">      
-      {infoLoading }
+    <div className="w-full justify-between space-x-4 p-4 md:flex">
+      {infoLoading}
       <AddSectionForm
         onSubmit={handleAddSection}
         isLoadingSubmit={isLoadingSubmit}
