@@ -59,21 +59,7 @@ model User {
   adminProfile      AdminProfile?
   accounts          Account[]
   sessions          Session[]
-  verificationToken VerificationToken[]
   invitations       Invitation[]
-}
-
-model VerificationToken {
-  id          String    @id @default(cuid())
-  token       String    @unique
-  createdAt   DateTime  @default(now())
-  activatedAt DateTime?
-  expiresAt   DateTime?
-
-  user   User   @relation(fields: [userId], references: [id])
-  userId String
-
-  @@unique([id, token])
 }
 
 model Invitation {
@@ -167,27 +153,29 @@ model Enrollment {
 model GradeLevel {
   id         String @id @default(cuid())
   gradeLevel Int
+  strand     Strand[]
 
-  student   StudentProfile @relation(fields: [studentId], references: [id])
-  studentId String         @unique
-  section   Section?       @relation(fields: [sectionId], references: [id])
-  sectionId String?
+  student   StudentProfile? @relation(fields: [studentId], references: [id])
+  studentId String?         @unique
 }
 
 model Strand {
   id         String @id @default(cuid())
   strandCode String
   strandName String
+  gradeLevel GradeLevel[]
+  section    Section[]
+  subject    Subject[]
 
-  student   StudentProfile @relation(fields: [studentId], references: [id])
-  studentId String         @unique
+  student   StudentProfile? @relation(fields: [studentId], references: [id])
+  studentId String?         @unique
 }
 
 model Section {
   id          String       @id @default(cuid())
   sectionName String
   room        String?
-  gradeLevel  GradeLevel[]
+  strand      Strand[]
 
   student   StudentProfile? @relation(fields: [studentId], references: [id])
   studentId String?         @unique
@@ -200,6 +188,8 @@ model Subject {
   subjectCode String @unique
   subjectName String
 
+  strand    Strand @relation(fields: [strandId], references: [id])
+  strandId  String
   student   StudentProfile? @relation(fields: [studentId], references: [id])
   studentId String?
   faculty   FacultyProfile? @relation(fields: [facultyId], references: [id])

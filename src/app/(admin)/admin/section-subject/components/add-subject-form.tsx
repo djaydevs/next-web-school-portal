@@ -39,12 +39,12 @@ import { Separator } from "@/components/ui/separator";
 
 interface AddSubjectFormProps {
   onSubmit: SubmitHandler<Subject>;
-  isLoadingSubmit: boolean;
+  loadingSubmit: boolean;
 }
 
 const AddSubjectForm: FC<AddSubjectFormProps> = ({
   onSubmit,
-  isLoadingSubmit,
+  loadingSubmit,
 }) => {
   const [strandName, setStrandName] = useState("");
 
@@ -70,7 +70,7 @@ const AddSubjectForm: FC<AddSubjectFormProps> = ({
           <CardContent className="space-y-2">
             <FormField
               control={form.control}
-              name="strandCode"
+              name="strandId"
               render={({ field }) => (
                 <FormItem className="mb-2">
                   <FormLabel>Strand</FormLabel>
@@ -129,8 +129,8 @@ const AddSubjectForm: FC<AddSubjectFormProps> = ({
             <Button variant="outline" className="w-full">
               View Subject
             </Button>
-            <Button type="submit" disabled={isLoadingSubmit} className="w-full">
-              {isLoadingSubmit ? (
+            <Button type="submit" disabled={loadingSubmit} className="w-full">
+              {loadingSubmit ? (
                 <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" />
               ) : null}{" "}
               Add

@@ -18,6 +18,7 @@ export async function GET(req: Request) {
   }
 }
 
+//Create a new user account
 export async function POST(req: NextRequest) {
   try {
 
