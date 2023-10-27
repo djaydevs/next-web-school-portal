@@ -1,5 +1,3 @@
-"use client";
-
 import { FC } from "react";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -18,6 +16,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   Form,
   FormControl,
@@ -39,11 +44,12 @@ const InviteNewAccount: FC<InviteNewAccountProps> = ({
   isLoadingSubmit,
 }) => {
   const form = useForm<z.infer<typeof userSchema>>({
-    mode: "onChange",
     resolver: zodResolver(userSchema),
     defaultValues: {
+      id: "",
       email: "",
       role: "",
+      isVerified: false,
     },
   });
 
@@ -71,11 +77,7 @@ const InviteNewAccount: FC<InviteNewAccountProps> = ({
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="some@example.com"
-                      {...field}
-                      value={field.value ?? ""}
-                    />
+                    <Input placeholder="some@example.com" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -85,36 +87,23 @@ const InviteNewAccount: FC<InviteNewAccountProps> = ({
               control={form.control}
               name="role"
               render={({ field }) => (
-                <FormItem className="space-y-3">
-                  <FormLabel>Choose a role</FormLabel>
-                  <FormControl>
-                    <RadioGroup
-                      {...field}
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                      className="flex flex-col space-y-1"
-                    >
-                      <FormItem className="flex items-center space-x-3 space-y-0">
-                        <FormControl>
-                          <RadioGroupItem value="student" />
-                        </FormControl>
-                        <FormLabel className="font-normal">Student</FormLabel>
-                      </FormItem>
-                      <FormItem className="flex items-center space-x-3 space-y-0">
-                        <FormControl>
-                          <RadioGroupItem value="faculty" />
-                        </FormControl>
-                        <FormLabel className="font-normal">Faculty</FormLabel>
-                      </FormItem>
-                      <FormItem className="flex items-center space-x-3 space-y-0">
-                        <FormControl>
-                          <RadioGroupItem value="admin" />
-                        </FormControl>
-                        <FormLabel className="font-normal">Admin</FormLabel>
-                      </FormItem>
-                    </RadioGroup>
-                  </FormControl>
-                  <FormMessage />
+                <FormItem>
+                  <FormLabel>Role</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select a role" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="student">Student</SelectItem>
+                      <SelectItem value="faculty">Faculty</SelectItem>
+                      <SelectItem value="admin">Admin</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </FormItem>
               )}
             />

@@ -2,12 +2,12 @@
 
 import { FC } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { SubmitHandler } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import axios, { AxiosError } from "axios";
+import * as z from "zod";
 
 import { fetchUserById } from "@/hooks/getUsers";
-import { User } from "@/types";
+import { User, userSchema } from "@/types";
 import UserInfoCard from "@/components/user-info-card";
 import UserUpdateForm from "@/components/user-update-form";
 import { useToast } from "@/components/ui/use-toast";
@@ -24,7 +24,12 @@ const ManageAccountIdPage: FC<ManageAccountIdPageProps> = ({ params }) => {
   const router = useRouter();
   const { toast } = useToast();
 
-  const { data: userInfo, isPending: infoLoading } = useQuery<User>({
+  const {
+    data: userInfo,
+    isPending: infoLoading,
+    isError,
+    error,
+  } = useQuery<User>({
     queryKey: ["user", id],
     queryFn: async () => fetchUserById(id),
   });
@@ -54,9 +59,13 @@ const ManageAccountIdPage: FC<ManageAccountIdPageProps> = ({ params }) => {
     },
   });
 
-  const handleUpdateUser: SubmitHandler<User> = async (userInfo) => {
-    updateUser(userInfo);
+  const handleUpdateUser = (updateInfo: z.infer<typeof userSchema>) => {
+    updateUser(updateInfo);
   };
+
+  if (isError) {
+    return <span>Error: {error.message}</span>;
+  }
 
   return (
     <>

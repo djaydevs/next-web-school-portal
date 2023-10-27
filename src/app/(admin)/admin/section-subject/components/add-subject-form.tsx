@@ -1,5 +1,3 @@
-"use client";
-
 import { FC, useState } from "react";
 import * as z from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";

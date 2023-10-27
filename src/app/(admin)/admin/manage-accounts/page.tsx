@@ -1,23 +1,22 @@
 "use client";
 
+import * as z from "zod";
 import axios, { AxiosError } from "axios";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { SubmitHandler, useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 
 import { fetchUsers } from "@/hooks/getUsers";
 import AccountTable from "@/components/account-table";
-import InviteNewAccount from "@/components/invite-new-account";
 import { SkeletonTable } from "@/components/loading";
 import { columns } from "@/components/columns";
 import { useToast } from "@/components/ui/use-toast";
-import { User } from "@/types";
+import { User, userSchema } from "@/types";
+import InviteAccount from "@/components/invite-account";
 
 export default function ManageAccountsPage() {
   const router = useRouter();
   const { toast } = useToast();
   const queryClient = useQueryClient();
-  const { register, handleSubmit } = useForm();
 
   const {
     data: users,
@@ -51,16 +50,13 @@ export default function ManageAccountsPage() {
         title: "Success",
         description: "User added successfully!",
       });
+      router.push("/admin/manage-accounts");
       router.refresh();
     },
   });
 
-  const handleInvite = (users: any) => {
-    createUser(users);
-  };
-
-  const handleInviteUser: SubmitHandler<User> = async (users) => {
-    createUser(users);
+  const handleInviteUser = (invite: z.infer<typeof userSchema>) => {
+    createUser(invite);
   };
 
   if (isErrorFetchingUsers) {
@@ -76,21 +72,7 @@ export default function ManageAccountsPage() {
           admin/registrar.
         </p>
       </div>
-      <form onSubmit={handleSubmit(handleInvite)}>
-        <input
-          {...register("email")}
-          type="email"
-          placeholder="some@example.com"
-        />
-        <select {...register("role")}>
-          <option value="">Select...</option>
-          <option value="student">Student</option>
-          <option value="faculty">Faculty</option>
-          <option value="admin">Admin</option>
-        </select>
-        <button type="submit">Submit</button>
-      </form>
-      <InviteNewAccount
+      <InviteAccount
         onSubmit={handleInviteUser}
         isLoadingSubmit={isLoadingSubmit}
       />
