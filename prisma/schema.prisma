@@ -75,17 +75,22 @@ model Invitation {
 
 model StudentProfile {
   id                    String      @id @default(cuid())
-  lrn                   Int         @unique
-  lastName              String
-  firstName             String
-  middleName            String?
-  age                   Int
-  dateOfBirth           DateTime
-  gender                String
-  address               String
+  lrnNumber             String   @map("LRN NUMBER (2)") @unique
+  sex                   String   @map("SEX (3)")
+  age                   Int      @map("AGE (4)")
+  lastName              String   @map("Last Name (5)")
+  firstName             String   @map("First Name (6)")
+  middleName            String?  @map("Middle Name (7)")
+  dateOfBirth           DateTime @map("DOB (8)")
+  gender                String   @map("SEX M/F (9)")
+  genAveJHS             Float    @map("GEN Ave. JHS (10)")
+  nameOfJHS             String   @map("Name of JHS (11)")
+  address               String   @map("Address (12)")
+  jhsCompleted          Int      @map("SY JHS Completed")
+  placeOfBirth          PlaceOfBirth?
+  parentGuardian        ParentGuardian?
+  workImmersion         String? 
   contactNumber         String?
-  guardianName          String?
-  guardianContactNumber String?
   enrollment            Enrollment?
   gradeLevel            GradeLevel?
   strand                Strand?
@@ -132,8 +137,8 @@ model AdminProfile {
 
 model SchoolYear {
   id        String @id @default(cuid())
-  yearStart Int
-  yearEnd   Int
+  yearStart DateTime
+  yearEnd   DateTime
   quarter   Int
 
   enrollment Enrollment[]
@@ -206,6 +211,24 @@ model Grades {
 
   student   StudentProfile? @relation(fields: [studentId], references: [id])
   studentId String?
+}
+
+model PlaceOfBirth {
+  id          Int     @id @default(autoincrement())
+  province    String  @map("Province")
+  town        String  @map("Town")
+  barangay    String  @map("Barangay")
+  student     StudentProfile @relation(fields: [studentId], references: [id])
+  studentId   String @unique
+}
+
+model ParentGuardian {
+  id          Int     @id @default(autoincrement())
+  name        String  @map("Parent/Guardian (17)")
+  address     String  @map("Address of Parent/ Guardian")
+  occupation  String
+  student     StudentProfile @relation(fields: [studentId], references: [id])
+  studentId   String @unique
 }
 
 // enum Role {
