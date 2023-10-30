@@ -19,6 +19,10 @@ export const getCurrentUser = async () => {
     const currentUser = await prisma.user.findUnique({
       where: {
         email: session.user.email as string,
+      }, include: {
+        studentProfile: true,
+        facultyProfile: true,
+        adminProfile: true,
       }
     });
 
