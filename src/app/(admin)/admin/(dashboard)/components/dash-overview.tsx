@@ -17,7 +17,7 @@ export default async function AdminDashboardOverview() {
   return (
     <div>
       {currentUser?.name ? (
-        <Heading size="sm" className="grow">
+        <Heading size="sm" className="grow py-2">
           Welcome, {currentUser.name}
         </Heading>
       ) : (
@@ -26,11 +26,11 @@ export default async function AdminDashboardOverview() {
         </Heading>
       )}
       <div className="flex w-full flex-col">
-        <section className="w-full py-2">
+        <section className="w-full py-2 pr-4">
           <DashboardCards />
         </section>
         <section>
-          <Card className="my-2 mr-2">
+          <Card className="my-2 mr-4">
             <CardHeader>
               <CardTitle>Enrollment</CardTitle>
             </CardHeader>

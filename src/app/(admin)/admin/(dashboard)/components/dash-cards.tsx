@@ -13,7 +13,7 @@ interface DashboardCardsProps {}
 const DashboardCards: FC<DashboardCardsProps> = ({}) => {
   return (
     <div className="flex w-full gap-4">
-      <Card>
+      <Card className="w-full">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">New Students</CardTitle>
         </CardHeader>
@@ -24,7 +24,7 @@ const DashboardCards: FC<DashboardCardsProps> = ({}) => {
           </p> */}
         </CardContent>
       </Card>
-      <Card>
+      <Card className="w-full">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">
             Existing Students
@@ -37,7 +37,7 @@ const DashboardCards: FC<DashboardCardsProps> = ({}) => {
           </p> */}
         </CardContent>
       </Card>
-      <Card>
+      <Card className="w-full">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Alumni</CardTitle>
         </CardHeader>
@@ -46,7 +46,7 @@ const DashboardCards: FC<DashboardCardsProps> = ({}) => {
           {/* <p className="text-xs text-muted-foreground">+19% from last month</p> */}
         </CardContent>
       </Card>
-      <Card>
+      <Card className="w-full">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Faculty Members</CardTitle>
         </CardHeader>
