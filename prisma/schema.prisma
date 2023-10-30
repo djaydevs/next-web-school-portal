@@ -115,6 +115,7 @@ model FacultyProfile {
   contactNumber String?
   section       Section[]
   subjects      Subject[]
+  gradeLevel    GradeLevel[]
 
   user   User?   @relation(fields: [userId], references: [id])
   userId String? @unique
@@ -139,8 +140,7 @@ model SchoolYear {
   id        String @id @default(cuid())
   yearStart DateTime
   yearEnd   DateTime
-  quarter   Int
-
+  subject   Subject[]
   enrollment Enrollment[]
 }
 
@@ -162,6 +162,8 @@ model GradeLevel {
 
   student   StudentProfile? @relation(fields: [studentId], references: [id])
   studentId String?         @unique
+  faculty   FacultyProfile?  @relation(fields: [facultyId], references: [id])
+  facultyId String?          @unique
 }
 
 model Strand {
@@ -190,7 +192,6 @@ model Section {
 
 model Subject {
   id          String @id @default(cuid())
-  subjectCode String @unique
   subjectName String
 
   strand    Strand @relation(fields: [strandId], references: [id])
@@ -199,6 +200,8 @@ model Subject {
   studentId String?
   faculty   FacultyProfile? @relation(fields: [facultyId], references: [id])
   facultyId String?
+  schoolYear  SchoolYear[]
+  semester    Semester[]
 }
 
 model Grades {
@@ -211,6 +214,13 @@ model Grades {
 
   student   StudentProfile? @relation(fields: [studentId], references: [id])
   studentId String?
+}
+
+model Semester {
+  id              String @id @default(cuid())
+  semesterInfo    String
+
+  subject Subject[]
 }
 
 model PlaceOfBirth {
