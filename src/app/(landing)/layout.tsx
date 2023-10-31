@@ -10,6 +10,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={montserrat.className}>
+      <head>
+      <link rel="icon" href="/mja-logo.png" sizes="any" />
+      </head>
       <body>
         <Providers>{children}</Providers>
       </body>
