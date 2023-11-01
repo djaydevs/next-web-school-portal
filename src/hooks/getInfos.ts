@@ -5,6 +5,11 @@ export const fetchSchoolYear = async () => {
     return res.data;
 };
 
+export const fetchGradeLevel = async () => {
+    const res = await axios.get("/api/grade-level");
+    return res.data;
+};
+
 export const fetchStrands = async () => {
     const res = await axios.get("/api/strand");
     return res.data;

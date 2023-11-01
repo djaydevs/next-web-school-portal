@@ -76,7 +76,7 @@ const AddSubjectForm: FC<AddSubjectFormProps> = ({}) => {
   });
 
   //Create a new subject
-  const { mutate: addSubject, isPending: loadingSubmit } = useMutation({
+  const { mutate: addSubject, isPending: isLoadingSubmit } = useMutation({
     mutationFn: (addSub: Subject) => {
       return axios.post(`/api/subject`, addSub);
     },
@@ -116,7 +116,7 @@ const AddSubjectForm: FC<AddSubjectFormProps> = ({}) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button size="sm" className="w-[200px]">
+        <Button className="w-full">
           <Icons.PlusCircle className="mr-2" />
           Add Subject
         </Button>
@@ -227,8 +227,12 @@ const AddSubjectForm: FC<AddSubjectFormProps> = ({}) => {
               )}
             />
             <DialogFooter className="flex justify-between gap-4">
-              <Button type="submit" disabled={loadingSubmit} className="w-full">
-                {loadingSubmit ? (
+              <Button
+                type="submit"
+                disabled={isLoadingSubmit}
+                className="w-full"
+              >
+                {isLoadingSubmit ? (
                   <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" />
                 ) : null}{" "}
                 Add Subject

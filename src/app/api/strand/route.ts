@@ -15,3 +15,22 @@ export async function GET(req: Request) {
         return NextResponse.json({ message: "Something went wrong!" }, { status: 500 });
     }
 }
+
+export async function POST(req: NextRequest) {
+    try {
+        const body = await req.json();
+
+        const add = await prisma.strand.create({
+            data: {
+                gradeLevelId: body.gradeLevelId,
+                strandCode: body.strandCode,
+                strandName: body.strandName,
+            },
+        });
+
+        return NextResponse.json(add, { status: 200 });
+
+    } catch (error: any) {
+        return NextResponse.json({ message: error.message }, { status: 500 })
+    }
+}

@@ -94,7 +94,7 @@ const AddSchoolYearForm: FC<AddSchoolYearFormProps> = ({}) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button size="sm" className="w-[200px]">
+        <Button className="w-full">
           <Icons.PlusCircle className="mr-2" />
           Add School Year
         </Button>

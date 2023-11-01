@@ -3,29 +3,22 @@ import { prisma } from "@/lib/prisma";
 
 // Create a Section and Strand
 export async function POST(req: NextRequest) {
-    try {
-      const body = await req.json();
-  
-      const add = await prisma.gradeLevel.create({
-        data: {
-          gradeLevel: body.gradeLevel,
-          strand: {
-            create: {
-              strandCode: body.strandCode,
-              strandName: body.strandName,
-              section: {
-                create: {
-                  sectionName: body.sectionName,
-                },
-              }, 
-            },   
-          },                            
-        },
-      });
-  
-      return NextResponse.json(add, { status: 200 });
-  
-    } catch ( error: any ) {
-      return NextResponse.json({ message: error.message }, { status: 500 })      
-    }
+  try {
+    const body = await req.json();
+
+    const add = await prisma.section.create({
+      data: {
+        schoolYearId: body.schoolYearId,
+        gradeLevelId: body.gradeLevelId,
+        strandId: body.strandId,
+        sectionName: body.sectionName,
+        room: body.room,
+      },
+    });
+
+    return NextResponse.json(add, { status: 200 });
+
+  } catch (error: any) {
+    return NextResponse.json({ message: error.message }, { status: 500 })
+  }
 }

@@ -146,6 +146,7 @@ model SchoolYear {
   to       DateTime
   semester Int
 
+  sections   Section[]
   subjects   Subject[]
   enrollment Enrollment[]
 }
@@ -162,9 +163,10 @@ model Enrollment {
 }
 
 model GradeLevel {
-  id         String   @id @default(cuid())
+  id         String    @id @default(cuid())
   gradeLevel Int
-  strand     Strand[]
+  strands    Strand[]
+  sections   Section[]
 
   student   StudentProfile? @relation(fields: [studentId], references: [id])
   studentId String?         @unique
@@ -173,27 +175,33 @@ model GradeLevel {
 }
 
 model Strand {
-  id         String       @id @default(cuid())
+  id         String    @id @default(cuid())
   strandCode String
   strandName String
-  gradeLevel GradeLevel[]
-  section    Section[]
-  subject    Subject[]
+  sections   Section[]
+  subjects   Subject[]
 
-  student   StudentProfile? @relation(fields: [studentId], references: [id])
-  studentId String?         @unique
+  gradeLevel   GradeLevel?     @relation(fields: [gradeLevelId], references: [id])
+  gradeLevelId String?
+  student      StudentProfile? @relation(fields: [studentId], references: [id])
+  studentId    String?         @unique
 }
 
 model Section {
-  id          String   @id @default(cuid())
+  id          String  @id @default(cuid())
   sectionName String
   room        String?
-  strand      Strand[]
 
-  student   StudentProfile? @relation(fields: [studentId], references: [id])
-  studentId String?         @unique
-  faculty   FacultyProfile? @relation(fields: [facultyId], references: [id])
-  facultyId String?
+  schoolYear   SchoolYear?     @relation(fields: [schoolYearId], references: [id])
+  schoolYearId String?
+  gradeLevel   GradeLevel?     @relation(fields: [gradeLevelId], references: [id])
+  gradeLevelId String?
+  strand       Strand?         @relation(fields: [strandId], references: [id])
+  strandId     String?
+  student      StudentProfile? @relation(fields: [studentId], references: [id])
+  studentId    String?         @unique
+  faculty      FacultyProfile? @relation(fields: [facultyId], references: [id])
+  facultyId    String?
 }
 
 model Subject {

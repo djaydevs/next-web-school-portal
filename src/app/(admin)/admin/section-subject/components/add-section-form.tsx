@@ -1,18 +1,25 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import * as z from "zod";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { GradeLevel, SchoolYear, Strand } from "@prisma/client";
 
-import { getStrandName } from "@/lib/options";
-import { GradeSection, gradeSectionSchema } from "@/types";
+import { Section, sectionSchema } from "@/types";
 import {
-  Card,
-  CardHeader,
-  CardFooter,
-  CardTitle,
-  CardDescription,
-  CardContent,
-} from "@/components/ui/card";
+  fetchGradeLevel,
+  fetchSchoolYear,
+  fetchStrands,
+} from "@/hooks/getInfos";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import {
   Form,
   FormControl,
@@ -32,92 +39,226 @@ import {
 import { Button } from "@/components/ui/button";
 import Icons from "@/components/ui/icons";
 import { Input } from "@/components/ui/input";
+import axios, { AxiosError } from "axios";
+import { useRouter } from "next/navigation";
+import { useToast } from "@/components/ui/use-toast";
 
-interface AddSectionFormProps {
-  onSubmit: SubmitHandler<GradeSection>;
-  isLoadingSubmit: boolean;
-}
+interface AddSectionFormProps {}
 
-const AddSectionForm: FC<AddSectionFormProps> = ({
-  onSubmit,
-  isLoadingSubmit,
-}) => {
-  const [strandName, setStrandName] = useState("");
+const AddSectionForm: FC<AddSectionFormProps> = ({}) => {
+  const router = useRouter();
+  const { toast } = useToast();
 
-  const form = useForm<z.infer<typeof gradeSectionSchema>>({
-    resolver: zodResolver(gradeSectionSchema),
+  const {
+    data: schoolYears,
+    isPending: isLoadingSchoolYears,
+    isError: isErrorFetchingSchoolYears,
+    error: schoolYearsError,
+  } = useQuery<SchoolYear[]>({
+    queryKey: ["schoolYears"],
+    queryFn: async () => fetchSchoolYear(),
+  });
+
+  const {
+    data: gradeLevels,
+    isPending: isLoadingGradeLevels,
+    isError: isErrorFetchingGradeLevels,
+    error: gradeLevelsError,
+  } = useQuery<GradeLevel[]>({
+    queryKey: ["gradeLevel"],
+    queryFn: async () => fetchGradeLevel(),
+  });
+
+  const {
+    data: strands,
+    isPending: isLoadingStrands,
+    isError: isErrorFetchingStrands,
+    error: strandsError,
+  } = useQuery<Strand[]>({
+    queryKey: ["strands"],
+    queryFn: async () => fetchStrands(),
+  });
+
+  const form = useForm<z.infer<typeof sectionSchema>>({
+    resolver: zodResolver(sectionSchema),
     defaultValues: {
-      gradeLevel: 11,
-      strandCode: "",
-      strandName: "",
+      id: "",
+      schoolYearId: "",
+      gradeLevelId: "",
+      strandId: "",
       sectionName: "",
+      room: "",
     },
   });
 
+  const { mutate: addSection, isPending: isLoadingSubmit } = useMutation({
+    mutationFn: (newSection: Section) => {
+      return axios.post("/api/section", newSection);
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 500) {
+          toast({
+            title: "Error",
+            description: "Something went wrong! Please try again later.",
+            variant: "destructive",
+          });
+        }
+      }
+    },
+    onSuccess: () => {
+      toast({
+        title: "Success",
+        description: "Section added successfully!",
+      });
+      router.push("/admin/section-subject");
+      router.refresh();
+    },
+  });
+
+  const onSubmit = (data: z.infer<typeof sectionSchema>) => {
+    addSection(data);
+  };
+
+  if (isErrorFetchingSchoolYears) {
+    return <span>Error: {schoolYearsError.message}</span>;
+  }
+
+  if (isErrorFetchingGradeLevels) {
+    return <span>Error: {gradeLevelsError.message}</span>;
+  }
+
+  if (isErrorFetchingStrands) {
+    return <span>Error: {strandsError.message}</span>;
+  }
+
   return (
-    <Card className="w-full">
-      <CardHeader>
-        <CardTitle>Section</CardTitle>
-        <CardDescription>
-          Add section including grade level, strand code, and strand name.
-        </CardDescription>
-      </CardHeader>
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="w-full space-y-6"
-        >
-          <CardContent>
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button className="w-full">
+          <Icons.PlusCircle className="mr-2" />
+          Add Section
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>New Section</DialogTitle>
+          <DialogDescription>Add new section.</DialogDescription>
+        </DialogHeader>
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="w-full space-y-6"
+          >
             <FormField
               control={form.control}
-              name="gradeLevel"
+              name="schoolYearId"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Grade Level</FormLabel>
-                  <FormControl>
-                    <Input {...field} value={field.value ?? ""} />
-                  </FormControl>
+                <FormItem className="mb-2">
+                  <FormLabel>School Year</FormLabel>
+                  {isLoadingSchoolYears ? (
+                    "loading..."
+                  ) : (
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select school year..." />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {schoolYears?.map((schoolYear) => {
+                          const from = new Date(schoolYear.from).getFullYear();
+                          const to = new Date(schoolYear.to).getFullYear();
+
+                          return (
+                            <SelectItem
+                              key={schoolYear.id}
+                              value={schoolYear.id}
+                            >
+                              {from} - {to}{" "}
+                              {schoolYear.semester === 1
+                                ? `(1st semester)`
+                                : `(2nd semester)`}
+                            </SelectItem>
+                          );
+                        })}
+                      </SelectContent>
+                    </Select>
+                  )}
                   <FormMessage />
                 </FormItem>
               )}
             />
             <FormField
               control={form.control}
-              name="strandCode"
+              name="gradeLevelId"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Strand Code</FormLabel>
-                  <Select
-                    onValueChange={(value) => {
-                      field.onChange(value);
-                      setStrandName(getStrandName(value)); // set the strandName based on the selected strandCode
-                    }}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select strand code option..." />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="abm">ABM</SelectItem>
-                      <SelectItem value="stem">STEM</SelectItem>
-                      <SelectItem value="humss">HUMSS</SelectItem>
-                      <SelectItem value="gas">GAS</SelectItem>
-                    </SelectContent>
-                  </Select>
+                <FormItem className="mb-2">
+                  <FormLabel>Grade Level</FormLabel>
+                  {isLoadingGradeLevels ? (
+                    "loading..."
+                  ) : (
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select grade level option..." />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {gradeLevels?.map((gradeLevel) => (
+                          <SelectItem key={gradeLevel.id} value={gradeLevel.id}>
+                            {gradeLevel.gradeLevel}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  )}
+                  <FormMessage />
                 </FormItem>
               )}
             />
             <FormField
               control={form.control}
-              name="strandName"
+              name="strandId"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Strand Name</FormLabel>
-                  <FormControl>
-                    <Input {...field} value={strandName} />
-                  </FormControl>
+                <FormItem className="mb-2">
+                  <FormLabel>Strand</FormLabel>
+                  {isLoadingStrands ? (
+                    "loading..."
+                  ) : (
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select strand option..." />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {strands?.map((strand) => (
+                          <SelectItem key={strand.id} value={strand.id}>
+                            {strand.strandCode}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  )}
+                  <FormDescription>
+                    {strands?.find(
+                      (strand) => strand.id === form.getValues("strandId"),
+                    )
+                      ? `Add subject to ${strands.find(
+                          (strand) => strand.id === form.getValues("strandId"),
+                        )?.strandName}`
+                      : "Select a strand"}
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -127,29 +268,43 @@ const AddSectionForm: FC<AddSectionFormProps> = ({
               name="sectionName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Section</FormLabel>
+                  <FormLabel>Section Name</FormLabel>
                   <FormControl>
-                    <Input {...field} value={field.value ?? ""} />
+                    <Input required {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-          </CardContent>
-          <CardFooter className="flex justify-between gap-4">
-            <Button variant="outline" className="w-full">
-              View Section
-            </Button>
-            <Button type="submit" disabled={isLoadingSubmit} className="w-full">
-              {isLoadingSubmit ? (
-                <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" />
-              ) : null}{" "}
-              Add
-            </Button>
-          </CardFooter>
-        </form>
-      </Form>
-    </Card>
+            <FormField
+              control={form.control}
+              name="room"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Room</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <DialogFooter className="flex justify-between gap-4">
+              <Button
+                type="submit"
+                disabled={isLoadingSubmit}
+                className="w-full"
+              >
+                {isLoadingSubmit ? (
+                  <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" />
+                ) : null}{" "}
+                Add Section
+              </Button>
+            </DialogFooter>
+          </form>
+        </Form>
+      </DialogContent>
+    </Dialog>
   );
 };
 
