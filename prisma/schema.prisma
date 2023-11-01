@@ -87,8 +87,12 @@ model StudentProfile {
   nameOfJHS             String   @map("Name of JHS (11)")
   address               String   @map("Address (12)")
   jhsCompleted          Int      @map("SY JHS Completed")
-  placeOfBirth          PlaceOfBirth?
-  parentGuardian        ParentGuardian?
+  province              String?  @map("Place of Birth: Province")
+  town                  String?  @map("Place of Birth: Town")
+  barangay              String?  @map("Place of Birth:Barangay")
+  parentGuardianName    String?  @map("Parent/Guardian (17)")
+  parentGuardianAddress String?  @map("Address of Parent/ Guardian")
+  parentGuardianOccupation String?
   workImmersion         String? 
   contactNumber         String?
   enrollment            Enrollment?
@@ -101,6 +105,7 @@ model StudentProfile {
   user         User?   @relation(fields: [userId], references: [id])
   userId       String? @unique
   gradeLevelId String?
+  
 }
 
 model FacultyProfile {
@@ -223,23 +228,21 @@ model Semester {
   subject Subject[]
 }
 
-model PlaceOfBirth {
-  id          Int     @id @default(autoincrement())
-  province    String  @map("Province")
-  town        String  @map("Town")
-  barangay    String  @map("Barangay")
-  student     StudentProfile @relation(fields: [studentId], references: [id])
-  studentId   String @unique
-}
+// model Birthplace {
+//   id          String     @id @default(cuid())
+//   province    String  @map("Province")
+//   town        String  @map("Town")
+//   barangay    String  @map("Barangay")
+//   student     StudentProfile[]
+// }
 
-model ParentGuardian {
-  id          Int     @id @default(autoincrement())
-  name        String  @map("Parent/Guardian (17)")
-  address     String  @map("Address of Parent/ Guardian")
-  occupation  String
-  student     StudentProfile @relation(fields: [studentId], references: [id])
-  studentId   String @unique
-}
+// model ParentGuardian {
+//   id          String     @id @default(cuid())
+//   name        String  @map("Parent/Guardian (17)")
+//   address     String  @map("Address of Parent/ Guardian")
+//   occupation  String
+//   studentId   StudentProfile[]
+// }
 
 // enum Role {
 //   STUDENT
