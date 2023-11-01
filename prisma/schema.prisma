@@ -54,12 +54,12 @@ model User {
   role          String    @default("student")
   isVerified    Boolean   @default(false)
 
-  studentProfile    StudentProfile?
-  facultyProfile    FacultyProfile?
-  adminProfile      AdminProfile?
-  accounts          Account[]
-  sessions          Session[]
-  invitations       Invitation[]
+  studentProfile StudentProfile?
+  facultyProfile FacultyProfile?
+  adminProfile   AdminProfile?
+  accounts       Account[]
+  sessions       Session[]
+  invitations    Invitation[]
 }
 
 model Invitation {
@@ -74,29 +74,29 @@ model Invitation {
 }
 
 model StudentProfile {
-  id                    String      @id @default(cuid())
-  lrnNumber             String   @map("LRN NUMBER (2)") @unique
-  sex                   String   @map("SEX (3)")
-  age                   Int      @map("AGE (4)")
-  lastName              String   @map("Last Name (5)")
-  firstName             String   @map("First Name (6)")
-  middleName            String?  @map("Middle Name (7)")
-  dateOfBirth           DateTime @map("DOB (8)")
-  gender                String   @map("SEX M/F (9)")
-  genAveJHS             Float    @map("GEN Ave. JHS (10)")
-  nameOfJHS             String   @map("Name of JHS (11)")
-  address               String   @map("Address (12)")
-  jhsCompleted          Int      @map("SY JHS Completed")
-  placeOfBirth          PlaceOfBirth?
-  parentGuardian        ParentGuardian?
-  workImmersion         String? 
-  contactNumber         String?
-  enrollment            Enrollment?
-  gradeLevel            GradeLevel?
-  strand                Strand?
-  section               Section?
-  subjects              Subject[]
-  grades                Grades[]
+  id             String          @id @default(cuid())
+  lrnNumber      String          @unique @map("LRN NUMBER (2)")
+  sex            String          @map("SEX (3)")
+  age            Int             @map("AGE (4)")
+  lastName       String          @map("Last Name (5)")
+  firstName      String          @map("First Name (6)")
+  middleName     String?         @map("Middle Name (7)")
+  dateOfBirth    DateTime        @map("DOB (8)")
+  gender         String          @map("SEX M/F (9)")
+  genAveJHS      Float           @map("GEN Ave. JHS (10)")
+  nameOfJHS      String          @map("Name of JHS (11)")
+  address        String          @map("Address (12)")
+  jhsCompleted   Int             @map("SY JHS Completed")
+  placeOfBirth   PlaceOfBirth?
+  parentGuardian ParentGuardian?
+  workImmersion  String?
+  contactNumber  String?
+  enrollment     Enrollment?
+  gradeLevel     GradeLevel?
+  strand         Strand?
+  section        Section?
+  subjects       Subject[]
+  grades         Grades[]
 
   user         User?   @relation(fields: [userId], references: [id])
   userId       String? @unique
@@ -104,7 +104,7 @@ model StudentProfile {
 }
 
 model FacultyProfile {
-  id            String    @id @default(cuid())
+  id            String       @id @default(cuid())
   lastName      String
   firstName     String
   middleName    String?
@@ -137,10 +137,12 @@ model AdminProfile {
 }
 
 model SchoolYear {
-  id        String @id @default(cuid())
-  yearStart DateTime
-  yearEnd   DateTime
-  subject   Subject[]
+  id       String   @id @default(cuid())
+  from     DateTime
+  to       DateTime
+  semester Int
+
+  subjects   Subject[]
   enrollment Enrollment[]
 }
 
@@ -156,18 +158,18 @@ model Enrollment {
 }
 
 model GradeLevel {
-  id         String @id @default(cuid())
+  id         String   @id @default(cuid())
   gradeLevel Int
   strand     Strand[]
 
   student   StudentProfile? @relation(fields: [studentId], references: [id])
   studentId String?         @unique
-  faculty   FacultyProfile?  @relation(fields: [facultyId], references: [id])
-  facultyId String?          @unique
+  faculty   FacultyProfile? @relation(fields: [facultyId], references: [id])
+  facultyId String?         @unique
 }
 
 model Strand {
-  id         String @id @default(cuid())
+  id         String       @id @default(cuid())
   strandCode String
   strandName String
   gradeLevel GradeLevel[]
@@ -179,7 +181,7 @@ model Strand {
 }
 
 model Section {
-  id          String       @id @default(cuid())
+  id          String   @id @default(cuid())
   sectionName String
   room        String?
   strand      Strand[]
@@ -194,14 +196,14 @@ model Subject {
   id          String @id @default(cuid())
   subjectName String
 
-  strand    Strand @relation(fields: [strandId], references: [id])
-  strandId  String
-  student   StudentProfile? @relation(fields: [studentId], references: [id])
-  studentId String?
-  faculty   FacultyProfile? @relation(fields: [facultyId], references: [id])
-  facultyId String?
-  schoolYear  SchoolYear[]
-  semester    Semester[]
+  schoolYear   SchoolYear?     @relation(fields: [schoolYearId], references: [id])
+  schoolYearId String
+  strand       Strand          @relation(fields: [strandId], references: [id])
+  strandId     String
+  student      StudentProfile? @relation(fields: [studentId], references: [id])
+  studentId    String?
+  faculty      FacultyProfile? @relation(fields: [facultyId], references: [id])
+  facultyId    String?
 }
 
 model Grades {
@@ -216,29 +218,22 @@ model Grades {
   studentId String?
 }
 
-model Semester {
-  id              String @id @default(cuid())
-  semesterInfo    String
-
-  subject Subject[]
-}
-
 model PlaceOfBirth {
-  id          Int     @id @default(autoincrement())
-  province    String  @map("Province")
-  town        String  @map("Town")
-  barangay    String  @map("Barangay")
-  student     StudentProfile @relation(fields: [studentId], references: [id])
-  studentId   String @unique
+  id        Int            @id @default(autoincrement())
+  province  String         @map("Province")
+  town      String         @map("Town")
+  barangay  String         @map("Barangay")
+  student   StudentProfile @relation(fields: [studentId], references: [id])
+  studentId String         @unique
 }
 
 model ParentGuardian {
-  id          Int     @id @default(autoincrement())
-  name        String  @map("Parent/Guardian (17)")
-  address     String  @map("Address of Parent/ Guardian")
-  occupation  String
-  student     StudentProfile @relation(fields: [studentId], references: [id])
-  studentId   String @unique
+  id         Int            @id @default(autoincrement())
+  name       String         @map("Parent/Guardian (17)")
+  address    String         @map("Address of Parent/ Guardian")
+  occupation String
+  student    StudentProfile @relation(fields: [studentId], references: [id])
+  studentId  String         @unique
 }
 
 // enum Role {
