@@ -10,6 +10,9 @@ export default function AuthLayout({
 }) {
   return (
     <html lang="en" className={mulish.className}>
+      <head>
+        <link rel="icon" href="/mja-logo.png" sizes="any" />
+      </head>
       <body>
         <Providers>{children}</Providers>
       </body>

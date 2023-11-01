@@ -1,3 +1,4 @@
+import axios from "axios";
 import { getServerSession } from "next-auth/next"
 
 import { authOptions } from "@/lib/auth";
@@ -18,6 +19,10 @@ export const getCurrentUser = async () => {
     const currentUser = await prisma.user.findUnique({
       where: {
         email: session.user.email as string,
+      }, include: {
+        studentProfile: true,
+        facultyProfile: true,
+        adminProfile: true,
       }
     });
 
@@ -36,7 +41,11 @@ export const getCurrentUser = async () => {
 }
 
 export const fetchUsers = async () => {
-  const res = await fetch("/api/users");
-  const data = res.json();
-  return data;
+  const res = await axios.get("/api/user");
+  return res.data;
 };
+
+export const fetchUserById = async (userId: string) => {
+  const res = await axios.get(`/api/user/${userId}`)
+  return res.data
+}

@@ -4,7 +4,7 @@ import { ColumnDef } from "@tanstack/react-table";
 
 import { statuses, roles } from "@/lib/options";
 import { AccountTableColumnHeader } from "@/components/account-table-column-header";
-import { AccountTableRowActions } from "@/components/account-table-row-actions";
+import { AccountTableRowDetails } from "@/components/account-table-row-details";
 import { User } from "@/types";
 import { UserAvatar } from "@/components/user-avatar";
 
@@ -35,11 +35,15 @@ export const columns: ColumnDef<User>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => (
-      <AccountTableColumnHeader column={column} title="Name" />
+      <AccountTableColumnHeader
+        column={column}
+        title="Name"
+        className="hidden md:table-cell"
+      />
     ),
     cell: ({ row }) => {
       return (
-        <div className="flex w-full items-center justify-start">
+        <div className="hidden w-full items-center justify-start md:flex">
           <UserAvatar
             user={{
               name: row.original.name || null,
@@ -56,14 +60,14 @@ export const columns: ColumnDef<User>[] = [
   {
     accessorKey: "email",
     header: ({ column }) => (
-      <AccountTableColumnHeader column={column} title="E-mail" />
+      <AccountTableColumnHeader column={column} title="Email" />
     ),
     cell: ({ row }) => {
       return <div className="w-full">{row.getValue("email")}</div>;
     },
   },
   {
-    accessorKey: "status",
+    accessorKey: "isVerified",
     header: ({ column }) => (
       <AccountTableColumnHeader
         column={column}
@@ -73,14 +77,14 @@ export const columns: ColumnDef<User>[] = [
     ),
     cell: ({ row }) => {
       const status = statuses.find(
-        (status) => status.value === row.getValue("status"),
+        (status) => status.value === row.getValue("isVerified"),
       );
 
       if (!status) {
         return null;
       }
 
-      return <span>{status.label}</span>;
+      return <span className="hidden md:table-cell">{status.label}</span>;
     },
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
@@ -110,6 +114,6 @@ export const columns: ColumnDef<User>[] = [
   },
   {
     id: "actions",
-    cell: ({ row }) => <AccountTableRowActions row={row} />,
+    cell: ({ row }) => <AccountTableRowDetails row={row} />,
   },
 ];

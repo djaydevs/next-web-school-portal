@@ -12,6 +12,16 @@ export const authOptions: NextAuthOptions = ({
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID as string,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+            profile(profile) {
+                return {
+                    id: profile.sub,
+                    name: `${profile.given_name} ${profile.family_name}`,
+                    email: profile.email,
+                    image: profile.picture,
+                    role: profile.role ? profile.role : "student",
+                    isVerified: profile.isVerified ? profile.isVerified : false,
+                };
+            }
         }),
     ],
     callbacks: {
@@ -33,6 +43,7 @@ export const authOptions: NextAuthOptions = ({
                 role: dbUser.role,
                 email: dbUser.email,
                 image: dbUser.image,
+                isVerified: dbUser.isVerified,
             }
         },
         async session({ session, token }) {
@@ -42,11 +53,12 @@ export const authOptions: NextAuthOptions = ({
                 session.user.email = token.email
                 session.user.image = token.picture
                 session.user.role = token.role
+                session.user.isVerified = token.isVerified
             }
 
             return session
         },
-    },    
+    },
     session: {
         strategy: "jwt",
     },

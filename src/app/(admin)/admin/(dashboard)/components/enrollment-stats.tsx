@@ -30,7 +30,7 @@ interface EnrollmentStatsProps {}
 
 const EnrollmentStats: FC<EnrollmentStatsProps> = ({}) => {
   return (
-    <ResponsiveContainer width="100%" height={350}>
+    <ResponsiveContainer width="100%" height={270}>
       <BarChart data={data}>
         <XAxis
           dataKey="name"

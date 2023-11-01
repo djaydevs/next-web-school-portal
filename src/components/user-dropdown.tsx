@@ -16,7 +16,7 @@ export default async function UserAccountDrop() {
   const currentUser = await getCurrentUser();
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger>
+      <DropdownMenuTrigger title="Account" aria-label="Account">
         <UserAvatar
           user={{
             name: currentUser?.name || null,
@@ -28,32 +28,32 @@ export default async function UserAccountDrop() {
       <DropdownMenuContent className="bg-background" align="end">
         <div className="flex items-center justify-start gap-2 p-2">
           <div className="flex flex-col space-y-1 leading-none">
-            {currentUser?.name && (
+            {currentUser?.name ? (
               <p className="font-medium">{currentUser.name}</p>
-            )}
-            {currentUser?.email && (
+            ) : null}
+            {currentUser?.email ? (
               <p className="w-[200px] truncate text-sm text-muted-foreground">
                 {currentUser.email}
               </p>
-            )}
+            ) : null}
           </div>
         </div>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild className="cursor-pointer">
           <Link href="/profile">
-            <Icons.UserSquare2 className="w-4 h-4 mr-2" />
+            <Icons.UserSquare2 className="mr-2 h-4 w-4" />
             My Profile
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild className="cursor-pointer">
           <Link href="/help">
-            <Icons.HelpCircle className="w-4 h-4 mr-2" />
+            <Icons.HelpCircle className="mr-2 h-4 w-4" />
             Help
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild className="cursor-pointer">
           <Link href="/settings">
-            <Icons.Settings className="w-4 h-4 mr-2" />
+            <Icons.Settings className="mr-2 h-4 w-4" />
             Settings
           </Link>
         </DropdownMenuItem>

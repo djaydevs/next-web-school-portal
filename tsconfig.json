@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -20,18 +24,28 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"],
-      "@/styles/*": ["./src/styles/*"],
-      "@/types/*": ["./src/types/*"],
-      "@/lib/*": ["./src/lib/*"],
+      "@/*": [
+        "./src/*"
+      ],
+      "@/styles/*": [
+        "./src/styles/*"
+      ],
+      "@/types/*": [
+        "./src/types/*"
+      ],
+      "@/lib/*": [
+        "./src/lib/*"
+      ],
       "@/components/*": [
-        "./src/components/*", 
-        "./src/app/(landing)/components/*", 
+        "./src/components/*",
+        "./src/app/(landing)/components/*",
         "./src/app/(admin)/admin/(dashboard)/components/*",
-        "./src/app/(admin)/admin/enrollment/components/*", 
+        "./src/app/(admin)/admin/section-subject/components/*",
+        "./src/app/(admin)/admin/enrollment/components/*",
         "./src/app/(admin)/admin/manage-accounts/components/*",
         "./src/app/(admin)/admin/request/components/*",
         "./src/app/(admin)/admin/student-record/components/*",
+        "./src/app/(admin)/admin/faculty-record/components/*",
         "./src/app/(auth)/components/*",
         "./src/app/(faculty)/faculty/(dashboard)/components/*",
         "./src/app/(faculty)/faculty/advisory-class/components/*",
@@ -43,6 +57,13 @@
       ],
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }
