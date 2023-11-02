@@ -18,6 +18,47 @@ export const userSchema = z.object({
 });
 export type User = z.infer<typeof userSchema>
 
+export const facultySchema = z.object({
+    id: z.string(),
+    name: z.string().nullish(),
+    email: z.string({
+        required_error: "Email field is required",
+        invalid_type_error: "This field must be in email format",
+    }).email(),
+    emailVerified: z.string().nullish(),
+    createdAt: z.string().nullish(),
+    updatedAt: z.string().nullish(),
+    image: z.string().url().nullish(),
+    role: z.string({
+        required_error: "You need to select a role.",
+    }),
+    isVerified: z.boolean(),
+    facultyProfile: z.object({
+        lastName: z.string({
+            required_error: "Last name is required",
+        }),
+        firstName: z.string({
+            required_error: "First name is required",
+        }),
+        middleName: z.string().nullish(),
+        age: z.number({
+            required_error: "Age is required",
+            invalid_type_error: "Age must be a number",
+        }).int(),
+        dateOfBirth: z.date({
+            required_error: "Date of birth is required",
+        }),
+        gender: z.string({
+            required_error: "Gender is required",
+        }),
+        address: z.string({
+            required_error: "Address is required",
+        }),
+        contactNumber: z.string().nullish(),
+    })
+});
+export type Faculty = z.infer<typeof facultySchema>
+
 export const schoolYearSchema = z.object({
     id: z.string(),
     schoolYear: z.object({

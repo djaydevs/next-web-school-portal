@@ -24,19 +24,19 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { AccountTableToolbar } from "@/components/account-toolbar";
-import { AccountTablePagination } from "./account-table-pagination";
+import { FacultyTableToolbar } from "@/components/faculty-toolbar";
+import { FacultyTablePagination } from "@/components/faculty-table-pagination";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
-interface AccountTableProps<TData, TValue> {
+interface FacultyTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
 }
 
-export default function AccountTable<TData, TValue>({
+export default function FacultyTable<TData, TValue>({
   columns,
   data,
-}: AccountTableProps<TData, TValue>) {
+}: FacultyTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
@@ -68,7 +68,7 @@ export default function AccountTable<TData, TValue>({
 
   return (
     <div className="space-y-2">
-      <AccountTableToolbar table={table} />
+      <FacultyTableToolbar table={table} />
       <div className="rounded-md border">
         <ScrollArea className="h-full md:h-[320px]">
           <Table>
@@ -121,7 +121,7 @@ export default function AccountTable<TData, TValue>({
           </Table>
         </ScrollArea>
       </div>
-      <AccountTablePagination table={table} />
+      <FacultyTablePagination table={table} />
     </div>
   );
 }

@@ -10,13 +10,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-interface AccountTablePaginationProps<TData> {
+interface FacultyTablePaginationProps<TData> {
   table: Table<TData>;
 }
 
-export function AccountTablePagination<TData>({
+export function FacultyTablePagination<TData>({
   table,
-}: AccountTablePaginationProps<TData>) {
+}: FacultyTablePaginationProps<TData>) {
   return (
     <div className="flex items-center justify-between px-2">
       {/* <div className="flex-1 text-sm text-muted-foreground">
