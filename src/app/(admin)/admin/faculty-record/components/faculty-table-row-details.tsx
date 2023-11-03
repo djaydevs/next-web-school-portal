@@ -18,8 +18,8 @@ export function FacultyTableRowDetails<TData>({
 
   return (
     <Link
-      href={`/admin/manage-accounts/${user.id}`}
-      aria-label="Manage account details"
+      href={`/admin/faculty-record/${user.id}`}
+      aria-label="Manage faculty details"
       className={cn(
         buttonVariants({
           variant: "outline",

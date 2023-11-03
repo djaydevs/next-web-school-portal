@@ -18,7 +18,7 @@ const FacultyRecordPage: FC<FacultyRecordPageProps> = ({}) => {
     isError: isErrorFetchingFaculties,
     error,
   } = useQuery<Faculty[]>({
-    queryKey: ["users"],
+    queryKey: ["faculties"],
     queryFn: async () => fetchFaculty(),
   });
 
@@ -29,7 +29,9 @@ const FacultyRecordPage: FC<FacultyRecordPageProps> = ({}) => {
   return (
     <div className="h-full flex-1 flex-col space-y-4 px-4 md:flex">
       <div>
-        <h2 className="text-2xl font-bold tracking-tight">Manage Faculty</h2>
+        <h2 className="text-2xl font-bold tracking-tight">
+          Manage Faculty Record
+        </h2>
         <p className="text-muted-foreground">
           Here&apos;s a list of faculty records you can manage as an
           admin/registrar.

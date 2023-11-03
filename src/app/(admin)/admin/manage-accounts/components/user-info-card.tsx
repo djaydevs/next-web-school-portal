@@ -74,6 +74,21 @@ const UserInfoCard: FC<UserInfoCardProps> = ({ userInfo }) => {
             Student Record
           </Link>
         ) : null}
+        {userInfo?.role === "faculty" ? (
+          <Link
+            href={`/admin/faculty-record/${userInfo?.id}`}
+            aria-label="Manage account details"
+            className={cn(
+              buttonVariants({
+                variant: "secondary",
+                size: "sm",
+              }),
+              "w-full",
+            )}
+          >
+            Faculty Record
+          </Link>
+        ) : null}
       </CardContent>
     </Card>
   );

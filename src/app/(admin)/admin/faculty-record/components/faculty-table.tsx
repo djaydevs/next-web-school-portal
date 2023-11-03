@@ -70,7 +70,7 @@ export default function FacultyTable<TData, TValue>({
     <div className="space-y-2">
       <FacultyTableToolbar table={table} />
       <div className="rounded-md border">
-        <ScrollArea className="h-full md:h-[320px]">
+        <ScrollArea className="h-full md:h-[390px]">
           <Table>
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (

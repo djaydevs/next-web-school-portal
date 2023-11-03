@@ -2,36 +2,13 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 
-import { statuses, roles } from "@/lib/options";
 import { FacultyTableColumnHeader } from "@/components/faculty-table-column-header";
 import { FacultyTableRowDetails } from "@/components/faculty-table-row-details";
-import { User } from "@/types";
 import { UserAvatar } from "@/components/user-avatar";
+import { Faculty } from "@/types";
+import { Badge } from "@/components/ui/badge";
 
-export const columns: ColumnDef<User>[] = [
-  //   {
-  //     id: "select",
-  //     header: ({ table }) => (
-  //       <Checkbox
-  //         checked={table.getIsAllPageRowsSelected()}
-  //         onCheckedChange={(value: any) =>
-  //           table.toggleAllPageRowsSelected(!!value)
-  //         }
-  //         aria-label="Select all"
-  //         className="translate-y-[2px]"
-  //       />
-  //     ),
-  //     cell: ({ row }) => (
-  //       <Checkbox
-  //         checked={row.getIsSelected()}
-  //         onCheckedChange={(value: any) => row.toggleSelected(!!value)}
-  //         aria-label="Select row"
-  //         className="translate-y-[2px]"
-  //       />
-  //     ),
-  //     enableSorting: false,
-  //     enableHiding: false,
-  //   },
+export const columns: ColumnDef<Faculty>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => (
@@ -67,49 +44,56 @@ export const columns: ColumnDef<User>[] = [
     },
   },
   {
-    accessorKey: "isVerified",
+    accessorKey: "facultyProfile",
     header: ({ column }) => (
-      <FacultyTableColumnHeader
-        column={column}
-        title="Status"
-        className="hidden md:table-cell"
-      />
+      <FacultyTableColumnHeader column={column} title="Section" />
     ),
     cell: ({ row }) => {
-      const status = statuses.find(
-        (status) => status.value === row.getValue("isVerified"),
-      );
+      const facultyProfile = row.getValue(
+        "facultyProfile",
+      ) as Faculty["facultyProfile"];
 
-      if (!status) {
-        return null;
+      if (!facultyProfile?.section.length) {
+        return <Badge variant="destructive">No sections</Badge>;
       }
 
-      return <span className="hidden md:table-cell">{status.label}</span>;
+      return (
+        <span className="flex">
+          {facultyProfile?.section.map((sec) => (
+            <Badge key={sec.id} variant="secondary" className="mr-2">
+              {sec.sectionName}
+            </Badge>
+          ))}
+        </span>
+      );
     },
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
     },
   },
   {
-    accessorKey: "role",
+    accessorKey: "facultyProfile",
     header: ({ column }) => (
-      <FacultyTableColumnHeader
-        column={column}
-        title="Role"
-        className="hidden md:table-cell"
-      />
+      <FacultyTableColumnHeader column={column} title="Subject" />
     ),
     cell: ({ row }) => {
-      const role = roles.find((role) => role.value === row.getValue("role"));
+      const facultyProfile = row.getValue(
+        "facultyProfile",
+      ) as Faculty["facultyProfile"];
 
-      if (!role) {
-        return null;
+      if (!facultyProfile?.subjects.length) {
+        return <Badge variant="destructive">No subjects</Badge>;
       }
 
-      return <span className="hidden md:table-cell">{role.label}</span>;
-    },
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
+      return (
+        <span className="flex">
+          {facultyProfile?.subjects.map((sub) => (
+            <Badge key={sub.id} variant="outline" className="mr-2">
+              {sub.subjectName}
+            </Badge>
+          ))}
+        </span>
+      );
     },
   },
   {
