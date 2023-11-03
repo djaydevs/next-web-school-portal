@@ -85,7 +85,8 @@ const AddSubjectForm: FC<AddSubjectFormProps> = ({}) => {
         if (error.response?.status === 500) {
           toast({
             title: "Error",
-            description: "Something went wrong! Please try again later.",
+            description:
+              "Something went wrong! Please check if required fields are answered, or try again later.",
             variant: "destructive",
           });
         }
@@ -220,7 +221,21 @@ const AddSubjectForm: FC<AddSubjectFormProps> = ({}) => {
                 <FormItem>
                   <FormLabel>Subject Name</FormLabel>
                   <FormControl>
-                    <Input {...field} required />
+                    <Input
+                      required
+                      {...field}
+                      onChange={(e) =>
+                        field.onChange(
+                          e.target.value
+                            .split(" ")
+                            .map(
+                              (word) =>
+                                word.charAt(0).toUpperCase() + word.slice(1),
+                            )
+                            .join(" "),
+                        )
+                      }
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

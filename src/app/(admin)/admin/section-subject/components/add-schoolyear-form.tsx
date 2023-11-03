@@ -71,7 +71,7 @@ const AddSchoolYearForm: FC<AddSchoolYearFormProps> = ({}) => {
         if (error.response?.status === 500) {
           toast({
             title: "Error",
-            description: "Something went wrong! Please try again later.",
+            description: "Something went wrong! Please check if required fields are answered, or try again later.",
             variant: "destructive",
           });
         }

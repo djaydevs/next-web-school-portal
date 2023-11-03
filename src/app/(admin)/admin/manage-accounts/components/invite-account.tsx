@@ -48,7 +48,7 @@ const InviteNewAccount: FC<InviteNewAccountProps> = ({
     defaultValues: {
       id: "",
       email: "",
-      role: "",
+      role: "student",
       isVerified: false,
     },
   });
@@ -90,6 +90,7 @@ const InviteNewAccount: FC<InviteNewAccountProps> = ({
                 <FormItem>
                   <FormLabel>Role</FormLabel>
                   <Select
+                    required
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                   >
@@ -104,6 +105,7 @@ const InviteNewAccount: FC<InviteNewAccountProps> = ({
                       <SelectItem value="admin">Admin</SelectItem>
                     </SelectContent>
                   </Select>
+                  <FormMessage />
                 </FormItem>
               )}
             />
