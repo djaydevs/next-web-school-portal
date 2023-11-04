@@ -7,7 +7,6 @@ import { Table } from "@tanstack/react-table";
 import Icons from "@/components/ui/icons";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { FacultyViewOptions } from "@/components/faculty-view-options";
 // import { FacultyTableFacetedFilter } from "@/components/faculty-table-faceted-filter";
 // import { generateSectionOptions } from "@/lib/options";
 // import { Faculty } from "@/types";
@@ -68,7 +67,6 @@ export function FacultyTableToolbar<TData>({
           )}
         </div>
       </div>
-      <FacultyViewOptions table={table} />
     </div>
   );
 }

@@ -12,15 +12,11 @@ export const columns: ColumnDef<Faculty>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => (
-      <FacultyTableColumnHeader
-        column={column}
-        title="Name"
-        className="hidden md:table-cell"
-      />
+      <FacultyTableColumnHeader column={column} title="Name" />
     ),
     cell: ({ row }) => {
       return (
-        <div className="hidden w-full items-center justify-start md:flex">
+        <div className="flex w-full items-center justify-start">
           <UserAvatar
             user={{
               name: row.original.name || null,
@@ -37,16 +33,28 @@ export const columns: ColumnDef<Faculty>[] = [
   {
     accessorKey: "email",
     header: ({ column }) => (
-      <FacultyTableColumnHeader column={column} title="Email" />
+      <FacultyTableColumnHeader
+        column={column}
+        title="Email"
+        className="hidden md:table-cell"
+      />
     ),
     cell: ({ row }) => {
-      return <div className="w-full">{row.getValue("email")}</div>;
+      return (
+        <div className="hidden w-full items-center justify-start md:flex">
+          {row.getValue("email")}
+        </div>
+      );
     },
   },
   {
     accessorKey: "facultyProfile",
     header: ({ column }) => (
-      <FacultyTableColumnHeader column={column} title="Section" />
+      <FacultyTableColumnHeader
+        column={column}
+        title="Section"
+        className="hidden md:table-cell"
+      />
     ),
     cell: ({ row }) => {
       const facultyProfile = row.getValue(
@@ -58,7 +66,7 @@ export const columns: ColumnDef<Faculty>[] = [
       }
 
       return (
-        <span className="flex">
+        <span className="hidden w-full items-center justify-start md:flex">
           {facultyProfile?.section.map((sec) => (
             <Badge key={sec.id} variant="secondary" className="mr-2">
               {sec.sectionName}
@@ -67,14 +75,15 @@ export const columns: ColumnDef<Faculty>[] = [
         </span>
       );
     },
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
-    },
   },
   {
     accessorKey: "facultyProfile",
     header: ({ column }) => (
-      <FacultyTableColumnHeader column={column} title="Subject" />
+      <FacultyTableColumnHeader
+        column={column}
+        title="Subject"
+        className="hidden md:table-cell"
+      />
     ),
     cell: ({ row }) => {
       const facultyProfile = row.getValue(
@@ -86,7 +95,7 @@ export const columns: ColumnDef<Faculty>[] = [
       }
 
       return (
-        <span className="flex">
+        <span className="hidden w-full items-center justify-start md:flex">
           {facultyProfile?.subjects.map((sub) => (
             <Badge key={sub.id} variant="outline" className="mr-2">
               {sub.subjectName}

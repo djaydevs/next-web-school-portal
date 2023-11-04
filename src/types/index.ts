@@ -70,7 +70,9 @@ export const facultySchema = z.object({
                 required_error: "Grade section is required",
             }),
             room: z.string(),
-        })),
+        }), z.string()).refine((value) => value.some((item) => item), {
+            message: "You have to select at least one item.",
+        }),
         subjects: z.array(z.object({
             id: z.string(),
             subjectName: z.string({
