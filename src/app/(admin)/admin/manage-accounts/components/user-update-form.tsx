@@ -2,6 +2,9 @@ import { FC } from "react";
 import * as z from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
+import axios, { AxiosError } from "axios";
 
 import { User, userSchema } from "@/types";
 import {
@@ -31,22 +34,54 @@ import {
 import { Button } from "@/components/ui/button";
 import Icons from "@/components/ui/icons";
 import { Input } from "@/components/ui/input";
+import { useToast } from "@/components/ui/use-toast";
 
 interface UserUpdateFormProps {
-  onSubmit: SubmitHandler<User>;
-  isLoadingSubmit: boolean;
+  params: {
+    id: string;
+  };
   initialValue?: User;
 }
 
-const UserUpdateForm: FC<UserUpdateFormProps> = ({
-  onSubmit,
-  isLoadingSubmit,
-  initialValue,
-}) => {
+const UserUpdateForm: FC<UserUpdateFormProps> = ({ params, initialValue }) => {
+  const { id } = params;
+  const router = useRouter();
+  const { toast } = useToast();
+
   const form = useForm<z.infer<typeof userSchema>>({
     resolver: zodResolver(userSchema),
     defaultValues: initialValue,
   });
+
+  const { mutate: updateUser, isPending: isLoadingSubmit } = useMutation({
+    mutationFn: (update: User) => {
+      return axios.patch(`/api/user/${id}`, update);
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 500) {
+          toast({
+            title: "Error",
+            description:
+              "Something went wrong! Please check if required fields are answered, or try again later.",
+            variant: "destructive",
+          });
+        }
+      }
+    },
+    onSuccess: () => {
+      toast({
+        title: "Success",
+        description: "User updated successfully!",
+      });
+      router.push("/admin/manage-accounts");
+      router.refresh();
+    },
+  });
+
+  const onSubmit = (updateInfo: z.infer<typeof userSchema>) => {
+    updateUser(updateInfo);
+  };
 
   return (
     <Card className="w-full">

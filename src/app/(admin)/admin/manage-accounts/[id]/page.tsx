@@ -34,36 +34,6 @@ const ManageAccountIdPage: FC<ManageAccountIdPageProps> = ({ params }) => {
     queryFn: async () => fetchUserById(id),
   });
 
-  const { mutate: updateUser, isPending: isLoadingSubmit } = useMutation({
-    mutationFn: (update: User) => {
-      return axios.patch(`/api/user/${id}`, update);
-    },
-    onError: (error) => {
-      if (error instanceof AxiosError) {
-        if (error.response?.status === 500) {
-          toast({
-            title: "Error",
-            description:
-              "Something went wrong! Please check if required fields are answered, or try again later.",
-            variant: "destructive",
-          });
-        }
-      }
-    },
-    onSuccess: () => {
-      toast({
-        title: "Success",
-        description: "User updated successfully!",
-      });
-      router.push("/admin/manage-accounts");
-      router.refresh();
-    },
-  });
-
-  const handleUpdateUser = (updateInfo: z.infer<typeof userSchema>) => {
-    updateUser(updateInfo);
-  };
-
   if (isError) {
     return <span>Error: {error.message}</span>;
   }
@@ -80,11 +50,7 @@ const ManageAccountIdPage: FC<ManageAccountIdPageProps> = ({ params }) => {
       ) : (
         <div className="w-full justify-between space-x-4 p-4 md:flex">
           <UserInfoCard userInfo={userInfo} />
-          <UserUpdateForm
-            onSubmit={handleUpdateUser}
-            initialValue={userInfo}
-            isLoadingSubmit={isLoadingSubmit}
-          />
+          <UserUpdateForm initialValue={userInfo} params={{ id }} />
         </div>
       )}
     </>
