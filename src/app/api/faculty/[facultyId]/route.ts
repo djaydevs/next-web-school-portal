@@ -34,6 +34,7 @@ export async function GET(req: NextRequest, context: contextProps) {
 //Assign the faculty to the selected section and subject
 export async function PATCH(req: NextRequest, context: contextProps) {
   try {
+    const { params } = context
     const body = await req.json();
 
     const faculty = await prisma.facultyProfile.findUnique({ where: { id: body.facultyId } });
