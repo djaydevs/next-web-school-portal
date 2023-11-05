@@ -10,7 +10,7 @@ import { fetchFacultyById } from "@/hooks/getUsers";
 import { Faculty, facultySchema } from "@/types";
 import { useToast } from "@/components/ui/use-toast";
 import { SkeletonCard } from "@/components/loading";
-import FacultyAssignForm from "../components/faculty-assign-form";
+import FacultyAssignForm from "@/components/faculty-assign-form";
 
 interface ManageFacultyRecordProps {
   params: {
@@ -20,8 +20,6 @@ interface ManageFacultyRecordProps {
 
 const ManageFacultyRecord: FC<ManageFacultyRecordProps> = ({ params }) => {
   const { id } = params;
-  const router = useRouter();
-  const { toast } = useToast();
 
   const {
     data: facultyInfo,
@@ -32,36 +30,6 @@ const ManageFacultyRecord: FC<ManageFacultyRecordProps> = ({ params }) => {
     queryKey: ["faculty", id],
     queryFn: async () => fetchFacultyById(id),
   });
-
-  const { mutate: updateFaculty, isPending: isLoadingSubmit } = useMutation({
-    mutationFn: (update: Faculty) => {
-      return axios.patch(`/api/faculty/${id}`, update);
-    },
-    onError: (error) => {
-      if (error instanceof AxiosError) {
-        if (error.response?.status === 500) {
-          toast({
-            title: "Error",
-            description:
-              "Something went wrong! Please check if required fields are answered, or try again later.",
-            variant: "destructive",
-          });
-        }
-      }
-    },
-    onSuccess: () => {
-      toast({
-        title: "Success",
-        description: "Faculty updated successfully!",
-      });
-      router.push("/admin/faculty-record");
-      router.refresh();
-    },
-  });
-
-  const handleUpdateFaculty = (updateInfo: z.infer<typeof facultySchema>) => {
-    updateFaculty(updateInfo);
-  };
 
   if (isError) {
     return <span>Error: {error.message}</span>;
@@ -82,11 +50,7 @@ const ManageFacultyRecord: FC<ManageFacultyRecordProps> = ({ params }) => {
         </div>
       ) : (
         <div className="w-full justify-between space-x-4 p-4 md:flex">
-          <FacultyAssignForm
-            onSubmit={handleUpdateFaculty}
-            isLoadingSubmit={isLoadingSubmit}
-            initialValue={facultyInfo}
-          />
+          <FacultyAssignForm initialValue={facultyInfo} params={{ id }} />
         </div>
       )}
     </div>

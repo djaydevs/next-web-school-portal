@@ -1,7 +1,11 @@
 import { FC } from "react";
 import * as z from "zod";
-import { SubmitHandler, useForm } from "react-hook-form";
+import axios, { AxiosError } from "axios";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Section } from "@prisma/client";
+import { useRouter } from "next/navigation";
 
 import {
   Card,
@@ -23,26 +27,26 @@ import {
 import { Button } from "@/components/ui/button";
 import Icons from "@/components/ui/icons";
 import { Input } from "@/components/ui/input";
-import { Faculty, facultySchema } from "@/types";
-import axios, { AxiosError } from "axios";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Faculty, facultySchema } from "@/types";
 import { fetchSections } from "@/hooks/getInfos";
-import { Section } from "@prisma/client";
 
 interface FacultyAssignFormProps {
-  onSubmit: SubmitHandler<Faculty>;
-  isLoadingSubmit: boolean;
+  params: {
+    id: string;
+  };
   initialValue?: Faculty;
 }
 
 const FacultyAssignForm: FC<FacultyAssignFormProps> = ({
-  onSubmit,
-  isLoadingSubmit,
+  params,
   initialValue,
 }) => {
+  const { id } = params;
+  const router = useRouter();
+  const { toast } = useToast();
+
   const {
     data: sections,
     isPending: isLoadingSections,
@@ -58,6 +62,42 @@ const FacultyAssignForm: FC<FacultyAssignFormProps> = ({
     defaultValues: initialValue,
   });
 
+  const { mutate: updateFaculty, isPending: isLoadingSubmit } = useMutation({
+    mutationFn: (update: Faculty) => {
+      console.log("Sending PATCH request with data:", update);
+      return axios.patch(`/api/faculty/${id}`, update);
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 500) {
+          toast({
+            title: "Error",
+            description:
+              "Something went wrong! Please check if required fields are answered, or try again later.",
+            variant: "destructive",
+          });
+        }
+      }
+    },
+    onSuccess: () => {
+      toast({
+        title: "Success",
+        description: "Faculty updated successfully!",
+      });
+      router.push("/admin/faculty-record");
+      router.refresh();
+    },
+  });
+
+  const onSubmit = (updateInfo: z.infer<typeof facultySchema>) => {
+    console.log("Submitting form with data:", updateInfo);
+    updateFaculty(updateInfo);
+  };
+
+  if (isErrorFetchingSections) {
+    return <span>Error: {sectionsError.message}</span>;
+  }
+
   return (
     <Card className="w-full">
       <CardHeader>
@@ -72,6 +112,23 @@ const FacultyAssignForm: FC<FacultyAssignFormProps> = ({
           className="w-full space-y-6"
         >
           <CardContent>
+            {/* <FormField
+              control={form.control}
+              name="facultyProfile.lastName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Last Name</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder={field.value ?? ""}
+                      {...field}
+                      value={field.value ?? ""}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            /> */}
             <FormField
               control={form.control}
               name="facultyProfile.section"
@@ -83,41 +140,47 @@ const FacultyAssignForm: FC<FacultyAssignFormProps> = ({
                       Select the section you want to assign to .
                     </FormDescription>
                   </div>
-                  {sections?.map((section) => (
-                    <FormField
-                      key={section.id}
-                      control={form.control}
-                      name="facultyProfile.section"
-                      render={({ field }) => {
-                        return (
-                          <FormItem
-                            key={section.id}
-                            className="flex flex-row items-start space-x-3 space-y-0"
-                          >
-                            <FormControl>
-                              <Checkbox
-                                checked={field.value
-                                  ?.map((section) => section.id)
-                                  .includes(section.id)}
-                                onCheckedChange={(checked) => {
-                                  return checked
-                                    ? field.onChange([...field.value, section])
-                                    : field.onChange(
-                                        field.value?.filter(
-                                          (value) => value.id !== section.id,
-                                        ),
-                                      );
-                                }}
-                              />
-                            </FormControl>
-                            <FormLabel className="font-normal">
-                              {section.sectionName}
-                            </FormLabel>
-                          </FormItem>
-                        );
-                      }}
-                    />
-                  ))}
+                  {isLoadingSections
+                    ? "loading"
+                    : sections?.map((section) => (
+                        <FormField
+                          key={section.id}
+                          control={form.control}
+                          name="facultyProfile.section"
+                          render={({ field }) => {
+                            return (
+                              <FormItem
+                                key={section.id}
+                                className="flex flex-row items-start space-x-3 space-y-0"
+                              >
+                                <FormControl>
+                                  <Checkbox
+                                    checked={field.value
+                                      ?.map((section) => section.id)
+                                      .includes(section.id)}
+                                    onCheckedChange={(checked) => {
+                                      return checked
+                                        ? field.onChange([
+                                            ...field.value,
+                                            section,
+                                          ])
+                                        : field.onChange(
+                                            field.value?.filter(
+                                              (value) =>
+                                                value.id !== section.id,
+                                            ),
+                                          );
+                                    }}
+                                  />
+                                </FormControl>
+                                <FormLabel className="font-normal">
+                                  {section.sectionName}
+                                </FormLabel>
+                              </FormItem>
+                            );
+                          }}
+                        />
+                      ))}
                   <FormMessage />
                 </FormItem>
               )}
