@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 
 interface contextProps {
   params: {
-    userId: string
+    facultyId: string
   }
 }
 
@@ -13,7 +13,7 @@ export async function GET(req: NextRequest, context: contextProps) {
     const { params } = context;
     const faculty = await prisma.user.findUnique({
       where: {
-        id: params.userId,
+        id: params.facultyId,
       }, include: {
         facultyProfile: {
           include: {
@@ -24,9 +24,14 @@ export async function GET(req: NextRequest, context: contextProps) {
         },
       },
     });
+
+    if (!faculty) {
+      return NextResponse.json({ message: "No faculty found" }, { status: 404 });
+    }
+
     return NextResponse.json(faculty, { status: 200 });
-  } catch (error) {
-    return NextResponse.json({ message: "Something went wrong!" }, { status: 500 });
+  } catch (error: any) {
+    return NextResponse.json({ message: error.message }, { status: 500 });
   }
 }
 
@@ -36,9 +41,9 @@ export async function PATCH(req: NextRequest, context: contextProps) {
     const { params } = context
     const body = await req.json();
 
-    const facultyId = await prisma.user.findUnique({
+    const faculty = await prisma.user.findUnique({
       where: {
-        id: body.userId, // Make sure params.userId is a valid user ID
+        id: params.facultyId,
       },
       select: {
         facultyProfile: {
@@ -47,10 +52,10 @@ export async function PATCH(req: NextRequest, context: contextProps) {
           },
         },
       },
-    });    
+    });
 
-    if (facultyId && facultyId.facultyProfile && facultyId.facultyProfile.id) {
-      const facultyProfileId = facultyId.facultyProfile.id; // Extract the ID as a string
+    if (faculty && faculty.facultyProfile && faculty.facultyProfile.id) {
+      const facultyProfileId = faculty.facultyProfile.id; // Extract the ID as a string
       // Use facultyProfileId in your Prisma queries    
 
       const subjectIds = body.subjectIds; // an array of subject IDs
@@ -81,7 +86,7 @@ export async function PATCH(req: NextRequest, context: contextProps) {
           data: { faculty: { connect: { id: facultyProfileId } } },
         });
       }
-      
+
       // Now you can use the `faculty` object safely.
     } else {
       // Handle the case where `facultyId` or its properties are null.
