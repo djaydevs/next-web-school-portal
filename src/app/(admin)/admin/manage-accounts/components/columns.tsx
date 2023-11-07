@@ -7,6 +7,7 @@ import { AccountTableColumnHeader } from "@/components/account-table-column-head
 import { AccountTableRowDetails } from "@/components/account-table-row-details";
 import { User } from "@/types";
 import { UserAvatar } from "@/components/user-avatar";
+import { Badge } from "@/components/ui/badge";
 
 export const columns: ColumnDef<User>[] = [
   //   {
@@ -84,7 +85,15 @@ export const columns: ColumnDef<User>[] = [
         return null;
       }
 
-      return <span className="hidden md:table-cell">{status.label}</span>;
+      return (
+        <span className="hidden md:table-cell">
+          {status.value ? (
+            <Badge variant="outline">{status.label}</Badge>
+          ) : (
+            <Badge variant="destructive">{status.label}</Badge>
+          )}
+        </span>
+      );
     },
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));

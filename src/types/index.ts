@@ -18,6 +18,84 @@ export const userSchema = z.object({
 });
 export type User = z.infer<typeof userSchema>
 
+export const facultySchema = z.object({
+    id: z.string(),
+    name: z.string().nullish(),
+    email: z.string({
+        required_error: "Email field is required",
+        invalid_type_error: "This field must be in email format",
+    }).email(),
+    emailVerified: z.string().nullish(),
+    createdAt: z.string().nullish(),
+    updatedAt: z.string().nullish(),
+    image: z.string().url().nullish(),
+    role: z.string({
+        required_error: "You need to select a role.",
+    }),
+    isVerified: z.boolean(),
+    facultyProfile: z.object({
+        lastName: z.string({
+            required_error: "Last name is required",
+        }),
+        firstName: z.string({
+            required_error: "First name is required",
+        }),
+        middleName: z.string().nullish(),
+        age: z.number({
+            required_error: "Age is required",
+            invalid_type_error: "Age must be a number",
+        }).int(),
+        dateOfBirth: z.date({
+            required_error: "Date of birth is required",
+        }),
+        gender: z.string({
+            required_error: "Gender is required",
+        }),
+        address: z.string({
+            required_error: "Address is required",
+        }),
+        contactNumber: z.string().nullish(),
+        section: z.array(z.object({
+            id: z.string(),
+            schoolYearId: z.string({
+                required_error: "School Year is required",
+            }),
+            gradeLevelId: z.string({
+                required_error: "Grade level is required",
+            }),
+            strandId: z.string({
+                required_error: "Strand code is required",
+            }),
+            sectionName: z.string({
+                required_error: "Grade section is required",
+            }),
+            room: z.string(),
+        }), z.string()).refine((value) => value.some((item) => item), {
+            message: "You have to select at least one item.",
+        }),
+        subjects: z.array(z.object({
+            id: z.string(),
+            subjectName: z.string({
+                required_error: "Subject name is required",
+            }),
+            schoolYearId: z.string({
+                required_error: "School Year name is required",
+            }),
+            strandId: z.string({
+                required_error: "Strand is required",
+            }),
+            studentId: z.string({
+                required_error: "Student is required",
+            }),
+        })),
+        gradeLevel: z.array(z.object({
+            id: z.string(),
+            gradeLevel: z.number().int()
+        }))
+    })
+});
+export type Faculty = z.infer<typeof facultySchema>
+
 export const schoolYearSchema = z.object({
     id: z.string(),
     schoolYear: z.object({

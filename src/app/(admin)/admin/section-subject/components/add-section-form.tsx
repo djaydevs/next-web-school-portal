@@ -100,7 +100,8 @@ const AddSectionForm: FC<AddSectionFormProps> = ({}) => {
         if (error.response?.status === 500) {
           toast({
             title: "Error",
-            description: "Something went wrong! Please try again later.",
+            description:
+              "Something went wrong! Please check if required fields are answered, or try again later.",
             variant: "destructive",
           });
         }
@@ -270,7 +271,13 @@ const AddSectionForm: FC<AddSectionFormProps> = ({}) => {
                 <FormItem>
                   <FormLabel>Section Name</FormLabel>
                   <FormControl>
-                    <Input required {...field} />
+                    <Input
+                      required
+                      {...field}
+                      onChange={(e) =>
+                        field.onChange(e.target.value.toUpperCase())
+                      }
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -283,7 +290,12 @@ const AddSectionForm: FC<AddSectionFormProps> = ({}) => {
                 <FormItem>
                   <FormLabel>Room</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input
+                      {...field}
+                      onChange={(e) =>
+                        field.onChange(e.target.value.toUpperCase())
+                      }
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

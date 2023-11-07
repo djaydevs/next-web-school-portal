@@ -6,7 +6,6 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import Icons from "@/components/ui/icons";
 import { Input } from "@/components/ui/input";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
   Dialog,
   DialogContent,
@@ -48,7 +47,7 @@ const InviteNewAccount: FC<InviteNewAccountProps> = ({
     defaultValues: {
       id: "",
       email: "",
-      role: "",
+      role: "student",
       isVerified: false,
     },
   });
@@ -90,6 +89,7 @@ const InviteNewAccount: FC<InviteNewAccountProps> = ({
                 <FormItem>
                   <FormLabel>Role</FormLabel>
                   <Select
+                    required
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                   >
@@ -104,6 +104,7 @@ const InviteNewAccount: FC<InviteNewAccountProps> = ({
                       <SelectItem value="admin">Admin</SelectItem>
                     </SelectContent>
                   </Select>
+                  <FormMessage />
                 </FormItem>
               )}
             />

@@ -20,7 +20,7 @@ export function AccountTableToolbar<TData>({
 
   return (
     <div className="flex items-center justify-between">
-      <div className="flex flex-1 flex-col items-center space-x-2 md:flex-row">
+      <div className="flex flex-1 flex-col items-center space-x-2 py-4 md:flex-row">
         <Input
           placeholder="Search accounts by E-mail"
           value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
@@ -29,7 +29,7 @@ export function AccountTableToolbar<TData>({
           }
           className="h-8 w-full md:w-[300px]"
         />
-        <div className="flex w-full items-center justify-start space-x-2 py-4">
+        <div className="flex w-full items-center justify-start space-x-2">
           {table.getColumn("status") && (
             <AccountTableFacetedFilter
               column={table.getColumn("status")}
@@ -54,7 +54,7 @@ export function AccountTableToolbar<TData>({
               className="h-8 px-2 lg:px-3"
             >
               Reset
-              <Icons.PlusCircle className="ml-2 h-4 w-4" />
+              <Icons.XCircle className="ml-2 h-4 w-4" />
             </Button>
           )}
         </div>

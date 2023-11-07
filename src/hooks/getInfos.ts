@@ -14,3 +14,8 @@ export const fetchStrands = async () => {
     const res = await axios.get("/api/strand");
     return res.data;
 };
+
+export const fetchSections = async () => {
+    const res = await axios.get("/api/section");
+    return res.data;
+};

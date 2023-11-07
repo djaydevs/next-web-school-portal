@@ -46,7 +46,7 @@ const EnrollmentStats: FC<EnrollmentStatsProps> = ({}) => {
           axisLine={false}
           tickFormatter={(value) => `${value}`}
         />
-        <Bar dataKey="total" fill="#eddc00" radius={[4, 4, 0, 0]} />
+        <Bar dataKey="total" fill="#facc15" radius={[4, 4, 0, 0]} />
       </BarChart>
     </ResponsiveContainer>
   );

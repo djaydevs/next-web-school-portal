@@ -6,32 +6,29 @@ import { useRouter } from "next/navigation";
 import axios, { AxiosError } from "axios";
 import * as z from "zod";
 
-import { fetchUserById } from "@/hooks/getUsers";
-import { User, userSchema } from "@/types";
-import UserInfoCard from "@/components/user-info-card";
-import UserUpdateForm from "@/components/user-update-form";
+import { fetchFacultyById } from "@/hooks/getUsers";
+import { Faculty, facultySchema } from "@/types";
 import { useToast } from "@/components/ui/use-toast";
 import { SkeletonCard } from "@/components/loading";
+import FacultyAssignForm from "@/components/faculty-assign-form";
 
-interface ManageAccountIdPageProps {
+interface ManageFacultyRecordProps {
   params: {
     id: string;
   };
 }
 
-const ManageAccountIdPage: FC<ManageAccountIdPageProps> = ({ params }) => {
+const ManageFacultyRecord: FC<ManageFacultyRecordProps> = ({ params }) => {
   const { id } = params;
-  const router = useRouter();
-  const { toast } = useToast();
 
   const {
-    data: userInfo,
+    data: facultyInfo,
     isPending: infoLoading,
     isError,
     error,
-  } = useQuery<User>({
-    queryKey: ["user", id],
-    queryFn: async () => fetchUserById(id),
+  } = useQuery<Faculty>({
+    queryKey: ["faculty", id],
+    queryFn: async () => fetchFacultyById(id),
   });
 
   if (isError) {
@@ -39,9 +36,13 @@ const ManageAccountIdPage: FC<ManageAccountIdPageProps> = ({ params }) => {
   }
 
   return (
-    <>
+    <div>
+      {/* {facultyInfo?.name}
+      {facultyInfo?.facultyProfile.section.map((section, index) => (
+        <p key={index}>{section.sectionName}</p>
+      ))} */}
       <h2 className="px-4 text-2xl font-bold tracking-tight">
-        Manage Account Details
+        Manage Faculty Details
       </h2>
       {infoLoading ? (
         <div className="m-auto">
@@ -49,12 +50,11 @@ const ManageAccountIdPage: FC<ManageAccountIdPageProps> = ({ params }) => {
         </div>
       ) : (
         <div className="w-full justify-between space-x-4 p-4 md:flex">
-          <UserInfoCard userInfo={userInfo} />
-          <UserUpdateForm initialValue={userInfo} params={{ id }} />
+          <FacultyAssignForm initialValue={facultyInfo} params={{ id }} />
         </div>
       )}
-    </>
+    </div>
   );
 };
 
-export default ManageAccountIdPage;
+export default ManageFacultyRecord;

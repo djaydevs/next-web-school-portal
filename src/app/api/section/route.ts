@@ -1,7 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
-// Create a Section and Strand
+export async function GET(req: Request) {
+  try {
+    const sections = await prisma.section.findMany();
+
+    if (!sections) {
+      return NextResponse.json({ message: "No sections found" }, { status: 404 });
+    }
+
+    return NextResponse.json(sections, { status: 200 });
+
+  } catch (error: any) {
+    return NextResponse.json({ message: "Something went wrong!" }, { status: 500 });
+  }
+}
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
