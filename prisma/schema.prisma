@@ -6,13 +6,13 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-  // directUrl         = env("DIRECT_URL")
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  directUrl         = env("DIRECT_URL")
   // If you want to use Prisma Migrate, you will need to manually create a shadow database
   // https://neon.tech/docs/guides/prisma-migrate#configure-a-shadow-database-for-prisma-migrate
   // make sure to append ?connect_timeout=10 to the connection string
-  // shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
 model Account {
@@ -74,24 +74,24 @@ model Invitation {
 }
 
 model StudentProfile {
-  id                       String      @id @default(cuid())
-  lrnNumber                String      @unique @map("LRN NUMBER (2)")
-  sex                      String      @map("SEX (3)")
-  age                      Int         @map("AGE (4)")
-  lastName                 String      @map("Last Name (5)")
-  firstName                String      @map("First Name (6)")
-  middleName               String?     @map("Middle Name (7)")
-  dateOfBirth              DateTime    @map("DOB (8)")
-  gender                   String      @map("SEX M/F (9)")
-  genAveJHS                Float       @map("GEN Ave. JHS (10)")
-  nameOfJHS                String      @map("Name of JHS (11)")
-  address                  String      @map("Address (12)")
-  jhsCompleted             Int         @map("SY JHS Completed")
-  province                 String?     @map("Place of Birth: Province")
-  town                     String?     @map("Place of Birth: Town")
-  barangay                 String?     @map("Place of Birth:Barangay")
-  parentGuardianName       String?     @map("Parent/Guardian (17)")
-  parentGuardianAddress    String?     @map("Address of Parent/ Guardian")
+  id                       String       @id @default(cuid())
+  lrnNumber                String       @unique @map("LRN NUMBER (2)")
+  sex                      String       @map("SEX (3)")
+  age                      Int          @map("AGE (4)")
+  lastName                 String       @map("Last Name (5)")
+  firstName                String       @map("First Name (6)")
+  middleName               String?      @map("Middle Name (7)")
+  dateOfBirth              DateTime     @map("DOB (8)")
+  gender                   String       @map("SEX M/F (9)")
+  genAveJHS                Float        @map("GEN Ave. JHS (10)")
+  nameOfJHS                String       @map("Name of JHS (11)")
+  address                  String       @map("Address (12)")
+  jhsCompleted             Int          @map("SY JHS Completed")
+  province                 String?      @map("Place of Birth: Province")
+  town                     String?      @map("Place of Birth: Town")
+  barangay                 String?      @map("Place of Birth:Barangay")
+  parentGuardianName       String?      @map("Parent/Guardian (17)")
+  parentGuardianAddress    String?      @map("Address of Parent/ Guardian")
   parentGuardianOccupation String?
   workImmersion            String?
   contactNumber            String?
@@ -163,45 +163,45 @@ model Enrollment {
 }
 
 model GradeLevel {
-  id         String    @id @default(cuid())
-  gradeLevel Int       @unique @default(11)
+  id         String           @id @default(cuid())
+  gradeLevel Int              @unique @default(11)
   strands    Strand[]
   sections   Section[]
-  faculty    FacultyProfile[]  
-  student    StudentProfile[]   
+  faculty    FacultyProfile[]
+  student    StudentProfile[]
 }
 
 model Strand {
-  id         String    @id @default(cuid())
+  id         String           @id @default(cuid())
   strandCode String
   strandName String
   sections   Section[]
   subjects   Subject[]
   student    StudentProfile[]
 
-  gradeLevel   GradeLevel?     @relation(fields: [gradeLevelId], references: [id])
+  gradeLevel   GradeLevel? @relation(fields: [gradeLevelId], references: [id])
   gradeLevelId String
 }
 
 model Section {
-  id          String  @id @default(cuid())
-  sectionName String  @unique
+  id          String           @id @default(cuid())
+  sectionName String           @unique
   room        String?
-  faculty      FacultyProfile[]
-  student      StudentProfile[]
+  faculty     FacultyProfile[]
+  student     StudentProfile[]
 
-  schoolYear   SchoolYear?     @relation(fields: [schoolYearId], references: [id])
+  schoolYear   SchoolYear? @relation(fields: [schoolYearId], references: [id])
   schoolYearId String?
-  gradeLevel   GradeLevel?     @relation(fields: [gradeLevelId], references: [id])
+  gradeLevel   GradeLevel? @relation(fields: [gradeLevelId], references: [id])
   gradeLevelId String?
-  strand       Strand?         @relation(fields: [strandId], references: [id])
+  strand       Strand?     @relation(fields: [strandId], references: [id])
   strandId     String?
 }
 
 model Subject {
-  id          String @id @default(cuid())
-  subjectName String @unique
-  faculty      FacultyProfile[]
+  id          String           @id @default(cuid())
+  subjectName String           @unique
+  faculty     FacultyProfile[]
 
   schoolYear   SchoolYear?     @relation(fields: [schoolYearId], references: [id])
   schoolYearId String
