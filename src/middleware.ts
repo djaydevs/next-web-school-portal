@@ -61,6 +61,7 @@ export default withAuth(
     callbacks: {
       authorized: ({ token }) => !!token,
     },
+    secret: process.env.SECRET,
   }
 );
 
@@ -68,5 +69,4 @@ export const config = {
   // REMINDER: add api route to the matcher if you're done testing
   // matcher: ["/api/:path*", "/admin/:path*", "/faculty/:path*", "/student/:path*, "/not-verified/:path*""],
   matcher: ["/admin/:path*", "/faculty/:path*", "/student/:path*", "/not-verified/:path*"],
-  secret: process.env.SECRET,
 };
