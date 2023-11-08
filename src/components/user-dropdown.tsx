@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import {
   DropdownMenu,
@@ -14,6 +15,20 @@ import SignoutModal from "@/components/signout-modal";
 
 export default async function UserAccountDrop() {
   const currentUser = await getCurrentUser();
+  // const router = useRouter();
+
+  // const handleProfileRedirect = () => {
+  //   if (currentUser?.role === "admin") {
+  //     router.push(`/admin/profile`);
+  //   }
+  //   if (currentUser?.role === "faculty") {
+  //     router.push(`/faculty/profile`);
+  //   }
+  //   if (currentUser?.role === "student") {
+  //     router.push(`/student/profile`);
+  //   }
+  // };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger title="Account" aria-label="Account">
