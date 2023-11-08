@@ -4,7 +4,7 @@ import Link from "next/link";
 
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
-import { AuthForm } from "@/components/auth-form";
+import { GoogleSignInButton } from "@/components/google-auth";
 
 export const metadata: Metadata = {
   title: "Sign In | Mary Josette Academy",
@@ -15,15 +15,6 @@ export default function AuthenticationPage() {
   return (
     <>
       <div className="container relative h-full flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
-        <Link
-          href="/signup"
-          className={cn(
-            buttonVariants({ variant: "ghost" }),
-            "absolute right-4 top-4 md:right-8 md:top-8"
-          )}
-        >
-          Sign Up
-        </Link>
         <div className="relative hidden h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex">
           <div className="absolute inset-0 bg-brown-500">
             <Image
@@ -40,7 +31,7 @@ export default function AuthenticationPage() {
               href="/"
               className="flex-center text-2xl font-bold tracking-tight"
             >
-              <div className="w-14 h-14 me-2">
+              <div className="me-2 h-14 w-14">
                 <Image
                   priority
                   width="100"
@@ -65,7 +56,7 @@ export default function AuthenticationPage() {
         <div className="py-24 md:p-8">
           <div className="m-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
             <div className="flex flex-col space-y-2 text-center">
-              <div className="w-20 h-20 mx-auto lg:hidden">
+              <div className="mx-auto h-20 w-20 lg:hidden">
                 <Link href="/">
                   <Image
                     priority
@@ -81,7 +72,7 @@ export default function AuthenticationPage() {
                 Sign in to your account
               </h1>
             </div>
-            <AuthForm />
+            <GoogleSignInButton />
             <p className="px-8 text-center text-sm text-muted-foreground">
               By clicking continue, you agree to our{" "}
               <Link

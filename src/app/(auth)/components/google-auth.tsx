@@ -34,7 +34,7 @@ export function GoogleSignInButton() {
           description: "Please verify your account.",
           variant: "destructive",
         });
-        router.push("/not-verified");
+        router.push("/verify");
       }
 
       if (session?.user.isVerified) {

@@ -12,21 +12,21 @@ export default withAuth(
     // console.log("token: ", req.nextauth.token);
 
     // protect routes for not verified users
-    if (req.nextUrl.pathname.startsWith("/not-verified") && req.nextauth.token?.isVerified)
+    if (req.nextUrl.pathname.startsWith("/verify") && req.nextauth.token?.isVerified)
       return NextResponse.rewrite(
         new URL("/signin", req.url)
       );
     if (req.nextUrl.pathname.startsWith("/admin") && !req.nextauth.token?.isVerified)
       return NextResponse.rewrite(
-        new URL("/not-verified", req.url)
+        new URL("/verify", req.url)
       );
     if (req.nextUrl.pathname.startsWith("/faculty") && !req.nextauth.token?.isVerified)
       return NextResponse.rewrite(
-        new URL("/not-verified", req.url)
+        new URL("/verify", req.url)
       );
     if (req.nextUrl.pathname.startsWith("/student") && !req.nextauth.token?.isVerified)
       return NextResponse.rewrite(
-        new URL("/not-verified", req.url)
+        new URL("/verify", req.url)
       );
 
     //protect api routes
@@ -67,6 +67,6 @@ export default withAuth(
 
 export const config = {
   // REMINDER: add api route to the matcher if you're done testing
-  // matcher: ["/api/:path*", "/admin/:path*", "/faculty/:path*", "/student/:path*, "/not-verified/:path*""],
-  matcher: ["/admin/:path*", "/faculty/:path*", "/student/:path*", "/not-verified/:path*"],
+  // matcher: ["/api/:path*", "/admin/:path*", "/faculty/:path*", "/student/:path*, "/verify/:path*""],
+  matcher: ["/admin/:path*", "/faculty/:path*", "/student/:path*", "/verify/:path*"],
 };
