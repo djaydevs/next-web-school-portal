@@ -120,6 +120,7 @@ model FacultyProfile {
   section       Section[]
   subjects      Subject[]
   gradeLevel    GradeLevel[]
+  grades        Grades[]
 
   user   User?   @relation(fields: [userId], references: [id])
   userId String? @unique
@@ -189,6 +190,7 @@ model Section {
   room        String?
   faculty     FacultyProfile[]
   student     StudentProfile[]
+  grades        Grades[]
 
   schoolYear   SchoolYear? @relation(fields: [schoolYearId], references: [id])
   schoolYearId String?
@@ -202,6 +204,7 @@ model Subject {
   id          String           @id @default(cuid())
   subjectName String           @unique
   faculty     FacultyProfile[]
+  grades        Grades[]
 
   schoolYear   SchoolYear?     @relation(fields: [schoolYearId], references: [id])
   schoolYearId String
@@ -213,14 +216,19 @@ model Subject {
 
 model Grades {
   id            String   @id @default(cuid())
-  firstGrading  Decimal?
-  secondGrading Decimal?
-  thirdGrading  Decimal?
-  fourthGrading Decimal?
+  firstQuarter  Decimal?
+  secondQuarter Decimal?
   finalGrade    Decimal?
+  genAverage    Decimal?
+  remarks       String?
+  section       Section[]
 
-  student   StudentProfile? @relation(fields: [studentId], references: [id])
-  studentId String?
+  student     StudentProfile? @relation(fields: [studentId], references: [id])
+  studentId   String?
+  faculty     FacultyProfile? @relation(fields: [facultyId], references: [id])
+  facultyId   String?
+  subject     Subject @relation(fields: [subjectId], references: [id])
+  subjectId   String
 }
 
 // model PlaceOfBirth {
