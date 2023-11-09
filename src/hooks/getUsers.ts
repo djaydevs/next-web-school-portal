@@ -59,3 +59,13 @@ export const fetchFacultyById = async (userId: string) => {
   const res = await axios.get(`/api/faculty/${userId}`)
   return res.data
 }
+
+export const fetchStudent = async () => {
+  const res = await axios.get("/api/student");
+  return res.data;
+};
+
+export const fetchStudentById = async (userId: string) => {
+  const res = await axios.get(`/api/student/${userId}`)
+  return res.data
+}
