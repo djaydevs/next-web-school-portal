@@ -111,6 +111,7 @@ model StudentProfile {
 
 model FacultyProfile {
   id            String       @id @default(cuid())
+  empNumber     String       @unique
   lastName      String
   firstName     String
   middleName    String?
