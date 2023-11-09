@@ -36,6 +36,7 @@ export async function POST(req: NextRequest) {
 
         const addFaculty = await prisma.facultyProfile.create({
             data: {
+                empNumber: body.empNumber,
                 lastName: body.lastName,
                 firstName: body.firstName,
                 middleName: body.middleName,

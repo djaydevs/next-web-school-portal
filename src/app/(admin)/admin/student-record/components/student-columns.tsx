@@ -10,6 +10,31 @@ import { Badge } from "@/components/ui/badge";
 
 export const columns: ColumnDef<Student>[] = [
   {
+    accessorKey: "studentProfile",
+    header: ({ column }) => (
+      <StudentTableColumnHeader
+        column={column}
+        title="LRN"
+        className="hidden md:table-cell"
+      />
+    ),
+    cell: ({ row }) => {
+      const studentProfile = row.getValue(
+        "studentProfile",
+      ) as Student["studentProfile"];
+
+      if (!studentProfile?.gradeLevel) {
+        return <Badge variant="destructive">No LRN</Badge>;
+      }
+
+      return (
+        <span className="hidden w-full items-center justify-start md:flex">
+          <p>{studentProfile?.lrnNumber}</p>
+        </span>
+      );
+    },
+  },
+  {
     accessorKey: "name",
     header: ({ column }) => (
       <StudentTableColumnHeader column={column} title="Name" />
@@ -52,6 +77,31 @@ export const columns: ColumnDef<Student>[] = [
     header: ({ column }) => (
       <StudentTableColumnHeader
         column={column}
+        title="Grade"
+        className="hidden md:table-cell"
+      />
+    ),
+    cell: ({ row }) => {
+      const studentProfile = row.getValue(
+        "studentProfile",
+      ) as Student["studentProfile"];
+
+      if (!studentProfile?.gradeLevel) {
+        return <Badge variant="destructive">No grade</Badge>;
+      }
+
+      return (
+        <span className="hidden w-full items-center justify-start md:flex">
+          <p>{studentProfile?.gradeLevel.gradeLevel}</p>
+        </span>
+      );
+    },
+  },
+  {
+    accessorKey: "studentProfile",
+    header: ({ column }) => (
+      <StudentTableColumnHeader
+        column={column}
         title="Strand"
         className="hidden md:table-cell"
       />
@@ -61,17 +111,13 @@ export const columns: ColumnDef<Student>[] = [
         "studentProfile",
       ) as Student["studentProfile"];
 
-      if (!studentProfile?.strand.length) {
+      if (!studentProfile?.strand) {
         return <Badge variant="destructive">No strand</Badge>;
       }
 
       return (
         <span className="hidden w-full items-center justify-start md:flex">
-          {studentProfile?.strand.map((str) => (
-            <Badge key={str.id} variant="secondary" className="mr-2">
-              {str.strandName}
-            </Badge>
-          ))}
+          <p>{studentProfile?.strand.strandCode}</p>
         </span>
       );
     },
@@ -90,17 +136,13 @@ export const columns: ColumnDef<Student>[] = [
         "studentProfile",
       ) as Student["studentProfile"];
 
-      if (!studentProfile?.section.length) {
+      if (!studentProfile?.section) {
         return <Badge variant="destructive">No section</Badge>;
       }
 
       return (
         <span className="hidden w-full items-center justify-start md:flex">
-          {studentProfile?.section.map((sec) => (
-            <Badge key={sec.id} variant="secondary" className="mr-2">
-              {sec.sectionName}
-            </Badge>
-          ))}
+          <p>{studentProfile?.section.sectionName}</p>
         </span>
       );
     },
