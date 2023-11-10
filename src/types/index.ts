@@ -15,6 +15,9 @@ export const userSchema = z.object({
         required_error: "You need to select a role.",
     }),
     isVerified: z.boolean(),
+    adminProfile: z.object({}).nullish(),
+    facultyProfile: z.object({}).nullish(),
+    studentProfile: z.object({}).nullish(),
 });
 export type User = z.infer<typeof userSchema>
 
@@ -137,11 +140,12 @@ export const studentSchema = z.object({
         address: z.string({
             required_error: "Address is required",
         }),
-        jhsCompletion: z.number().int(),
+        jhsCompleted: z.number().int(),
         province: z.string().nullish(),
         town: z.string().nullish(),
         barangay: z.string().nullish(),
         parentGuardianName: z.string().nullish(),
+        parentGuardianAddress: z.string().nullish(),
         parentGuardianOccupation: z.string().nullish(),
         workImmersion: z.string().nullish(),
         contactNumber: z.string().nullish(),
