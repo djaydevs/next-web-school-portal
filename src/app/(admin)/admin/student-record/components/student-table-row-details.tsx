@@ -18,7 +18,7 @@ export function StudentTableRowDetails<TData>({
 
   return (
     <Link
-      href={`/admin/faculty-record/${user.id}`}
+      href={`/admin/student-record/${user.id}`}
       aria-label="Manage faculty details"
       className={cn(
         buttonVariants({

@@ -15,9 +15,6 @@ export async function GET(req: NextRequest, context: contextProps) {
                 id: params.studentId,
             }, include: {
                 studentProfile: {
-                    select: {
-                        lrnNumber:true,
-                    },
                     include: {
                         gradeLevel: true,
                         strand: true,
@@ -44,18 +41,14 @@ export async function PATCH(req: NextRequest, context: contextProps) {
         const { params } = context
         const body = await req.json();
 
-        await prisma.user.update({
+        await prisma.studentProfile.update({
             where: {
-                id: params.studentId,
+                userId: params.studentId,
             },
             data: {
-                studentProfile: {
-                    update: {
-                        gradeLevelId: body.gradeLevelId,
-                        strandId: body.strandId,
-                        sectionId: body.sectionId,
-                    },
-                },
+                gradeLevelId: body.gradeLevelId,
+                strandId: body.strandId,
+                sectionId: body.sectionId,
             },
         });
 

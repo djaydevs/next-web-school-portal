@@ -214,6 +214,19 @@ export const studentSchema = z.object({
 });
 export type Student = z.infer<typeof studentSchema>
 
+export const studentProfileSchema = z.object({
+    gradeLevelId: z.string({
+        required_error: "Grade level is required",
+    }),
+    strandId: z.string({
+        required_error: "Strand is required",
+    }),
+    sectionId: z.string({
+        required_error: "Section is required",
+    }),
+});
+export type StudentProfile = z.infer<typeof studentProfileSchema>
+
 export const schoolYearSchema = z.object({
     id: z.string(),
     schoolYear: z.object({
