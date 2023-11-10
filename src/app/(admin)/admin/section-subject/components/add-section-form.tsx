@@ -180,9 +180,9 @@ const AddSectionForm: FC<AddSectionFormProps> = ({}) => {
                               value={schoolYear.id}
                             >
                               {from} - {to}{" "}
-                              {schoolYear.semester === 1
+                              {/* {schoolYear.semester === 1
                                 ? `(1st semester)`
-                                : `(2nd semester)`}
+                                : `(2nd semester)`} */}
                             </SelectItem>
                           );
                         })}

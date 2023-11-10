@@ -23,8 +23,12 @@ export const columns: ColumnDef<Student>[] = [
         "studentProfile",
       ) as Student["studentProfile"];
 
-      if (!studentProfile?.gradeLevel) {
-        return <Badge variant="destructive">No LRN</Badge>;
+      if (!studentProfile?.lrnNumber) {
+        return (
+          <Badge variant="destructive" className="hidden w-fit md:flex">
+            No LRN
+          </Badge>
+        );
       }
 
       return (
@@ -87,7 +91,11 @@ export const columns: ColumnDef<Student>[] = [
       ) as Student["studentProfile"];
 
       if (!studentProfile?.gradeLevel) {
-        return <Badge variant="destructive">No grade</Badge>;
+        return (
+          <Badge variant="destructive" className="hidden w-fit md:flex">
+            No grade
+          </Badge>
+        );
       }
 
       return (
@@ -112,7 +120,11 @@ export const columns: ColumnDef<Student>[] = [
       ) as Student["studentProfile"];
 
       if (!studentProfile?.strand) {
-        return <Badge variant="destructive">No strand</Badge>;
+        return (
+          <Badge variant="destructive" className="hidden w-fit md:flex">
+            No strand
+          </Badge>
+        );
       }
 
       return (
@@ -137,7 +149,11 @@ export const columns: ColumnDef<Student>[] = [
       ) as Student["studentProfile"];
 
       if (!studentProfile?.section) {
-        return <Badge variant="destructive">No section</Badge>;
+        return (
+          <Badge variant="destructive" className="hidden w-fit md:flex">
+            No section
+          </Badge>
+        );
       }
 
       return (
