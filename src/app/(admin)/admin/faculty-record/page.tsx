@@ -1,6 +1,7 @@
 "use client";
 
 import { FC } from "react";
+import UseCSV from "@usecsv/react";
 import { useQuery } from "@tanstack/react-query";
 
 import { fetchFaculty } from "@/hooks/getUsers";
@@ -8,6 +9,8 @@ import FacultyTable from "@/components/faculty-table";
 import { SkeletonTable } from "@/components/loading";
 import { columns } from "@/components/faculty-columns";
 import { Faculty } from "@/types";
+import { Button } from "@/components/ui/button";
+import Icons from "@/components/ui/icons";
 
 interface FacultyRecordPageProps {}
 
@@ -21,6 +24,15 @@ const FacultyRecordPage: FC<FacultyRecordPageProps> = ({}) => {
     queryKey: ["faculties"],
     queryFn: async () => fetchFaculty(),
   });
+
+  const renderButton = (openModal: any) => {
+    return (
+      <Button onClick={openModal} className="w-[170px]">
+        <Icons.FilePlus2 className="mr-2" />
+        Import Data
+      </Button>
+    );
+  };
 
   if (isErrorFetchingFaculties) {
     return <span>Error: {error.message}</span>;
@@ -37,6 +49,11 @@ const FacultyRecordPage: FC<FacultyRecordPageProps> = ({}) => {
           admin/registrar.
         </p>
       </div>
+      <UseCSV
+        importerKey="d4dd9a93-3546-44f6-9cbf-4ba978759442"
+        user={{ userId: 12345 }}
+        render={(openModal) => renderButton(openModal)}
+      />
       {isLoadingFacultyTable ? (
         <SkeletonTable />
       ) : (
