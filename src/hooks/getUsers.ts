@@ -8,6 +8,11 @@ export const getSession = async () => {
   return await getServerSession(authOptions)
 }
 
+export const getCurrentUser = async () => {
+  const res = await axios.get("/api/current-user");
+  return res.data;
+};
+
 export const fetchUsers = async () => {
   const res = await axios.get("/api/user");
   return res.data;
