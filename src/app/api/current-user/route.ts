@@ -28,7 +28,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json(currentUser, { status: 200 });
 
   } catch (error: any) {
-    return null;
+    return NextResponse.json({ message: error.message }, { status: 500 })
   }
 }
 
