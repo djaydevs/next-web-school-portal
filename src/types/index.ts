@@ -293,3 +293,10 @@ export const subjectSchema = z.object({
     }),
 });
 export type Subject = z.infer<typeof subjectSchema>
+
+export const verifySchema = z.object({
+    inputNumber: z.string({
+        required_error: "LRN or Employee number is required",
+    }),
+});
+export type Verify = z.infer<typeof verifySchema>

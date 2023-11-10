@@ -11,7 +11,6 @@ import { SkeletonTable } from "@/components/loading";
 import { columns } from "@/components/columns";
 import { useToast } from "@/components/ui/use-toast";
 import { User, userSchema } from "@/types";
-import InviteAccount from "@/components/invite-account";
 
 export default function ManageAccountsPage() {
   const router = useRouter();
@@ -73,10 +72,6 @@ export default function ManageAccountsPage() {
           admin/registrar.
         </p>
       </div>
-      <InviteAccount
-        onSubmit={handleInviteUser}
-        isLoadingSubmit={isLoadingSubmit}
-      />
       {isLoadingUserTable ? (
         <SkeletonTable />
       ) : (

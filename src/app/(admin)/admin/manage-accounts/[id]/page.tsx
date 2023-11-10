@@ -1,16 +1,12 @@
 "use client";
 
 import { FC } from "react";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
-import axios, { AxiosError } from "axios";
-import * as z from "zod";
+import { useQuery } from "@tanstack/react-query";
 
 import { fetchUserById } from "@/hooks/getUsers";
-import { User, userSchema } from "@/types";
+import { User } from "@/types";
 import UserInfoCard from "@/components/user-info-card";
 import UserUpdateForm from "@/components/user-update-form";
-import { useToast } from "@/components/ui/use-toast";
 import { SkeletonCard } from "@/components/loading";
 
 interface ManageAccountIdPageProps {
@@ -21,8 +17,6 @@ interface ManageAccountIdPageProps {
 
 const ManageAccountIdPage: FC<ManageAccountIdPageProps> = ({ params }) => {
   const { id } = params;
-  const router = useRouter();
-  const { toast } = useToast();
 
   const {
     data: userInfo,
