@@ -25,7 +25,13 @@ export async function POST(req: NextRequest) {
             data: {
                 from: body.schoolYear.from,
                 to: body.schoolYear.to,
-                semester: body.semester,
+                semesters: {
+                    create: [
+                      {
+                        semesterNum: body.semester,
+                      },
+                    ],
+                },
             },
         });
 

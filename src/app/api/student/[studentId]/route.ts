@@ -15,6 +15,9 @@ export async function GET(req: NextRequest, context: contextProps) {
                 id: params.studentId,
             }, include: {
                 studentProfile: {
+                    select: {
+                        lrnNumber:true,
+                    },
                     include: {
                         gradeLevel: true,
                         strand: true,
