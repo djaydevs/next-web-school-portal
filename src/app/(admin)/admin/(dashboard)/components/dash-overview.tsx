@@ -1,7 +1,7 @@
-import Heading from "@/components/ui/heading";
-import DashboardCalendar from "@/components/dashboard-calendar";
-import { getCurrentUser } from "@/hooks/getUsers";
-import EnrollmentStats from "@/components/enrollment-stats";
+"use client";
+
+import { useQuery } from "@tanstack/react-query";
+
 import {
   Card,
   CardContent,
@@ -9,10 +9,23 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import DashboardCards from "./dash-cards";
+import Heading from "@/components/ui/heading";
+import DashboardCalendar from "@/components/dashboard-calendar";
+import { getCurrentUser } from "@/hooks/getUsers";
+import EnrollmentStats from "@/components/enrollment-stats";
+import DashboardCards from "@/components/dash-cards";
+import { User } from "@/types";
 
-export default async function AdminDashboardOverview() {
-  const currentUser = await getCurrentUser();
+export default function AdminDashboardOverview() {
+  const {
+    data: currentUser,
+    isPending: isLoadingCurrentUser,
+    isError: isErrorFetchingCurrentUser,
+    error,
+  } = useQuery<User>({
+    queryKey: ["currentUser"],
+    queryFn: async () => getCurrentUser(),
+  });
 
   return (
     <div>

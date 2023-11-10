@@ -9,36 +9,9 @@ export const getSession = async () => {
 }
 
 export const getCurrentUser = async () => {
-  try {
-    const session = await getSession();
-
-    if (!session?.user?.email) {
-      return null;
-    }
-
-    const currentUser = await prisma.user.findUnique({
-      where: {
-        email: session.user.email as string,
-      }, include: {
-        studentProfile: true,
-        facultyProfile: true,
-        adminProfile: true,
-      }
-    });
-
-    if (!currentUser) {
-      return null;
-    }
-
-    return {
-      ...currentUser,
-      createdAt: currentUser.createdAt.toISOString(),
-      updatedAt: currentUser.updatedAt.toISOString()
-    };
-  } catch (error: any) {
-    return null;
-  }
-}
+  const res = await axios.get("/api/current-user");
+  return res.data;
+};
 
 export const fetchUsers = async () => {
   const res = await axios.get("/api/user");
@@ -57,5 +30,15 @@ export const fetchFaculty = async () => {
 
 export const fetchFacultyById = async (userId: string) => {
   const res = await axios.get(`/api/faculty/${userId}`)
+  return res.data
+}
+
+export const fetchStudent = async () => {
+  const res = await axios.get("/api/student");
+  return res.data;
+};
+
+export const fetchStudentById = async (userId: string) => {
+  const res = await axios.get(`/api/student/${userId}`)
   return res.data
 }

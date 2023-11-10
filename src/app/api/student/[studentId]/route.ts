@@ -3,41 +3,57 @@ import { prisma } from "@/lib/prisma";
 
 interface contextProps {
     params: {
-      facultyId: string
+        studentId: string
     }
-  };
+};
 
-//Assign the faculty to the selected section and subject
+export async function GET(req: NextRequest, context: contextProps) {
+    try {
+        const { params } = context;
+        const student = await prisma.user.findUnique({
+            where: {
+                id: params.studentId,
+            }, include: {
+                studentProfile: {
+                    include: {
+                        gradeLevel: true,
+                        strand: true,
+                        section: true,
+                        subjects: true,
+                        grades: true,
+                    }
+                },
+            },
+        });
+
+        if (!student) {
+            return NextResponse.json({ message: "No student found" }, { status: 404 });
+        }
+
+        return NextResponse.json(student, { status: 200 });
+    } catch (error: any) {
+        return NextResponse.json({ message: error.message }, { status: 500 });
+    }
+}
+
 export async function PATCH(req: NextRequest, context: contextProps) {
     try {
+        const { params } = context
         const body = await req.json();
 
-        const student = await prisma.studentProfile.findUnique({ where: { id: body.studentId} });
-        
-        const sectionIds = body.sectionIds; // an array of section IDs
-        const gradeLevelIds = body.gradeLevelIds; // an array of grade level IDs
-        const strandIds = body.strandIds; // an array of strand IDs
-        
-        // Assign student to a section
-        await prisma.section.update({
-            where: { id: sectionIds },
-            data: { student: { connect: { id: body.studentId } } },
+        await prisma.studentProfile.update({
+            where: {
+                userId: params.studentId,
+            },
+            data: {
+                gradeLevelId: body.gradeLevelId,
+                strandId: body.strandId,
+                sectionId: body.sectionId,
+            },
         });
-        
-        // Assign student to a gradeLevel
-        await prisma.gradeLevel.update({
-            where: { id: gradeLevelIds },
-            data: { student: { connect: { id: body.studentId } } },
-        });   
 
-        // Assign student to a strand
-        await prisma.strand.update({
-            where: { id: strandIds },
-            data: { student: { connect: { id: body.studentId } } },
-        });   
-    
-        return NextResponse.json({ message: "Successfully assign"}, { status: 200});
+        return NextResponse.json({ message: "Successfully assign to student" }, { status: 200 });
     } catch (error: any) {
-        return NextResponse.json({ message: error.message }, { status: 500 });      
+        return NextResponse.json({ message: error.message }, { status: 500 });
     }
 }

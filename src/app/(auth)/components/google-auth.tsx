@@ -30,11 +30,11 @@ export function GoogleSignInButton() {
 
       if (!session?.user.isVerified) {
         toast({
-          title: "Error",
+          title: "Not a verified user",
           description: "Please verify your account.",
           variant: "destructive",
         });
-        router.push("/not-verified");
+        router.push(`/verify/${session?.user.id}`);
       }
 
       if (session?.user.isVerified) {

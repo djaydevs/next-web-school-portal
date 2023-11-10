@@ -44,7 +44,9 @@ const UserInfoCard: FC<UserInfoCardProps> = ({ userInfo }) => {
           </div>
           <div className="flex flex-nowrap items-center justify-between">
             <Label>Email Verified:</Label>
-            <Label>{userInfo?.emailVerified}</Label>
+            <Label>
+              {new Date(userInfo?.emailVerified as string).toLocaleDateString()}
+            </Label>
           </div>
           <div className="flex flex-nowrap items-center justify-between">
             <Label>Created:</Label>

@@ -98,3 +98,56 @@ export async function PATCH(req: NextRequest, context: contextProps) {
     return NextResponse.json({ message: error.message }, { status: 500 });
   }
 }
+
+//Filter the section, subject and grade Level
+export async function POST(req: NextRequest, context: contextProps) {
+  try {
+    const { params } = context;
+    const data = await req.json();
+    const selection = await prisma.facultyProfile.findUnique({
+      where: {
+        userId: params.facultyId,
+      },
+      include: {
+        section: {
+          where: {
+            id: data.sectionId,
+          },
+        },
+        subjects: {
+          where: {
+            id: data.subjectId,
+          },
+        },
+        gradeLevel: {
+          where: {
+            id: data.gradeLevelId,
+          },
+        },
+        grades: {
+          select: {
+            student: {
+              select: {
+                lastName: true,
+                firstName: true,
+                middleName: true,
+              },
+            },
+            firstQuarter: true,
+            secondQuarter: true,
+            finalGrade: true,
+            remarks: true, // "remark" should be singular
+          },
+          orderBy: {
+            student: {
+              lastName: 'asc', // Sort by last name in ascending order
+            },
+          },
+        },
+      },
+    });    
+    return NextResponse.json(selection, { status: 200 });
+  } catch (error: any) {
+    return NextResponse.json({ message: error.message }, { status: 500 });
+  }
+}

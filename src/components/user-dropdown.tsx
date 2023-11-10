@@ -1,4 +1,8 @@
+"use client";
+
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
 
 import {
   DropdownMenu,
@@ -11,9 +15,33 @@ import Icons from "@/components/ui/icons";
 import { UserAvatar } from "@/components/user-avatar";
 import { getCurrentUser } from "@/hooks/getUsers";
 import SignoutModal from "@/components/signout-modal";
+import { User } from "@/types";
 
-export default async function UserAccountDrop() {
-  const currentUser = await getCurrentUser();
+export default function UserAccountDrop() {
+  const router = useRouter();
+
+  const {
+    data: currentUser,
+    isPending: isLoadingCurrentUser,
+    isError: isErrorFetchingCurrentUser,
+    error,
+  } = useQuery<User>({
+    queryKey: ["currentUser"],
+    queryFn: async () => getCurrentUser(),
+  });
+
+  const handleProfileRedirect = () => {
+    if (currentUser?.role === "admin") {
+      router.push(`/admin/profile`);
+    }
+    if (currentUser?.role === "faculty") {
+      router.push(`/faculty/profile`);
+    }
+    if (currentUser?.role === "student") {
+      router.push(`/student/profile`);
+    }
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger title="Account" aria-label="Account">
@@ -39,11 +67,12 @@ export default async function UserAccountDrop() {
           </div>
         </div>
         <DropdownMenuSeparator />
-        <DropdownMenuItem asChild className="cursor-pointer">
-          <Link href="/profile">
-            <Icons.UserSquare2 className="mr-2 h-4 w-4" />
-            My Profile
-          </Link>
+        <DropdownMenuItem
+          onClick={handleProfileRedirect}
+          className="cursor-pointer"
+        >
+          <Icons.UserSquare2 className="mr-2 h-4 w-4" />
+          My Profile
         </DropdownMenuItem>
         <DropdownMenuItem asChild className="cursor-pointer">
           <Link href="/help">
