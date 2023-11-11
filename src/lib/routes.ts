@@ -46,15 +46,15 @@ export const adminRoutes = [
     href: "/admin/enrollment",
   },
   {
-    label: "Document Request",
-    icon: Icons.FolderOpen,
-    href: "/admin/request",
-  },
-  {
     label: "Manage Accounts",
     icon: Icons.Users2,
     href: "/admin/manage-accounts",
   },
+  // {
+  //   label: "Document Request",
+  //   icon: Icons.FolderOpen,
+  //   href: "/admin/request",
+  // },
 ];
 
 export const facultyRoutes = [
@@ -64,7 +64,7 @@ export const facultyRoutes = [
     href: "/faculty",
   },
   {
-    label: "Advisory Class",
+    label: "Classes",
     icon: Icons.FileText,
     href: "/faculty/advisory-class",
   },
@@ -72,11 +72,6 @@ export const facultyRoutes = [
     label: "Report Card",
     icon: Icons.Star,
     href: "/faculty/grades",
-  },
-  {
-    label: "Settings",
-    icon: Icons.Settings,
-    href: "/settings",
   },
 ];
 
@@ -87,23 +82,18 @@ export const studentRoutes = [
     href: "/student",
   },
   {
-    label: "Enrollment",
-    icon: Icons.FileText,
-    href: "/student/enrollment",
-  },
-  {
     label: "Report Card",
     icon: Icons.Star,
     href: "/student/grades",
   },
   {
-    label: "Document Request",
-    icon: Icons.FolderOpen,
-    href: "/student/request",
+    label: "Enrollment",
+    icon: Icons.FileText,
+    href: "/student/enrollment",
   },
-  {
-    label: "Settings",
-    icon: Icons.Settings,
-    href: "/settings",
-  },
+  // {
+  //   label: "Document Request",
+  //   icon: Icons.FolderOpen,
+  //   href: "/student/request",
+  // },
 ];
