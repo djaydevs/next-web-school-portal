@@ -1,6 +1,5 @@
 import { NextResponse, NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { sendMail } from "@/hooks/sendMail";
 
 export async function GET(req: Request) {
   try {
@@ -19,27 +18,27 @@ export async function GET(req: Request) {
 }
 
 //Create a new user account
-export async function POST(req: NextRequest) {
-  try {
+// export async function POST(req: NextRequest) {
+//   try {
 
-    const body = await req.json();
-    console.log(body)
+//     const body = await req.json();
+//     console.log(body)
 
-    // const parsedData = userSchema.parse(body)
-    // console.log(parsedData);
+//     // const parsedData = userSchema.parse(body)
+//     // console.log(parsedData);
 
-    const invite = await prisma.user.create({
-      data: {
-        email: body.email,
-        role: body.role,
-      },
-    });
+//     const invite = await prisma.user.create({
+//       data: {
+//         email: body.email,
+//         role: body.role,
+//       },
+//     });
 
-    await sendMail(invite.id, invite.email);
+//     await sendMail(invite.id, invite.email);
 
-    return NextResponse.json(invite, { status: 200 })
+//     return NextResponse.json(invite, { status: 200 })
 
-  } catch (error: any) {
-    return NextResponse.json({ message: error.message }, { status: 500 })
-  }
-}
+//   } catch (error: any) {
+//     return NextResponse.json({ message: error.message }, { status: 500 })
+//   }
+// }
