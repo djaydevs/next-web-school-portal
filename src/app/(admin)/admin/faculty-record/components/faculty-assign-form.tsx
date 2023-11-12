@@ -89,10 +89,45 @@ const FacultyAssignForm: FC<FacultyAssignFormProps> = ({
     },
   });
 
-  const onSubmit = (updateInfo: z.infer<typeof facultySchema>) => {
-    console.log("Submitting form with data:", updateInfo);
-    updateFaculty(updateInfo);
+  type SectionType = {
+    id: string;
+    schoolYearId: string;
+    gradeLevelId: string;
+    strandId: string;
+    sectionName: string;
+    room: string;
   };
+  
+
+  const onSubmit = async (updateInfo: z.infer<typeof facultySchema>) => {
+    console.log("onSubmit triggered");
+    // Extracting only the IDs from the selected sections
+    const selectedSectionIds: SectionType[] = (updateInfo.facultyProfile.section || []).map(
+      (section) => ({
+        id: section.id,
+        schoolYearId: section.schoolYearId,
+        gradeLevelId: section.gradeLevelId,
+        strandId: section.strandId,
+        sectionName: section.sectionName,
+        room: section.room,
+      })
+    );
+  
+    // Creating a new object with only the section IDs
+    const updateWithSectionIds: Faculty = {
+      ...updateInfo,
+      facultyProfile: {
+        ...updateInfo.facultyProfile,
+        section: selectedSectionIds || [],
+      },
+    };
+  
+    console.log("Submitting form with data:", updateWithSectionIds);
+  
+    // Calling the updateFaculty function with the updated data
+    await updateFaculty(updateWithSectionIds);
+  };
+  
 
   if (isErrorFetchingSections) {
     return <span>Error: {sectionsError.message}</span>;
@@ -159,18 +194,18 @@ const FacultyAssignForm: FC<FacultyAssignFormProps> = ({
                                       ?.map((section) => section.id)
                                       .includes(section.id)}
                                     onCheckedChange={(checked) => {
-                                      return checked
-                                        ? field.onChange([
-                                            ...field.value,
-                                            section,
-                                          ])
-                                        : field.onChange(
-                                            field.value?.filter(
-                                              (value) =>
-                                                value.id !== section.id,
-                                            ),
+                                      const currentValues = field.value || [];
+                                      const updatedValues = checked
+                                        ? [...currentValues, section]
+                                        : currentValues.filter(
+                                            (value) => value.id !== section.id
                                           );
-                                    }}
+                  
+                                      field.onChange(updatedValues);
+                  
+                                      // Log the selected values
+                                      console.log("Selected Section IDs:", updatedValues.map((item) => item.id));
+                                    }}                                   
                                   />
                                 </FormControl>
                                 <FormLabel className="font-normal">

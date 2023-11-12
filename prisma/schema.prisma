@@ -147,18 +147,12 @@ model SchoolYear {
   id         String       @id @default(cuid())
   from       DateTime
   to         DateTime
+  semester   Int
+
+  grade      Grades[]
   enrollment Enrollment[]
   sections   Section[]
-  semesters  Semester[]
   subjects   Subject[]
-}
-
-model Semester {
-  id           String     @id @default(cuid())
-  semesterNum  Int
-  schoolYearId String
-  grades       Grades[]
-  schoolYear   SchoolYear @relation(fields: [schoolYearId], references: [id])
 }
 
 model Enrollment {
@@ -238,8 +232,8 @@ model Grades {
   facultyId  String?
   subject    Subject         @relation(fields: [subjectId], references: [id])
   subjectId  String
-  semester   Semester?       @relation(fields: [semesterId], references: [id])
-  semesterId String?
+  schoolYear SchoolYear @relation(fields: [schoolYearId], references: [id])
+  schoolYearId String
 }
 
 // model PlaceOfBirth {
