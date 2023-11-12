@@ -24,7 +24,7 @@ const buttonVariants = cva(
       },
       size: {
         default: "h-10 py-2 px-4",
-        icon: "p-2 rounded-md",
+        icon: "p-2 rounded-full hover:rounded-full",
         sm: "h-9 px-3 rounded-md",
         lg: "h-11 px-8 rounded-md",
       },
@@ -38,7 +38,7 @@ const buttonVariants = cva(
       size: "default",
       transition: "default",
     },
-  }
+  },
 );
 
 export interface ButtonProps
@@ -50,7 +50,7 @@ export interface ButtonProps
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
     { className, variant, size, transition, asChild = false, ...props },
-    ref
+    ref,
   ) => {
     const Comp = asChild ? Slot : "button";
     return (
@@ -60,7 +60,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {...props}
       />
     );
-  }
+  },
 );
 Button.displayName = "Button";
 

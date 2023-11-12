@@ -31,11 +31,11 @@ export default function AdminDashboardOverview() {
     <div>
       {currentUser?.name ? (
         <Heading size="sm" className="grow py-2">
-          Welcome, {currentUser.name}
+          Welcome, {currentUser.name.split(" ")[0]} !
         </Heading>
       ) : (
         <Heading size="sm" className="grow">
-          Welcome, Admin
+          Welcome, Admin !
         </Heading>
       )}
       <div className="flex w-full flex-col">
