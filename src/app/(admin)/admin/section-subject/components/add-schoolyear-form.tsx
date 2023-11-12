@@ -1,11 +1,14 @@
-import { FC } from "react";
+"use client";
+
+import * as React from "react";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { format, isValid } from "date-fns";
+import { format } from "date-fns";
 import { useMutation } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
+import { DateRange } from "react-day-picker";
 
 import {
   Dialog,
@@ -46,9 +49,13 @@ import { useToast } from "@/components/ui/use-toast";
 
 interface AddSchoolYearFormProps {}
 
-const AddSchoolYearForm: FC<AddSchoolYearFormProps> = ({}) => {
+const AddSchoolYearForm: React.FC<AddSchoolYearFormProps> = ({}) => {
   const router = useRouter();
   const { toast } = useToast();
+  const [date, setDate] = React.useState<DateRange | undefined>({
+    from: new Date(),
+    to: new Date(),
+  });
 
   const form = useForm<z.infer<typeof schoolYearSchema>>({
     resolver: zodResolver(schoolYearSchema),
@@ -71,7 +78,8 @@ const AddSchoolYearForm: FC<AddSchoolYearFormProps> = ({}) => {
         if (error.response?.status === 500) {
           toast({
             title: "Error",
-            description: "Something went wrong! Please check if required fields are answered, or try again later.",
+            description:
+              "Something went wrong! Please check if required fields are answered, or try again later.",
             variant: "destructive",
           });
         }
@@ -124,21 +132,25 @@ const AddSchoolYearForm: FC<AddSchoolYearFormProps> = ({}) => {
                           variant={"outline"}
                           className={cn(
                             "w-full pl-3 text-left font-normal",
-                            !field.value && "text-muted-foreground",
+                            !date && "text-muted-foreground",
                           )}
+                          onClick={() => {
+                            setDate({
+                              from: field.value.from,
+                              to: field.value.to,
+                            });
+                          }}
                         >
                           <Icons.CalendarIcon className="mr-2 h-4 w-4 opacity-50" />
-                          {field.value &&
-                          typeof field.value === "object" &&
-                          "from" in field.value &&
-                          typeof field.value === "object" &&
-                          "to" in field.value &&
-                          isValid((field.value as { from: Date }).from) &&
-                          isValid((field.value as { to: Date }).to) ? (
-                            `${format(
-                              field.value.from as Date,
-                              "LLL dd, y",
-                            )} - ${format(field.value.to as Date, "LLL dd, y")}`
+                          {date?.from ? (
+                            date.to ? (
+                              <>
+                                {format(date.from, "LLL dd, y")} -{" "}
+                                {format(date.to, "LLL dd, y")}
+                              </>
+                            ) : (
+                              format(date.from, "LLL dd, y")
+                            )
                           ) : (
                             <span>Pick a date</span>
                           )}
@@ -148,15 +160,11 @@ const AddSchoolYearForm: FC<AddSchoolYearFormProps> = ({}) => {
                     <PopoverContent className="w-auto p-0" align="start">
                       <Calendar
                         mode="range"
-                        selected={
-                          field.value instanceof Date
-                            ? {
-                                from: field.value.from,
-                                to: field.value.to,
-                              }
-                            : field.value
-                        }
-                        onSelect={field.onChange}
+                        selected={date}
+                        onSelect={(range) => {
+                          setDate(range);
+                          field.onChange(range);
+                        }}
                         numberOfMonths={2}
                         initialFocus
                       />
