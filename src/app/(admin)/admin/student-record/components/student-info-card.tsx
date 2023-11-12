@@ -92,11 +92,11 @@ const StudentInfoCard: FC<StudentInfoCardProps> = ({ studentInfo }) => {
               <Label>{studentInfo?.studentProfile.nameofJHS}</Label>
             </div>
             <div className="flex flex-nowrap items-center justify-between">
-              <Label>General Average JHS:</Label>
+              <Label>General Average ( JHS ):</Label>
               <Label>{studentInfo?.studentProfile.genAveJHS}</Label>
             </div>
             <div className="flex flex-nowrap items-center justify-between">
-              <Label>Completed:</Label>
+              <Label>Completed ( JHS ):</Label>
               <Label>{studentInfo?.studentProfile.jhsCompleted}</Label>
             </div>
           </div>

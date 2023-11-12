@@ -21,8 +21,14 @@ export default function FacultyDashboard() {
   return (
     <div className="md:flex">
       <section className="grow">
-        {currentUser?.name && (
-          <Heading size="sm">Welcome, {currentUser.name}</Heading>
+        {currentUser?.name ? (
+          <Heading size="sm" className="grow py-2">
+            Welcome, {currentUser.name.split(" ")[0]} !
+          </Heading>
+        ) : (
+          <Heading size="sm" className="grow">
+            Welcome, Faculty !
+          </Heading>
         )}
       </section>
       <section className="mx-auto hidden w-auto flex-none object-contain p-4 md:flex">

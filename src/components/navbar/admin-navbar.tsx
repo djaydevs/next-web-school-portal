@@ -6,7 +6,7 @@ export default function AdminNavbar() {
   return (
     <div className="flex items-center p-4">
       <MobileAdminSide />
-      <div className="flex w-full items-center justify-end">
+      <div className="flex w-full items-center justify-end gap-2">
         <ThemeToggle />
         <UserAccountDrop />
       </div>

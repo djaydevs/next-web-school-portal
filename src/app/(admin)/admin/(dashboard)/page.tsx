@@ -1,6 +1,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import AdminDashboardOverview from "@/components/dash-overview";
 import DashboardCalendar from "@/components/dashboard-calendar";
+import { DatePickerWithRange } from "@/components/date-picker-range";
 
 export const metadata = {
   title: "Dashboard | Admin Portal",
@@ -20,8 +21,9 @@ export default function AdminDashboard() {
         </TabsContent>
         <TabsContent value="reports"></TabsContent>
       </Tabs>
-      <div className="max-w-fit flex-none">
+      <div className="flex max-w-fit flex-col gap-2">
         <DashboardCalendar />
+        <DatePickerWithRange />
       </div>
     </div>
   );

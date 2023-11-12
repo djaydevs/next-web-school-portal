@@ -70,7 +70,7 @@ export default function AccountTable<TData, TValue>({
     <div className="space-y-2">
       <AccountTableToolbar table={table} />
       <div className="rounded-md border">
-        <ScrollArea className="h-full md:h-[320px]">
+        <ScrollArea className="h-full md:h-[400px]">
           <Table>
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (

@@ -47,20 +47,22 @@ const ManageStudentIdPage: FC<ManageStudentIdPageProps> = ({ params }) => {
           <SkeletonCard />
         </div>
       ) : (
-        <div className="w-full items-center justify-between space-x-4 p-4 md:flex">
+        <>
           {studentInfo.studentProfile ? (
-            <>
+            <div className="w-full items-center justify-between space-x-4 p-4 md:flex">
               <StudentInfoCard studentInfo={studentInfo} />
               <StudentAssignForm initialValue={studentInfo} params={{ id }} />
-            </>
+            </div>
           ) : (
-            <Card className="m-auto">
-              <CardHeader className="m-auto">
-                Student has no profile yet.
-              </CardHeader>
-            </Card>
+            <div className="m-auto flex h-[500px] w-full items-center justify-center">
+              <Card className="m-auto">
+                <CardHeader className="m-auto">
+                  Student is either not verified or has no profile yet.
+                </CardHeader>
+              </Card>
+            </div>
           )}
-        </div>
+        </>
       )}
     </>
   );

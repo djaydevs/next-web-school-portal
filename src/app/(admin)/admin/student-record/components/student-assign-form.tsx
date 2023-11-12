@@ -85,9 +85,9 @@ const StudentAssignForm: FC<StudentAssignFormProps> = ({
   const form = useForm<z.infer<typeof studentProfileSchema>>({
     resolver: zodResolver(studentProfileSchema),
     defaultValues: {
-      gradeLevelId: initialValue?.studentProfile.gradeLevelId,
-      strandId: initialValue?.studentProfile.strandId,
-      sectionId: initialValue?.studentProfile.sectionId,
+      gradeLevelId: initialValue?.studentProfile.gradeLevelId ?? "",
+      strandId: initialValue?.studentProfile.strandId ?? "",
+      sectionId: initialValue?.studentProfile.sectionId ?? "",
     },
   });
 
@@ -159,7 +159,7 @@ const StudentAssignForm: FC<StudentAssignFormProps> = ({
                   ) : (
                     <Select
                       onValueChange={field.onChange}
-                      defaultValue={field.value}
+                      defaultValue={field.value ?? ""}
                     >
                       <FormControl>
                         <SelectTrigger>
@@ -190,7 +190,7 @@ const StudentAssignForm: FC<StudentAssignFormProps> = ({
                   ) : (
                     <Select
                       onValueChange={field.onChange}
-                      defaultValue={field.value}
+                      defaultValue={field.value ?? ""}
                     >
                       <FormControl>
                         <SelectTrigger>
@@ -221,7 +221,7 @@ const StudentAssignForm: FC<StudentAssignFormProps> = ({
                   ) : (
                     <Select
                       onValueChange={field.onChange}
-                      defaultValue={field.value}
+                      defaultValue={field.value ?? ""}
                     >
                       <FormControl>
                         <SelectTrigger>
