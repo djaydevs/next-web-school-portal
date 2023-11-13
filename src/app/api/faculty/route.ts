@@ -30,26 +30,26 @@ export async function GET(req: NextRequest) {
 }
 
 //Add a new faculty
-export async function POST(req: NextRequest) {
-    try {
-        const body = await req.json();
+// export async function POST(req: NextRequest) {
+//     try {
+//         const body = await req.json();
 
-        const addFaculty = await prisma.facultyProfile.create({
-            data: {
-                empNumber: body.empNumber,
-                lastName: body.lastName,
-                firstName: body.firstName,
-                middleName: body.middleName,
-                age: body.age,
-                dateOfBirth: body.dateOfBirth,
-                gender: body.gender,
-                address: body.address,
-                contactNumber: body.contactNumber,
-            },
-        });
+//         const addFaculty = await prisma.facultyProfile.create({
+//             data: {
+//                 empNumber: body.empNumber,
+//                 lastName: body.lastName,
+//                 firstName: body.firstName,
+//                 middleName: body.middleName,
+//                 age: body.age,
+//                 dateOfBirth: body.dateOfBirth,
+//                 gender: body.gender,
+//                 address: body.address,
+//                 contactNumber: body.contactNumber,
+//             },
+//         });
 
-        return NextResponse.json(addFaculty, { status: 200 });
-    } catch (error: any) {
-        return NextResponse.json({ message: error.message }, { status: 500 });
-    }
-}
+//         return NextResponse.json(addFaculty, { status: 200 });
+//     } catch (error: any) {
+//         return NextResponse.json({ message: error.message }, { status: 500 });
+//     }
+// }

@@ -36,15 +36,11 @@ export const columns: ColumnDef<User>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => (
-      <AccountTableColumnHeader
-        column={column}
-        title="Name"
-        className="hidden md:table-cell"
-      />
+      <AccountTableColumnHeader column={column} title="Name" />
     ),
     cell: ({ row }) => {
       return (
-        <div className="hidden w-full items-center justify-start md:flex">
+        <div className="flex w-full items-center justify-start">
           <UserAvatar
             user={{
               name: row.original.name || null,
@@ -61,10 +57,18 @@ export const columns: ColumnDef<User>[] = [
   {
     accessorKey: "email",
     header: ({ column }) => (
-      <AccountTableColumnHeader column={column} title="Email" />
+      <AccountTableColumnHeader
+        column={column}
+        title="Email"
+        className="hidden md:table-cell"
+      />
     ),
     cell: ({ row }) => {
-      return <div className="w-full">{row.getValue("email")}</div>;
+      return (
+        <div className="hidden w-full items-center justify-start md:flex">
+          {row.getValue("email")}
+        </div>
+      );
     },
   },
   {

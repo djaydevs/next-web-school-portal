@@ -34,7 +34,7 @@ import {
 import { Button } from "@/components/ui/button";
 import Icons from "@/components/ui/icons";
 import { useToast } from "@/components/ui/use-toast";
-import { Student, StudentProfile, studentProfileSchema } from "@/types";
+import { Student, StudentAssign, studentAssignSchema } from "@/types";
 import { fetchGradeLevel, fetchSections, fetchStrands } from "@/hooks/getInfos";
 
 interface StudentAssignFormProps {
@@ -82,8 +82,8 @@ const StudentAssignForm: FC<StudentAssignFormProps> = ({
     queryFn: async () => fetchSections(),
   });
 
-  const form = useForm<z.infer<typeof studentProfileSchema>>({
-    resolver: zodResolver(studentProfileSchema),
+  const form = useForm<z.infer<typeof studentAssignSchema>>({
+    resolver: zodResolver(studentAssignSchema),
     defaultValues: {
       gradeLevelId: initialValue?.studentProfile.gradeLevelId ?? "",
       strandId: initialValue?.studentProfile.strandId ?? "",
@@ -92,7 +92,7 @@ const StudentAssignForm: FC<StudentAssignFormProps> = ({
   });
 
   const { mutate: updateStudent, isPending: isLoadingSubmit } = useMutation({
-    mutationFn: (update: StudentProfile) => {
+    mutationFn: (update: StudentAssign) => {
       return axios.patch(`/api/student/${id}`, update);
     },
     onError: (error) => {
@@ -117,7 +117,7 @@ const StudentAssignForm: FC<StudentAssignFormProps> = ({
     },
   });
 
-  const onSubmit = (updateInfo: z.infer<typeof studentProfileSchema>) => {
+  const onSubmit = (updateInfo: z.infer<typeof studentAssignSchema>) => {
     console.log("Submitting form with data:", updateInfo);
     updateStudent(updateInfo);
   };

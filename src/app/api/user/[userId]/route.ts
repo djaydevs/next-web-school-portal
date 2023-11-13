@@ -30,17 +30,17 @@ export async function PATCH(req: NextRequest, context: contextProps) {
     const body = await req.json()
 
     await prisma.user.update({
-      where: {
-        id: params.userId
-      },
+      where: { id: params.userId },
       data: {
         name: body.name,
-        role: body.role
-      }
+        role: body.role,
+        isVerified: body.isVerified,
+        emailVerified: body.isVerified ? new Date() : undefined,
+      },
     });
-    return NextResponse.json({ message: "Role updated successfuly!" }, { status: 200 });
+
+    return NextResponse.json({ message: "User updated successfuly!" }, { status: 200 });
   } catch (error) {
     return NextResponse.json({ message: "Something went wrong!" }, { status: 500 });
   }
-
 }
