@@ -42,7 +42,7 @@ const ManageAccountIdPage: FC<ManageAccountIdPageProps> = ({ params }) => {
           <SkeletonCard />
         </div>
       ) : (
-        <div className="w-full justify-between space-x-4 p-4 md:flex">
+        <div className="flex w-full flex-col justify-between gap-4 p-4 md:flex-row">
           <UserInfoCard userInfo={userInfo} />
           <UserUpdateForm initialValue={userInfo} params={{ id }} />
         </div>
