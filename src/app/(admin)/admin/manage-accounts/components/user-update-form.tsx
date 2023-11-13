@@ -35,6 +35,7 @@ import { Button } from "@/components/ui/button";
 import Icons from "@/components/ui/icons";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
+import { Switch } from "@/components/ui/switch";
 
 interface UserUpdateFormProps {
   params: {
@@ -50,7 +51,11 @@ const UserUpdateForm: FC<UserUpdateFormProps> = ({ params, initialValue }) => {
 
   const form = useForm<z.infer<typeof userSchema>>({
     resolver: zodResolver(userSchema),
-    defaultValues: initialValue,
+    defaultValues: {
+      ...initialValue,
+      role: initialValue?.role ?? "",
+      isVerified: initialValue?.isVerified ?? false,
+    },
   });
 
   const { mutate: updateUser, isPending: isLoadingSubmit } = useMutation({
@@ -96,7 +101,44 @@ const UserUpdateForm: FC<UserUpdateFormProps> = ({ params, initialValue }) => {
           onSubmit={form.handleSubmit(onSubmit)}
           className="w-full space-y-6"
         >
-          <CardContent>
+          <CardContent className="space-y-4">
+            <FormField
+              control={form.control}
+              name="isVerified"
+              render={({ field }) => (
+                <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                  <div className="space-y-0.5">
+                    <FormLabel className="text-base">Verify User</FormLabel>
+                    <FormDescription>
+                      Enable the switch to verify the user.
+                    </FormDescription>
+                  </div>
+                  <FormControl>
+                    <Switch
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder={field.value ?? ""}
+                      {...field}
+                      value={field.value ?? ""}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="role"
@@ -118,23 +160,6 @@ const UserUpdateForm: FC<UserUpdateFormProps> = ({ params, initialValue }) => {
                       <SelectItem value="admin">Admin</SelectItem>
                     </SelectContent>
                   </Select>
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Name</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder={field.value ?? ""}
-                      {...field}
-                      value={field.value ?? ""}
-                    />
-                  </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
