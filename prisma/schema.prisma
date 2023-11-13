@@ -103,10 +103,17 @@ model FacultyProfile {
   firstName     String
   middleName    String?
   age           Int
-  dateOfBirth   DateTime
-  gender        String
-  address       String
-  contactNumber String?
+  sex           String
+  civilStatus   String
+  yearsInMJA    String
+  otherSchool   Int
+  dateIssued    DateTime
+  dateValid     DateTime
+  licenseNumber Int
+  profOrg       String
+  degree        String
+  major         String
+  minor         String
   section       Section[]
   subjects      Subject[]
   gradeLevel    GradeLevel[]
