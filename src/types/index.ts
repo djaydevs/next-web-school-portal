@@ -37,6 +37,8 @@ export const facultySchema = z.object({
     }),
     isVerified: z.boolean(),
     facultyProfile: z.object({
+        id: z.string(),
+        empNumber: z.number().int(),
         lastName: z.string({
             required_error: "Last name is required",
         }),
@@ -218,19 +220,6 @@ export const studentSchema = z.object({
 });
 export type Student = z.infer<typeof studentSchema>
 
-export const studentProfileSchema = z.object({
-    gradeLevelId: z.string({
-        required_error: "Grade level is required",
-    }),
-    strandId: z.string({
-        required_error: "Strand is required",
-    }),
-    sectionId: z.string({
-        required_error: "Section is required",
-    }),
-});
-export type StudentProfile = z.infer<typeof studentProfileSchema>
-
 export const schoolYearSchema = z.object({
     id: z.string(),
     schoolYear: z.object({
@@ -293,6 +282,26 @@ export const subjectSchema = z.object({
     }),
 });
 export type Subject = z.infer<typeof subjectSchema>
+
+export const studentAssignSchema = z.object({
+    gradeLevelId: z.string({
+        required_error: "Grade level is required",
+    }),
+    strandId: z.string({
+        required_error: "Strand is required",
+    }),
+    sectionId: z.string({
+        required_error: "Section is required",
+    }),
+});
+export type StudentAssign = z.infer<typeof studentAssignSchema>
+
+export const facultyAssignSchema = z.object({
+    gradeLevelIds: z.array(z.string()),
+    sectionIds: z.array(z.string()),
+    subjectIds: z.array(z.string()),
+});
+export type FacultyAssign = z.infer<typeof facultyAssignSchema>
 
 export const verifySchema = z.object({
     inputNumber: z.string({

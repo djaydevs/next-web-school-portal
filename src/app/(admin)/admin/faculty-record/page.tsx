@@ -50,8 +50,8 @@ const FacultyRecordPage: FC<FacultyRecordPageProps> = ({}) => {
         </p>
       </div>
       <UseCSV
-        importerKey="d4dd9a93-3546-44f6-9cbf-4ba978759442"
-        user={{ userId: 12345 }}
+        importerKey="d82e0f09-3989-45db-a14b-136267d2815f"
+        user={{ userId: 123456 }}
         render={(openModal) => renderButton(openModal)}
       />
       {isLoadingFacultyTable ? (
