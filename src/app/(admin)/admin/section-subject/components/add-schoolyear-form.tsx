@@ -52,6 +52,10 @@ interface AddSchoolYearFormProps {}
 const AddSchoolYearForm: React.FC<AddSchoolYearFormProps> = ({}) => {
   const router = useRouter();
   const { toast } = useToast();
+  const [date, setDate] = React.useState<DateRange | undefined>({
+    from: new Date(),
+    to: new Date(),
+  });
 
   const form = useForm<z.infer<typeof schoolYearSchema>>({
     resolver: zodResolver(schoolYearSchema),
@@ -119,11 +123,6 @@ const AddSchoolYearForm: React.FC<AddSchoolYearFormProps> = ({}) => {
               control={form.control}
               name="schoolYear"
               render={({ field }) => {
-                const [date, setDate] = React.useState<DateRange | undefined>({
-                  from: field.value.from,
-                  to: field.value.to,
-                });
-
                 return (
                   <FormItem className="flex w-full flex-col space-y-2">
                     <FormLabel>School Year</FormLabel>
