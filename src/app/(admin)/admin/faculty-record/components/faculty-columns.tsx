@@ -10,6 +10,35 @@ import { Badge } from "@/components/ui/badge";
 
 export const columns: ColumnDef<Faculty>[] = [
   {
+    accessorKey: "facultyProfile",
+    header: ({ column }) => (
+      <FacultyTableColumnHeader
+        column={column}
+        title="ID"
+        className="hidden md:table-cell"
+      />
+    ),
+    cell: ({ row }) => {
+      const facultyProfile = row.getValue(
+        "facultyProfile",
+      ) as Faculty["facultyProfile"];
+
+      if (!facultyProfile?.empNumber) {
+        return (
+          <Badge variant="destructive" className="hidden w-fit md:flex">
+            No ID
+          </Badge>
+        );
+      }
+
+      return (
+        <span className="hidden w-full items-center justify-start md:flex">
+          <p>{facultyProfile?.empNumber}</p>
+        </span>
+      );
+    },
+  },
+  {
     accessorKey: "name",
     header: ({ column }) => (
       <FacultyTableColumnHeader column={column} title="Name" />
@@ -74,6 +103,14 @@ export const columns: ColumnDef<Faculty>[] = [
           ))}
         </span>
       );
+    },
+    filterFn: (row, id, value) => {
+      const facultyProfile = row.getValue(
+        "facultyProfile",
+      ) as Faculty["facultyProfile"];
+
+      // Check if any section name matches the filter value
+      return facultyProfile?.section.some((sec) => sec.sectionName === value);
     },
   },
   {

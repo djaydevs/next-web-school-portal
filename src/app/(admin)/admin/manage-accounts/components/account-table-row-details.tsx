@@ -18,35 +18,19 @@ export function AccountTableRowDetails<TData>({
 
   return (
     <>
-      {!user.isVerified ? (
-        <Link
-          href={`/admin/manage-accounts/${user.id}`}
-          aria-label="Manage account details"
-          className={cn(
-            buttonVariants({
-              variant: "destructive",
-              size: "sm",
-            }),
-            "w-full rounded-md px-2 py-1",
-          )}
-        >
-          Details
-        </Link>
-      ) : (
-        <Link
-          href={`/admin/manage-accounts/${user.id}`}
-          aria-label="Manage account details"
-          className={cn(
-            buttonVariants({
-              variant: "outline",
-              size: "sm",
-            }),
-            "w-full rounded-md px-2 py-1",
-          )}
-        >
-          Details
-        </Link>
-      )}
+      <Link
+        href={`/admin/manage-accounts/${user.id}`}
+        aria-label="Manage account details"
+        className={cn(
+          buttonVariants({
+            variant: "outline",
+            size: "sm",
+          }),
+          "w-full rounded-md px-2 py-1",
+        )}
+      >
+        Details
+      </Link>
     </>
   );
 }
