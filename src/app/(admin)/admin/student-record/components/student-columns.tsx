@@ -77,7 +77,7 @@ export const columns: ColumnDef<Student>[] = [
     },
   },
   {
-    accessorKey: "studentProfile",
+    accessorKey: "grade",
     header: ({ column }) => (
       <StudentTableColumnHeader
         column={column}
@@ -106,7 +106,7 @@ export const columns: ColumnDef<Student>[] = [
     },
   },
   {
-    accessorKey: "studentProfile",
+    accessorKey: "strand",
     header: ({ column }) => (
       <StudentTableColumnHeader
         column={column}
@@ -135,7 +135,7 @@ export const columns: ColumnDef<Student>[] = [
     },
   },
   {
-    accessorKey: "studentProfile",
+    accessorKey: "section",
     header: ({ column }) => (
       <StudentTableColumnHeader
         column={column}
@@ -161,6 +161,11 @@ export const columns: ColumnDef<Student>[] = [
           <p>{studentProfile?.section.sectionName}</p>
         </span>
       );
+    },
+    filterFn: (row, id, value) => {
+      const studentProfile: { section?: { sectionName: string } } =
+        row.getValue("studentProfile");
+      return value.includes(studentProfile?.section?.sectionName);
     },
   },
   {

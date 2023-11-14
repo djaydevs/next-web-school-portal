@@ -1,16 +1,16 @@
 "use client";
 
 import { Table } from "@tanstack/react-table";
-// import { useQuery } from "@tanstack/react-query";
-// import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
 
 import Icons from "@/components/ui/icons";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-// import { FacultyTableFacetedFilter } from "@/components/faculty-table-faceted-filter";
-// import { generateSectionOptions } from "@/lib/options";
-// import { Faculty } from "@/types";
-// import { fetchFaculty } from "@/hooks/getUsers";
+import { StudentTableFacetedFilter } from "@/components/student-table-faceted-filter";
+import { generateSectionOptionsStudent } from "@/lib/options";
+import { Student } from "@/types";
+import { fetchStudent } from "@/hooks/getUsers";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
@@ -20,21 +20,21 @@ export function StudentTableToolbar<TData>({
   table,
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
-  // const { data: faculties } = useQuery<Faculty[]>({
-  //   queryKey: ["faculties"],
-  //   queryFn: async () => fetchFaculty(),
-  // });
+  const { data: students } = useQuery<Student[]>({
+    queryKey: ["students"],
+    queryFn: async () => fetchStudent(),
+  });
 
-  // const [sectionOptions, setSectionOptions] = useState<
-  //   { label: string; value: string }[]
-  // >([]);
+  const [sectionOptions, setSectionOptions] = useState<
+    { label: string; value: string }[]
+  >([]);
 
-  // useEffect(() => {
-  //   if (faculties) {
-  //     const options = generateSectionOptions(faculties);
-  //     setSectionOptions(options);
-  //   }
-  // }, [faculties]);
+  useEffect(() => {
+    if (students) {
+      const options = generateSectionOptionsStudent(students);
+      setSectionOptions(options);
+    }
+  }, [students]);
 
   return (
     <div className="flex items-center justify-between">
@@ -48,13 +48,13 @@ export function StudentTableToolbar<TData>({
           className="h-8 w-full md:w-[300px]"
         />
         <div className="flex w-full items-center justify-start space-x-2">
-          {/* {table.getColumn("facultyProfile") && (
-            <FacultyTableFacetedFilter
-              column={table.getColumn("facultyProfile")}
+          {table.getColumn("section") && (
+            <StudentTableFacetedFilter
+              column={table.getColumn("section")}
               title="Section"
               options={sectionOptions}
             />
-          )} */}
+          )}
           {isFiltered && (
             <Button
               variant="ghost"

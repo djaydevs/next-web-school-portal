@@ -1,5 +1,7 @@
 // import { Faculty } from "@/types";
 
+import { Section, Faculty, Student } from "@/types";
+
 export const statuses = [
   {
     value: false,
@@ -41,19 +43,34 @@ export const roles = [
 //   }
 // };
 
-// // Assuming faculties is your fetched data
-// export const generateSectionOptions = (faculties: Faculty[]) => {
-//   const sections = faculties.reduce(
-//     (acc: { label: string; value: string }[], faculty: Faculty) => {
-//       faculty.facultyProfile?.section.forEach((sec) => {
-//         if (!acc.find((option) => option.value === sec.id)) {
-//           acc.push({ label: sec.sectionName, value: sec.id });
-//         }
-//       });
-//       return acc;
-//     },
-//     [],
-//   );
+// Assuming faculties is your fetched data
+export const generateSectionOptionsFaculty = (faculties: Faculty[]) => {
+  const sections = faculties.reduce(
+    (acc: { label: string; value: string }[], faculty: Faculty) => {
+      faculty.facultyProfile?.section.forEach((sec) => {
+        if (!acc.find((option) => option.value === sec.sectionName)) {
+          acc.push({ label: sec.sectionName, value: sec.sectionName });
+        }
+      });
+      return acc;
+    },
+    [],
+  );
 
-//   return sections;
-// };
+  return sections;
+};
+
+export const generateSectionOptionsStudent = (students: Student[]) => {
+  const sections = students.reduce(
+    (acc: { label: string; value: string }[], student: Student) => {
+      const sec = student.studentProfile?.section;
+      if (sec && !acc.find((option) => option.value === sec.sectionName)) {
+        acc.push({ label: sec.sectionName, value: sec.sectionName });
+      }
+      return acc;
+    },
+    [],
+  );
+
+  return sections;
+};
