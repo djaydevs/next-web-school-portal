@@ -51,11 +51,11 @@ export async function PATCH(req: NextRequest, context: contextProps) {
     const sectionIds = body.sectionIds; // an array of section IDs
     const gradeLevelIds = body.gradeLevelIds; // an array of grade level IDs
 
-    // Assign faculty to subjects
+    //Assign faculty to subjects
     for (const subjectId of subjectIds) {
       await prisma.subject.update({
         where: { id: subjectId },
-        data: { faculty: { connect: { id: body.facultyId } } },
+        data: { faculty: { connect: { userId: params.facultyId } } },
       });
     }
       
@@ -63,7 +63,7 @@ export async function PATCH(req: NextRequest, context: contextProps) {
     for (const sectionId of sectionIds) {
       await prisma.section.update({
         where: { id: sectionId },
-        data: { faculty: { connect: { id: body.facultyId } } },
+        data: { faculty: { connect: { userId: params.facultyId } } },
       });
     }
     
@@ -71,7 +71,7 @@ export async function PATCH(req: NextRequest, context: contextProps) {
     for (const gradeLevelId of gradeLevelIds) {
       await prisma.gradeLevel.update({
         where: { id: gradeLevelId },
-        data: { faculty: { connect: { id: body.facultyId } } },
+        data: { faculty: { connect: { userId: params.facultyId } } },
       });
     }         
 
