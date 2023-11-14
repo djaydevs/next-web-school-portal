@@ -91,7 +91,7 @@ export const columns: ColumnDef<User>[] = [
 
       return (
         <span className="hidden md:table-cell">
-          {status.value ? (
+          {status.value === true ? (
             <Badge variant="outline">{status.label}</Badge>
           ) : (
             <Badge variant="destructive">{status.label}</Badge>
