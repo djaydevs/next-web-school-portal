@@ -19,3 +19,8 @@ export const fetchSections = async () => {
     const res = await axios.get("/api/section");
     return res.data;
 };
+
+export const fetchSubjects = async () => {
+    const res = await axios.get("/api/subject");
+    return res.data;
+};

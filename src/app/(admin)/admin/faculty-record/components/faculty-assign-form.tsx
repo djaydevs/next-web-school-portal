@@ -4,7 +4,7 @@ import axios, { AxiosError } from "axios";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Section } from "@prisma/client";
+import { Section, Subject } from "@prisma/client";
 import { useRouter } from "next/navigation";
 
 import {
@@ -29,8 +29,8 @@ import Icons from "@/components/ui/icons";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Faculty, facultySchema } from "@/types";
-import { fetchSections } from "@/hooks/getInfos";
+import { Faculty, FacultyAssign, facultyAssignSchema } from "@/types";
+import { fetchSections, fetchSubjects } from "@/hooks/getInfos";
 
 interface FacultyAssignFormProps {
   params: {
@@ -57,13 +57,33 @@ const FacultyAssignForm: FC<FacultyAssignFormProps> = ({
     queryFn: async () => fetchSections(),
   });
 
-  const form = useForm<z.infer<typeof facultySchema>>({
-    resolver: zodResolver(facultySchema),
-    defaultValues: initialValue,
+  const {
+    data: subjects,
+    isPending: isLoadingSubjects,
+    isError: isErrorFetchingSubjects,
+    error: subjectsError,
+  } = useQuery<Subject[]>({
+    queryKey: ["subjects"],
+    queryFn: async () => fetchSubjects(),
+  });
+
+  const form = useForm<z.infer<typeof facultyAssignSchema>>({
+    resolver: zodResolver(facultyAssignSchema),
+    defaultValues: {
+      gradeLevelIds: initialValue?.facultyProfile.gradeLevel.map(
+        (gradeLevel) => gradeLevel.id,
+      ),
+      sectionIds: initialValue?.facultyProfile.section.map(
+        (section) => section.id,
+      ),
+      subjectIds: initialValue?.facultyProfile.subjects.map(
+        (subject) => subject.id,
+      ),
+    },
   });
 
   const { mutate: updateFaculty, isPending: isLoadingSubmit } = useMutation({
-    mutationFn: (update: Faculty) => {
+    mutationFn: (update: FacultyAssign) => {
       console.log("Sending PATCH request with data:", update);
       return axios.patch(`/api/faculty/${id}`, update);
     },
@@ -89,48 +109,16 @@ const FacultyAssignForm: FC<FacultyAssignFormProps> = ({
     },
   });
 
-  type SectionType = {
-    id: string;
-    schoolYearId: string;
-    gradeLevelId: string;
-    strandId: string;
-    sectionName: string;
-    room: string;
+  const onSubmit = async (updateInfo: z.infer<typeof facultyAssignSchema>) => {
+    updateFaculty(updateInfo);
   };
-  
-
-  const onSubmit = async (updateInfo: z.infer<typeof facultySchema>) => {
-    console.log("onSubmit triggered");
-    // Extracting only the IDs from the selected sections
-    const selectedSectionIds: SectionType[] = (updateInfo.facultyProfile.section || []).map(
-      (section) => ({
-        id: section.id,
-        schoolYearId: section.schoolYearId,
-        gradeLevelId: section.gradeLevelId,
-        strandId: section.strandId,
-        sectionName: section.sectionName,
-        room: section.room,
-      })
-    );
-  
-    // Creating a new object with only the section IDs
-    const updateWithSectionIds: Faculty = {
-      ...updateInfo,
-      facultyProfile: {
-        ...updateInfo.facultyProfile,
-        section: selectedSectionIds || [],
-      },
-    };
-  
-    console.log("Submitting form with data:", updateWithSectionIds);
-  
-    // Calling the updateFaculty function with the updated data
-    await updateFaculty(updateWithSectionIds);
-  };
-  
 
   if (isErrorFetchingSections) {
     return <span>Error: {sectionsError.message}</span>;
+  }
+
+  if (isErrorFetchingSubjects) {
+    return <span>Error: {subjectsError.message}</span>;
   }
 
   return (
@@ -146,28 +134,11 @@ const FacultyAssignForm: FC<FacultyAssignFormProps> = ({
           onSubmit={form.handleSubmit(onSubmit)}
           className="w-full space-y-6"
         >
-          <CardContent>
-            {/* <FormField
-              control={form.control}
-              name="facultyProfile.lastName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Last Name</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder={field.value ?? ""}
-                      {...field}
-                      value={field.value ?? ""}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            /> */}
+          <CardContent className="space-y-4">
             <FormField
               control={form.control}
-              name="facultyProfile.section"
-              render={() => (
+              name="sectionIds"
+              render={({ field }) => (
                 <FormItem>
                   <div className="mb-4">
                     <FormLabel className="text-base">Section</FormLabel>
@@ -178,43 +149,93 @@ const FacultyAssignForm: FC<FacultyAssignFormProps> = ({
                   {isLoadingSections
                     ? "loading"
                     : sections?.map((section) => (
-                        <FormField
+                        <FormItem
                           key={section.id}
-                          control={form.control}
-                          name="facultyProfile.section"
-                          render={({ field }) => {
-                            return (
-                              <FormItem
-                                key={section.id}
-                                className="flex flex-row items-start space-x-3 space-y-0"
-                              >
-                                <FormControl>
-                                  <Checkbox
-                                    checked={field.value
-                                      ?.map((section) => section.id)
-                                      .includes(section.id)}
-                                    onCheckedChange={(checked) => {
-                                      const currentValues = field.value || [];
-                                      const updatedValues = checked
-                                        ? [...currentValues, section]
-                                        : currentValues.filter(
-                                            (value) => value.id !== section.id
-                                          );
-                  
-                                      field.onChange(updatedValues);
-                  
-                                      // Log the selected values
-                                      console.log("Selected Section IDs:", updatedValues.map((item) => item.id));
-                                    }}                                   
-                                  />
-                                </FormControl>
-                                <FormLabel className="font-normal">
-                                  {section.sectionName}
-                                </FormLabel>
-                              </FormItem>
-                            );
-                          }}
-                        />
+                          className="flex flex-row items-start space-x-3 space-y-0"
+                        >
+                          <FormControl>
+                            <Checkbox
+                              checked={
+                                Array.isArray(field.value) &&
+                                field.value.includes(section.id)
+                              }
+                              onChange={(event) => {
+                                const isChecked = (
+                                  event.target as HTMLInputElement
+                                ).checked;
+
+                                if (isChecked) {
+                                  field.onChange([
+                                    ...(field.value || []),
+                                    section.id,
+                                  ]);
+                                } else {
+                                  field.onChange(
+                                    (field.value || []).filter(
+                                      (value) => value !== section.id,
+                                    ),
+                                  );
+                                }
+                              }}
+                            />
+                          </FormControl>
+                          <FormLabel className="font-normal">
+                            {section.sectionName}
+                          </FormLabel>
+                        </FormItem>
+                      ))}
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="subjectIds"
+              render={({ field }) => (
+                <FormItem>
+                  <div className="mb-4">
+                    <FormLabel className="text-base">Subject</FormLabel>
+                    <FormDescription>
+                      Select the subject you want to assign to .
+                    </FormDescription>
+                  </div>
+                  {isLoadingSubjects
+                    ? "loading"
+                    : subjects?.map((subject) => (
+                        <FormItem
+                          key={subject.id}
+                          className="flex flex-row items-start space-x-3 space-y-0"
+                        >
+                          <FormControl>
+                            <Checkbox
+                              checked={
+                                Array.isArray(field.value) &&
+                                field.value.includes(subject.id)
+                              }
+                              onChange={(event) => {
+                                const isChecked = (
+                                  event.target as HTMLInputElement
+                                ).checked;
+
+                                if (isChecked) {
+                                  field.onChange([
+                                    ...(field.value || []),
+                                    subject.id,
+                                  ]);
+                                } else {
+                                  field.onChange(
+                                    (field.value || []).filter(
+                                      (value) => value !== subject.id,
+                                    ),
+                                  );
+                                }
+                              }}
+                            />
+                          </FormControl>
+                          <FormLabel className="font-normal">
+                            {subject.subjectName}
+                          </FormLabel>
+                        </FormItem>
                       ))}
                   <FormMessage />
                 </FormItem>

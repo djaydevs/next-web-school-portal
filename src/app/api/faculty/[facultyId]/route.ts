@@ -58,7 +58,7 @@ export async function PATCH(req: NextRequest, context: contextProps) {
         data: { faculty: { connect: { userId: params.facultyId } } },
       });
     }
-      
+
     // Assign faculty to sections
     for (const sectionId of sectionIds) {
       await prisma.section.update({
@@ -66,14 +66,14 @@ export async function PATCH(req: NextRequest, context: contextProps) {
         data: { faculty: { connect: { userId: params.facultyId } } },
       });
     }
-    
+
     // Assign faculty to grade levels
     for (const gradeLevelId of gradeLevelIds) {
       await prisma.gradeLevel.update({
         where: { id: gradeLevelId },
         data: { faculty: { connect: { userId: params.facultyId } } },
       });
-    }         
+    }
 
     return NextResponse.json({ message: "Successfully assign" }, { status: 200 });
   } catch (error: any) {
@@ -127,7 +127,7 @@ export async function POST(req: NextRequest, context: contextProps) {
           },
         },
       },
-    });    
+    });
     return NextResponse.json(selection, { status: 200 });
   } catch (error: any) {
     return NextResponse.json({ message: error.message }, { status: 500 });
