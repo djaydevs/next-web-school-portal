@@ -142,6 +142,15 @@ export const columns: ColumnDef<Faculty>[] = [
         </span>
       );
     },
+    filterFn: (row, id, value) => {
+      const facultyProfile: { subjects?: { subjectName: string }[] } =
+        row.getValue("facultyProfile");
+      return (
+        facultyProfile?.subjects?.some((subjects) =>
+          value.includes(subjects.subjectName),
+        ) || false
+      );
+    },
   },
   {
     id: "actions",

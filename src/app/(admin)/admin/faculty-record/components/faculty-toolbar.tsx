@@ -8,7 +8,10 @@ import Icons from "@/components/ui/icons";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { FacultyTableFacetedFilter } from "@/components/faculty-table-faceted-filter";
-import { generateSectionOptionsFaculty } from "@/lib/options";
+import {
+  generateSectionOptionsFaculty,
+  generateSubjectOptionsFaculty,
+} from "@/lib/options";
 import { Faculty } from "@/types";
 import { fetchFaculty } from "@/hooks/getUsers";
 
@@ -29,10 +32,17 @@ export function FacultyTableToolbar<TData>({
     { label: string; value: string }[]
   >([]);
 
+  const [subjectOptions, setSubjectOptions] = useState<
+    { label: string; value: string }[]
+  >([]);
+
   useEffect(() => {
     if (faculties) {
-      const options = generateSectionOptionsFaculty(faculties);
-      setSectionOptions(options);
+      const sections = generateSectionOptionsFaculty(faculties);
+      setSectionOptions(sections);
+
+      const subjects = generateSubjectOptionsFaculty(faculties);
+      setSubjectOptions(subjects);
     }
   }, [faculties]);
 
@@ -53,6 +63,13 @@ export function FacultyTableToolbar<TData>({
               column={table.getColumn("section")}
               title="Section"
               options={sectionOptions}
+            />
+          )}
+          {table.getColumn("subjects") && (
+            <FacultyTableFacetedFilter
+              column={table.getColumn("subjects")}
+              title="Subject"
+              options={subjectOptions}
             />
           )}
           {isFiltered && (

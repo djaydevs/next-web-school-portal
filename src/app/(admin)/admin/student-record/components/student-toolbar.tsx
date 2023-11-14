@@ -8,7 +8,11 @@ import Icons from "@/components/ui/icons";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { StudentTableFacetedFilter } from "@/components/student-table-faceted-filter";
-import { generateSectionOptionsStudent } from "@/lib/options";
+import {
+  generateGradeLevelOptionsStudent,
+  generateSectionOptionsStudent,
+  generateStrandOptionsStudent,
+} from "@/lib/options";
 import { Student } from "@/types";
 import { fetchStudent } from "@/hooks/getUsers";
 
@@ -25,14 +29,26 @@ export function StudentTableToolbar<TData>({
     queryFn: async () => fetchStudent(),
   });
 
+  const [gradeLevelOptions, setGradeLevelOptions] = useState<
+    { label: string; value: string }[]
+  >([]);
+
+  const [strandOptions, setStrandOptions] = useState<
+    { label: string; value: string }[]
+  >([]);
+
   const [sectionOptions, setSectionOptions] = useState<
     { label: string; value: string }[]
   >([]);
 
   useEffect(() => {
     if (students) {
-      const options = generateSectionOptionsStudent(students);
-      setSectionOptions(options);
+      const gradeLevels = generateGradeLevelOptionsStudent(students);
+      setGradeLevelOptions(gradeLevels);
+      const strands = generateStrandOptionsStudent(students);
+      setStrandOptions(strands);
+      const sections = generateSectionOptionsStudent(students);
+      setSectionOptions(sections);
     }
   }, [students]);
 
@@ -48,6 +64,20 @@ export function StudentTableToolbar<TData>({
           className="h-8 w-full md:w-[300px]"
         />
         <div className="flex w-full items-center justify-start space-x-2">
+          {table.getColumn("grade") && (
+            <StudentTableFacetedFilter
+              column={table.getColumn("grade")}
+              title="Grade"
+              options={gradeLevelOptions}
+            />
+          )}
+          {table.getColumn("strand") && (
+            <StudentTableFacetedFilter
+              column={table.getColumn("strand")}
+              title="Strand"
+              options={strandOptions}
+            />
+          )}
           {table.getColumn("section") && (
             <StudentTableFacetedFilter
               column={table.getColumn("section")}

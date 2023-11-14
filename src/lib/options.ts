@@ -1,6 +1,4 @@
-// import { Faculty } from "@/types";
-
-import { Section, Faculty, Student } from "@/types";
+import { Faculty, Student } from "@/types";
 
 export const statuses = [
   {
@@ -28,22 +26,6 @@ export const roles = [
   },
 ]
 
-// export const getStrandName = (strandCode: string): string => {
-//   switch (strandCode) {
-//     case "abm":
-//       return "Accountancy and Business Management";
-//     case "stem":
-//       return "Science, Technology, Engineering, and Mathematics";
-//     case "humss":
-//       return "Humanities and Social Sciences";
-//     case "gas":
-//       return "General Academic Strand";
-//     default:
-//       return "";
-//   }
-// };
-
-// Assuming faculties is your fetched data
 export const generateSectionOptionsFaculty = (faculties: Faculty[]) => {
   const sections = faculties.reduce(
     (acc: { label: string; value: string }[], faculty: Faculty) => {
@@ -58,6 +40,52 @@ export const generateSectionOptionsFaculty = (faculties: Faculty[]) => {
   );
 
   return sections;
+};
+
+export const generateSubjectOptionsFaculty = (faculties: Faculty[]) => {
+  const subjects = faculties.reduce(
+    (acc: { label: string; value: string }[], faculty: Faculty) => {
+      faculty.facultyProfile?.subjects.forEach((sub) => {
+        if (!acc.find((option) => option.value === sub.subjectName)) {
+          acc.push({ label: sub.subjectName, value: sub.subjectName });
+        }
+      });
+      return acc;
+    },
+    [],
+  );
+
+  return subjects;
+};
+
+export const generateGradeLevelOptionsStudent = (students: Student[]) => {
+  const grades = students.reduce(
+    (acc: { label: string; value: string }[], student: Student) => {
+      const grd = student.studentProfile?.gradeLevel;
+      if (grd && !acc.find((option) => option.value === grd.id)) {
+        acc.push({ label: grd.gradeLevel.toString(), value: grd.id });
+      }
+      return acc;
+    },
+    [],
+  );
+
+  return grades;
+};
+
+export const generateStrandOptionsStudent = (students: Student[]) => {
+  const strands = students.reduce(
+    (acc: { label: string; value: string }[], student: Student) => {
+      const str = student.studentProfile?.strand;
+      if (str && !acc.find((option) => option.value === str.strandCode)) {
+        acc.push({ label: str.strandCode, value: str.strandCode });
+      }
+      return acc;
+    },
+    [],
+  );
+
+  return strands;
 };
 
 export const generateSectionOptionsStudent = (students: Student[]) => {

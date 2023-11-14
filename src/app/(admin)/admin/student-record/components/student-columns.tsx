@@ -104,6 +104,11 @@ export const columns: ColumnDef<Student>[] = [
         </span>
       );
     },
+    filterFn: (row, id, value) => {
+      const studentProfile: { gradeLevel?: { id: string } } =
+        row.getValue("studentProfile");
+      return value.includes(studentProfile?.gradeLevel?.id);
+    },
   },
   {
     accessorKey: "strand",
@@ -132,6 +137,11 @@ export const columns: ColumnDef<Student>[] = [
           <p>{studentProfile?.strand.strandCode}</p>
         </span>
       );
+    },
+    filterFn: (row, id, value) => {
+      const studentProfile: { strand?: { strandCode: string } } =
+        row.getValue("studentProfile");
+      return value.includes(studentProfile?.strand?.strandCode);
     },
   },
   {
