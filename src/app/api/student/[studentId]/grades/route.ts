@@ -14,38 +14,38 @@ export async function GET(req: NextRequest, context: StudentProps) {
 
     //return the grades, subject and semester
     const studentGrades = await prisma.studentProfile.findUnique({
-        where: { userId: params.studentId }, // model of user: id in the params
-        include: {
-          grades: {
-            select: {
-              firstQuarter: true,
-              secondQuarter: true,
-              finalGrade: true,
-              remarks: true,
-              subject: {
-                select: {
-                  subjectName: true,
-                },
+      where: { userId: params.studentId }, // model of user: id in the params
+      include: {
+        grades: {
+          select: {
+            firstQuarter: true,
+            secondQuarter: true,
+            finalGrade: true,
+            remarks: true,
+            subject: {
+              select: {
+                subjectName: true,
               },
-              section: {
-                select: {
-                    schoolYear: {
-                        select: {
-                            semester: true,
-                        },
-                    },
+            },
+            section: {
+              select: {
+                schoolYear: {
+                  select: {
+                    semester: true,
+                  },
                 },
               },
             },
           },
         },
+      },
     });
 
     if (!studentGrades) {
-        return NextResponse.json({ error: 'Student not found' }, {status: 404});
+      return NextResponse.json({ error: 'Student not found' }, { status: 404 });
     }
 
-    return NextResponse.json(studentGrades, { status: 200});
+    return NextResponse.json(studentGrades, { status: 200 });
   } catch (error: any) {
     return NextResponse.json({ message: error.message }, { status: 500 });
   }
@@ -59,6 +59,7 @@ export async function POST(req: NextRequest, context: StudentProps) {
 
     //For encoding a single set of grades
     const {
+      studentId,
       section,
       subjectId,
       grades: {
@@ -71,7 +72,7 @@ export async function POST(req: NextRequest, context: StudentProps) {
     // Check if grades already exist for the student, section, and subject
     const existingGrades = await prisma.grades.findFirst({
       where: {
-        studentId: params.studentId,
+        studentId: studentId,
         section: {
           some: {
             id: section, // Filter based on the section's ID
@@ -137,7 +138,7 @@ export async function POST(req: NextRequest, context: StudentProps) {
           firstQuarter,
           section: { connect: { id: section } },
           subjectId,
-          studentId: params.studentId,
+          studentId: studentId,
         },
       });
 

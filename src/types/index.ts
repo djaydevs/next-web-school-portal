@@ -206,6 +206,30 @@ export const studentSchema = z.object({
             strandName: z.string({
                 required_error: "Strand name is required",
             }),
+            subjects: z.array(z.object({
+                id: z.string(),
+                subjectName: z.string({
+                    required_error: "Subject name is required",
+                }),
+                schoolYearId: z.string({
+                    required_error: "School Year name is required",
+                }),
+                strandId: z.string({
+                    required_error: "Strand is required",
+                }),
+                studentId: z.string({
+                    required_error: "Student is required",
+                }),
+                grades: z.array(z.object({
+                    id: z.string(),
+                    firstQuarter: z.number(),
+                    secondQuarter: z.number(),
+                    finalGrade: z.number(),
+                    genAverage: z.number(),
+                    remarks: z.string(),
+                    studentId: z.string(),
+                })),
+            }))
         }),
         strandId: z.string({
             required_error: "Strand is required",
@@ -285,6 +309,18 @@ export const strandSchema = z.object({
     strandName: z.string({
         required_error: "Strand name is required",
     }),
+    subjects: z.array(z.object({
+        id: z.string(),
+        subjectName: z.string({
+            required_error: "Subject name is required",
+        }),
+        strandId: z.string({
+            required_error: "Strand is required",
+        }),
+        schoolYearId: z.string({
+            required_error: "School Year name is required",
+        }),
+    })),
 });
 export type Strand = z.infer<typeof strandSchema>
 
@@ -339,6 +375,19 @@ export const facultyAssignSchema = z.object({
     subjectIds: z.array(z.string()),
 });
 export type FacultyAssign = z.infer<typeof facultyAssignSchema>
+
+export const addGradeSchema = z.object({
+    studentId: z.string(),
+    section: z.string({
+        required_error: "Section is required",
+    }),
+    subjectId: z.string(),
+    grades: z.object({
+        firstQuarter: z.number(),
+        secondQuarter: z.number(),
+    })
+});
+export type AddGrade = z.infer<typeof addGradeSchema>
 
 export const verifySchema = z.object({
     inputNumber: z.string({

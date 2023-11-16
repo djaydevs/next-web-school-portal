@@ -15,7 +15,19 @@ export async function GET(req: NextRequest) {
       where: {
         email: session.user.email as string,
       }, include: {
-        studentProfile: true,
+        studentProfile: {
+          include: {
+            strand: {
+              include: {
+                subjects: {
+                  include: {
+                    grades: true,
+                  }
+                },
+              }
+            }
+          }
+        },
         facultyProfile: true,
         adminProfile: true,
       }

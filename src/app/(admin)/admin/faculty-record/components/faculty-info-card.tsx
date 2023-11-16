@@ -100,7 +100,7 @@ const FacultyInfoCard: FC<FacultyInfoCardProps> = ({ facultyInfo }) => {
               </Label>
             </div>
             <div className="flex flex-nowrap items-center justify-between">
-              <Label>License ( Date Valid ):</Label>
+              <Label>License (Date Valid):</Label>
               <Label>
                 {new Date(
                   facultyInfo?.facultyProfile.dateValid as unknown as string,

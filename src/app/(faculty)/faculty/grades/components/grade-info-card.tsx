@@ -1,10 +1,6 @@
 import { FC } from "react";
-import Link from "next/link";
 
-import { cn } from "@/lib/utils";
 import { Student } from "@/types";
-import { buttonVariants } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { UserAvatar } from "@/components/user-avatar";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -36,6 +32,30 @@ const GradeInfoCard: FC<GradeInfoCardProps> = ({ studentInfo }) => {
       <CardContent className="space-y-4">
         <ScrollArea className="h-full space-y-2 p-4 md:h-[360px]">
           <div className="space-y-4">
+            <Separator className="mt-4" />
+            <h3>Report Card Information</h3>
+            <Separator />
+            {studentInfo?.studentProfile?.strand?.subjects?.map(
+              (sub) =>
+                sub.grades?.map((grade) => (
+                  <>
+                    <div className="flex flex-nowrap items-center justify-between">
+                      <div key={sub.id}>
+                        <Label>{sub.subjectName}:</Label>
+                      </div>
+                      <div key={grade.id}>
+                        <Label>
+                          1Q: {grade.firstQuarter}% | 2Q: {grade.secondQuarter}%
+                          | Final: {grade.finalGrade}%
+                        </Label>
+                      </div>
+                    </div>
+                  </>
+                )),
+            )}
+          </div>
+          <div className="space-y-4">
+            <Separator className="mt-4" />
             <h3>Student Personal Information</h3>
             <Separator />
             <div className="flex flex-nowrap items-center justify-between">

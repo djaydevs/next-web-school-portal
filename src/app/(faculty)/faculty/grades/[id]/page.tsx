@@ -2,15 +2,13 @@
 
 import { FC } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
 
 import { fetchStudentById } from "@/hooks/getUsers";
 import { Student } from "@/types";
-import { useToast } from "@/components/ui/use-toast";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { SkeletonCard } from "@/components/loading";
-import StudentAssignForm from "@/components/student-assign-form";
-import StudentInfoCard from "@/components/student-info-card";
+import GradeInfoCard from "@/components/grade-info-card";
+import AddGradesForm from "../components/add-grades-form";
 
 interface ManageGradeIdPageProps {
   params: {
@@ -20,8 +18,6 @@ interface ManageGradeIdPageProps {
 
 const ManageGradeIdPage: FC<ManageGradeIdPageProps> = ({ params }) => {
   const { id } = params;
-  const router = useRouter();
-  const { toast } = useToast();
 
   const {
     data: studentInfo,
@@ -50,7 +46,8 @@ const ManageGradeIdPage: FC<ManageGradeIdPageProps> = ({ params }) => {
         <>
           {studentInfo.studentProfile ? (
             <div className="w-full items-center justify-between space-x-4 p-4 md:flex">
-              <StudentInfoCard studentInfo={studentInfo} />
+              <GradeInfoCard studentInfo={studentInfo} />
+              <AddGradesForm params={{ id }} initialValue={studentInfo} />
             </div>
           ) : (
             <div className="m-auto flex h-[500px] w-full items-center justify-center">
