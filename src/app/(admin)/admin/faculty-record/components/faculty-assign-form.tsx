@@ -155,29 +155,19 @@ const FacultyAssignForm: FC<FacultyAssignFormProps> = ({
                         >
                           <FormControl>
                             <Checkbox
-                              checked={
-                                Array.isArray(field.value) &&
-                                field.value.includes(section.id)
-                              }
-                              onChange={(event) => {
-                                const isChecked = (
-                                  event.target as HTMLInputElement
-                                ).checked;
-
-                                if (isChecked) {
-                                  field.onChange([
-                                    ...(field.value || []),
-                                    section.id,
-                                  ]);
-                                } else {
-                                  field.onChange(
-                                    (field.value || []).filter(
-                                      (value) => value !== section.id,
-                                    ),
-                                  );
+                                checked={
+                                  field.value?.includes(section.id)
                                 }
-                              }}
-                            />
+                                onCheckedChange={(checked) => {
+                                  return checked
+                                    ? field.onChange([...field.value, section.id])
+                                    : field.onChange(
+                                          field.value?.filter(
+                                            (value) => value !== section.id
+                                          )
+                                        )
+                                }}
+                              />
                           </FormControl>
                           <FormLabel className="font-normal">
                             {section.sectionName}
@@ -208,29 +198,19 @@ const FacultyAssignForm: FC<FacultyAssignFormProps> = ({
                         >
                           <FormControl>
                             <Checkbox
-                              checked={
-                                Array.isArray(field.value) &&
-                                field.value.includes(subject.id)
-                              }
-                              onChange={(event) => {
-                                const isChecked = (
-                                  event.target as HTMLInputElement
-                                ).checked;
-
-                                if (isChecked) {
-                                  field.onChange([
-                                    ...(field.value || []),
-                                    subject.id,
-                                  ]);
-                                } else {
-                                  field.onChange(
-                                    (field.value || []).filter(
-                                      (value) => value !== subject.id,
-                                    ),
-                                  );
+                                checked={
+                                  field.value?.includes(subject.id)
                                 }
-                              }}
-                            />
+                                onCheckedChange={(checked) => {
+                                  return checked
+                                    ? field.onChange([...field.value, subject.id])
+                                    : field.onChange(
+                                          field.value?.filter(
+                                            (value) => value !== subject.id
+                                          )
+                                        )
+                                }}
+                              />
                           </FormControl>
                           <FormLabel className="font-normal">
                             {subject.subjectName}
