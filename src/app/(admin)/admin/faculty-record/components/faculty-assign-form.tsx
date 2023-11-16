@@ -26,7 +26,6 @@ import {
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import Icons from "@/components/ui/icons";
-import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Faculty, FacultyAssign, facultyAssignSchema } from "@/types";
@@ -143,7 +142,7 @@ const FacultyAssignForm: FC<FacultyAssignFormProps> = ({
                   <div className="mb-4">
                     <FormLabel className="text-base">Section</FormLabel>
                     <FormDescription>
-                      Select the section you want to assign to .
+                      Select the sections you want to assign to the faculty.
                     </FormDescription>
                   </div>
                   {isLoadingSections
@@ -155,19 +154,17 @@ const FacultyAssignForm: FC<FacultyAssignFormProps> = ({
                         >
                           <FormControl>
                             <Checkbox
-                                checked={
-                                  field.value?.includes(section.id)
-                                }
-                                onCheckedChange={(checked) => {
-                                  return checked
-                                    ? field.onChange([...field.value, section.id])
-                                    : field.onChange(
-                                          field.value?.filter(
-                                            (value) => value !== section.id
-                                          )
-                                        )
-                                }}
-                              />
+                              checked={field.value?.includes(section.id)}
+                              onCheckedChange={(checked) => {
+                                return checked
+                                  ? field.onChange([...field.value, section.id])
+                                  : field.onChange(
+                                      field.value?.filter(
+                                        (value) => value !== section.id,
+                                      ),
+                                    );
+                              }}
+                            />
                           </FormControl>
                           <FormLabel className="font-normal">
                             {section.sectionName}
@@ -186,7 +183,7 @@ const FacultyAssignForm: FC<FacultyAssignFormProps> = ({
                   <div className="mb-4">
                     <FormLabel className="text-base">Subject</FormLabel>
                     <FormDescription>
-                      Select the subject you want to assign to .
+                      Select the subjects you want to assign to the faculty.
                     </FormDescription>
                   </div>
                   {isLoadingSubjects
@@ -198,19 +195,17 @@ const FacultyAssignForm: FC<FacultyAssignFormProps> = ({
                         >
                           <FormControl>
                             <Checkbox
-                                checked={
-                                  field.value?.includes(subject.id)
-                                }
-                                onCheckedChange={(checked) => {
-                                  return checked
-                                    ? field.onChange([...field.value, subject.id])
-                                    : field.onChange(
-                                          field.value?.filter(
-                                            (value) => value !== subject.id
-                                          )
-                                        )
-                                }}
-                              />
+                              checked={field.value?.includes(subject.id)}
+                              onCheckedChange={(checked) => {
+                                return checked
+                                  ? field.onChange([...field.value, subject.id])
+                                  : field.onChange(
+                                      field.value?.filter(
+                                        (value) => value !== subject.id,
+                                      ),
+                                    );
+                              }}
+                            />
                           </FormControl>
                           <FormLabel className="font-normal">
                             {subject.subjectName}
@@ -222,8 +217,8 @@ const FacultyAssignForm: FC<FacultyAssignFormProps> = ({
               )}
             />
           </CardContent>
-          <CardFooter className="flex justify-between gap-4">
-            <Button type="submit" disabled={isLoadingSubmit} className="w-full">
+          <CardFooter className="flex w-full justify-end">
+            <Button type="submit" disabled={isLoadingSubmit}>
               {isLoadingSubmit ? (
                 <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" />
               ) : null}{" "}

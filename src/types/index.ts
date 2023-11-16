@@ -15,11 +15,37 @@ export const userSchema = z.object({
         required_error: "You need to select a role.",
     }),
     isVerified: z.boolean(),
-    adminProfile: z.object({}).nullish(),
-    facultyProfile: z.object({}).nullish(),
-    studentProfile: z.object({}).nullish(),
 });
 export type User = z.infer<typeof userSchema>
+
+export const adminSchema = z.object({
+    id: z.string(),
+    name: z.string().nullish(),
+    email: z.string({
+        required_error: "Email field is required",
+        invalid_type_error: "This field must be in email format",
+    }).email(),
+    emailVerified: z.string().nullish(),
+    createdAt: z.string().nullish(),
+    updatedAt: z.string().nullish(),
+    image: z.string().url().nullish(),
+    role: z.string({
+        required_error: "You need to select a role.",
+    }),
+    isVerified: z.boolean(),
+    adminProfile: z.object({
+        id: z.string(),
+        lastName: z.string(),
+        firstName: z.string(),
+        middleName: z.string().nullish(),
+        age: z.number().int(),
+        dateOfBirth: z.date().nullish(),
+        gender: z.string(),
+        address: z.string(),
+        contactNumber: z.string().nullish(),
+    }).nullish(),
+});
+export type Admin = z.infer<typeof adminSchema>
 
 export const facultySchema = z.object({
     id: z.string(),
@@ -38,7 +64,7 @@ export const facultySchema = z.object({
     isVerified: z.boolean(),
     facultyProfile: z.object({
         id: z.string(),
-        empNumber: z.number().int(),
+        empNumber: z.string(),
         lastName: z.string({
             required_error: "Last name is required",
         }),
@@ -50,16 +76,27 @@ export const facultySchema = z.object({
             required_error: "Age is required",
             invalid_type_error: "Age must be a number",
         }).int(),
-        dateOfBirth: z.date({
-            required_error: "Date of birth is required",
-        }),
-        gender: z.string({
-            required_error: "Gender is required",
-        }),
-        address: z.string({
-            required_error: "Address is required",
-        }),
-        contactNumber: z.string().nullish(),
+        // dateOfBirth: z.date({
+        //     required_error: "Date of birth is required",
+        // }),
+        // gender: z.string({
+        //     required_error: "Gender is required",
+        // }),
+        // address: z.string({
+        //     required_error: "Address is required",
+        // }),
+        // contactNumber: z.string().nullish(),
+        sex: z.string(),
+        civilStatus: z.string(),
+        yearsInMJA: z.string(),
+        otherSchool: z.number().int(),
+        dateIssued: z.date().nullish(),
+        dateValid: z.date().nullish(),
+        licenseNumber: z.number().int(),
+        profOrg: z.string(),
+        degree: z.string(),
+        major: z.string(),
+        minor: z.string(),
         section: z.array(z.object({
             id: z.string(),
             schoolYearId: z.string({

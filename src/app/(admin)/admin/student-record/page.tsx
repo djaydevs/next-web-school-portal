@@ -7,7 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { SkeletonTable } from "@/components/loading";
 import Icons from "@/components/ui/icons";
 import { Button } from "@/components/ui/button";
-import StudentTable from "./components/student-table";
+import StudentTable from "@/components/student-table";
 import { columns } from "@/components/student-columns";
 import { Student } from "@/types";
 import { fetchStudent } from "@/hooks/getUsers";

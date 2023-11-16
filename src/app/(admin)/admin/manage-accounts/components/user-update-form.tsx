@@ -164,11 +164,8 @@ const UserUpdateForm: FC<UserUpdateFormProps> = ({ params, initialValue }) => {
               )}
             />
           </CardContent>
-          <CardFooter className="flex justify-between gap-4">
-            <Button variant="outline" className="w-full">
-              Delete Account
-            </Button>
-            <Button type="submit" disabled={isLoadingSubmit} className="w-full">
+          <CardFooter className="flex w-full justify-end">
+            <Button type="submit" disabled={isLoadingSubmit}>
               {isLoadingSubmit ? (
                 <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" />
               ) : null}{" "}
