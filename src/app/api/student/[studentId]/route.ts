@@ -17,7 +17,15 @@ export async function GET(req: NextRequest, context: contextProps) {
                 studentProfile: {
                     include: {
                         gradeLevel: true,
-                        strand: true,
+                        strand: {
+                            include: {
+                                subjects: {
+                                    include: {
+                                        grades: true,
+                                    }
+                                },
+                            }
+                        },
                         section: true,
                         subjects: true,
                         grades: true,

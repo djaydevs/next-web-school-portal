@@ -14,11 +14,11 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <>
-      <header className="h-screen bg-background dark:bg-background">
+      <header className="h-screen">
         <Navbar />
         <Hero />
       </header>
-      <main className="z-20 mx-auto -mt-1 max-w-[1300px] bg-background dark:bg-background">
+      <main className="z-20 mx-auto -mt-1 max-w-[1300px]">
         <SectionMessage />
         <SectionPrograms />
         <SectionAbout />

@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import Icons from "@/components/ui/icons";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { StudentTableFacetedFilter } from "@/components/student-table-faceted-filter";
+import { GradeTableFacetedFilter } from "@/components/grade-table-faceted-filter";
 import {
   generateGradeLevelOptionsStudent,
   generateSectionOptionsStudent,
@@ -20,7 +20,7 @@ interface DataTableToolbarProps<TData> {
   table: Table<TData>;
 }
 
-export function StudentTableToolbar<TData>({
+export function GradeTableToolbar<TData>({
   table,
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
@@ -65,21 +65,21 @@ export function StudentTableToolbar<TData>({
         />
         <div className="flex w-full items-center justify-start space-x-2">
           {table.getColumn("grade") && (
-            <StudentTableFacetedFilter
+            <GradeTableFacetedFilter
               column={table.getColumn("grade")}
               title="Grade"
               options={gradeLevelOptions}
             />
           )}
           {table.getColumn("strand") && (
-            <StudentTableFacetedFilter
+            <GradeTableFacetedFilter
               column={table.getColumn("strand")}
               title="Strand"
               options={strandOptions}
             />
           )}
           {table.getColumn("section") && (
-            <StudentTableFacetedFilter
+            <GradeTableFacetedFilter
               column={table.getColumn("section")}
               title="Section"
               options={sectionOptions}

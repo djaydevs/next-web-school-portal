@@ -2,8 +2,8 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 
-import { StudentTableColumnHeader } from "@/components/student-table-column-header";
-import { StudentTableRowDetails } from "@/components/student-table-row-details";
+import { GradeTableColumnHeader } from "@/components/grade-table-column-header";
+import { GradeTableRowDetails } from "@/components/grade-table-row-details";
 import { UserAvatar } from "@/components/user-avatar";
 import { Student } from "@/types";
 import { Badge } from "@/components/ui/badge";
@@ -12,7 +12,7 @@ export const columns: ColumnDef<Student>[] = [
   {
     accessorKey: "studentProfile",
     header: ({ column }) => (
-      <StudentTableColumnHeader
+      <GradeTableColumnHeader
         column={column}
         title="LRN"
         className="hidden md:table-cell"
@@ -41,7 +41,7 @@ export const columns: ColumnDef<Student>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => (
-      <StudentTableColumnHeader column={column} title="Name" />
+      <GradeTableColumnHeader column={column} title="Name" />
     ),
     cell: ({ row }) => {
       return (
@@ -62,7 +62,7 @@ export const columns: ColumnDef<Student>[] = [
   {
     accessorKey: "email",
     header: ({ column }) => (
-      <StudentTableColumnHeader
+      <GradeTableColumnHeader
         column={column}
         title="Email"
         className="hidden md:table-cell"
@@ -79,7 +79,7 @@ export const columns: ColumnDef<Student>[] = [
   {
     accessorKey: "grade",
     header: ({ column }) => (
-      <StudentTableColumnHeader
+      <GradeTableColumnHeader
         column={column}
         title="Grade"
         className="hidden md:table-cell"
@@ -113,7 +113,7 @@ export const columns: ColumnDef<Student>[] = [
   {
     accessorKey: "strand",
     header: ({ column }) => (
-      <StudentTableColumnHeader
+      <GradeTableColumnHeader
         column={column}
         title="Strand"
         className="hidden md:table-cell"
@@ -147,7 +147,7 @@ export const columns: ColumnDef<Student>[] = [
   {
     accessorKey: "section",
     header: ({ column }) => (
-      <StudentTableColumnHeader
+      <GradeTableColumnHeader
         column={column}
         title="Section"
         className="hidden md:table-cell"
@@ -180,6 +180,6 @@ export const columns: ColumnDef<Student>[] = [
   },
   {
     id: "actions",
-    cell: ({ row }) => <StudentTableRowDetails row={row} />,
+    cell: ({ row }) => <GradeTableRowDetails row={row} />,
   },
 ];

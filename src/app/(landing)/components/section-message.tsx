@@ -7,6 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 
 interface SectionMessageProps {}
 
@@ -15,16 +16,17 @@ const SectionMessage: FC<SectionMessageProps> = ({}) => {
     <section id="message" className="w-full p-10">
       <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
         <Image
-          width={350}
-          height={350}
+          width={300}
+          height={300}
           src="/principal.jpg"
           alt="Hero Image"
           className="rounded-full"
         />
         <div>
-          <Card className="lg:px-16 lg:py-10">
+          <Card className="dark:bg-brown-300/50 lg:px-16 lg:py-10">
             <CardHeader>
               <CardTitle>Principal Message</CardTitle>
+              <Separator className="h-1 bg-gold-500" />
             </CardHeader>
             <CardContent>
               <p>

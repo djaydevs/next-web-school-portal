@@ -1,5 +1,6 @@
 import { FC } from "react";
 import Image from "next/image";
+
 import {
   Card,
   CardContent,
@@ -7,6 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 
 interface SectionAboutProps {}
 
@@ -14,9 +16,10 @@ const SectionAbout: FC<SectionAboutProps> = ({}) => {
   return (
     <section id="about" className="w-full p-10">
       <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-        <Card className="lg:px-16 lg:py-10">
+        <Card className="dark:bg-brown-300/50 lg:px-16 lg:py-10">
           <CardHeader>
             <CardTitle>About</CardTitle>
+            <Separator className="h-1 bg-gold-500" />
           </CardHeader>
           <CardContent className="flex flex-col items-center justify-between gap-2 lg:flex-row">
             <div>

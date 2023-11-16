@@ -26,9 +26,9 @@ import {
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import Icons from "@/components/ui/icons";
-import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import { Checkbox } from "@/components/ui/checkbox";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Faculty, FacultyAssign, facultyAssignSchema } from "@/types";
 import { fetchSections, fetchSubjects } from "@/hooks/getInfos";
 
@@ -135,115 +135,99 @@ const FacultyAssignForm: FC<FacultyAssignFormProps> = ({
           className="w-full space-y-6"
         >
           <CardContent className="space-y-4">
-            <FormField
-              control={form.control}
-              name="sectionIds"
-              render={({ field }) => (
-                <FormItem>
-                  <div className="mb-4">
-                    <FormLabel className="text-base">Section</FormLabel>
-                    <FormDescription>
-                      Select the section you want to assign to .
-                    </FormDescription>
-                  </div>
-                  {isLoadingSections
-                    ? "loading"
-                    : sections?.map((section) => (
-                        <FormItem
-                          key={section.id}
-                          className="flex flex-row items-start space-x-3 space-y-0"
-                        >
-                          <FormControl>
-                            <Checkbox
-                              checked={
-                                Array.isArray(field.value) &&
-                                field.value.includes(section.id)
-                              }
-                              onChange={(event) => {
-                                const isChecked = (
-                                  event.target as HTMLInputElement
-                                ).checked;
-
-                                if (isChecked) {
-                                  field.onChange([
-                                    ...(field.value || []),
-                                    section.id,
-                                  ]);
-                                } else {
-                                  field.onChange(
-                                    (field.value || []).filter(
-                                      (value) => value !== section.id,
-                                    ),
-                                  );
-                                }
-                              }}
-                            />
-                          </FormControl>
-                          <FormLabel className="font-normal">
-                            {section.sectionName}
-                          </FormLabel>
-                        </FormItem>
-                      ))}
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="subjectIds"
-              render={({ field }) => (
-                <FormItem>
-                  <div className="mb-4">
-                    <FormLabel className="text-base">Subject</FormLabel>
-                    <FormDescription>
-                      Select the subject you want to assign to .
-                    </FormDescription>
-                  </div>
-                  {isLoadingSubjects
-                    ? "loading"
-                    : subjects?.map((subject) => (
-                        <FormItem
-                          key={subject.id}
-                          className="flex flex-row items-start space-x-3 space-y-0"
-                        >
-                          <FormControl>
-                            <Checkbox
-                              checked={
-                                Array.isArray(field.value) &&
-                                field.value.includes(subject.id)
-                              }
-                              onChange={(event) => {
-                                const isChecked = (
-                                  event.target as HTMLInputElement
-                                ).checked;
-
-                                if (isChecked) {
-                                  field.onChange([
-                                    ...(field.value || []),
-                                    subject.id,
-                                  ]);
-                                } else {
-                                  field.onChange(
-                                    (field.value || []).filter(
-                                      (value) => value !== subject.id,
-                                    ),
-                                  );
-                                }
-                              }}
-                            />
-                          </FormControl>
-                          <FormLabel className="font-normal">
-                            {subject.subjectName}
-                          </FormLabel>
-                        </FormItem>
-                      ))}
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <ScrollArea className="h-full space-y-2 p-4 md:h-[330px]">
+              <FormField
+                control={form.control}
+                name="sectionIds"
+                render={({ field }) => (
+                  <FormItem>
+                    <div className="mb-2 mt-4">
+                      <FormLabel className="text-base">Section</FormLabel>
+                      <FormDescription>
+                        Select the sections you want to assign to the faculty.
+                      </FormDescription>
+                    </div>
+                    {isLoadingSections
+                      ? "loading"
+                      : sections?.map((section) => (
+                          <FormItem
+                            key={section.id}
+                            className="flex flex-row items-start space-x-3 space-y-0"
+                          >
+                            <FormControl>
+                              <Checkbox
+                                checked={field.value?.includes(section.id)}
+                                onCheckedChange={(checked) => {
+                                  return checked
+                                    ? field.onChange([
+                                        ...field.value,
+                                        section.id,
+                                      ])
+                                    : field.onChange(
+                                        field.value?.filter(
+                                          (value) => value !== section.id,
+                                        ),
+                                      );
+                                }}
+                              />
+                            </FormControl>
+                            <FormLabel className="font-normal">
+                              {section.sectionName}
+                            </FormLabel>
+                          </FormItem>
+                        ))}
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="subjectIds"
+                render={({ field }) => (
+                  <FormItem>
+                    <div className="mb-2 mt-4">
+                      <FormLabel className="text-base">Subject</FormLabel>
+                      <FormDescription>
+                        Select the subjects you want to assign to the faculty.
+                      </FormDescription>
+                    </div>
+                    {isLoadingSubjects
+                      ? "loading"
+                      : subjects?.map((subject) => (
+                          <FormItem
+                            key={subject.id}
+                            className="flex flex-row items-start space-x-3 space-y-0"
+                          >
+                            <FormControl>
+                              <Checkbox
+                                checked={field.value?.includes(subject.id)}
+                                onCheckedChange={(checked) => {
+                                  return checked
+                                    ? field.onChange([
+                                        ...field.value,
+                                        subject.id,
+                                      ])
+                                    : field.onChange(
+                                        field.value?.filter(
+                                          (value) => value !== subject.id,
+                                        ),
+                                      );
+                                }}
+                              />
+                            </FormControl>
+                            <FormLabel className="font-normal">
+                              {subject.subjectName}
+                            </FormLabel>
+                          </FormItem>
+                        ))}
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </ScrollArea>
           </CardContent>
-          <CardFooter className="flex justify-between gap-4">
-            <Button type="submit" disabled={isLoadingSubmit} className="w-full">
+          <CardFooter className="flex w-full justify-end">
+            <Button type="submit" disabled={isLoadingSubmit}>
               {isLoadingSubmit ? (
                 <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" />
               ) : null}{" "}

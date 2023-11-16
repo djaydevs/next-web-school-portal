@@ -63,11 +63,11 @@ export const facultyRoutes = [
     icon: Icons.LayoutDashboard,
     href: "/faculty",
   },
-  {
-    label: "Classes",
-    icon: Icons.FileText,
-    href: "/faculty/advisory-class",
-  },
+  // {
+  //   label: "Classes",
+  //   icon: Icons.FileText,
+  //   href: "/faculty/advisory-class",
+  // },
   {
     label: "Report Card",
     icon: Icons.Star,

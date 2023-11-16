@@ -77,7 +77,7 @@ export const columns: ColumnDef<Faculty>[] = [
     },
   },
   {
-    accessorKey: "facultyProfile",
+    accessorKey: "section",
     header: ({ column }) => (
       <FacultyTableColumnHeader
         column={column}
@@ -105,16 +105,17 @@ export const columns: ColumnDef<Faculty>[] = [
       );
     },
     filterFn: (row, id, value) => {
-      const facultyProfile = row.getValue(
-        "facultyProfile",
-      ) as Faculty["facultyProfile"];
-
-      // Check if any section name matches the filter value
-      return facultyProfile?.section.some((sec) => sec.sectionName === value);
+      const facultyProfile: { section?: { sectionName: string }[] } =
+        row.getValue("facultyProfile");
+      return (
+        facultyProfile?.section?.some((section) =>
+          value.includes(section.sectionName),
+        ) || false
+      );
     },
   },
   {
-    accessorKey: "facultyProfile",
+    accessorKey: "subjects",
     header: ({ column }) => (
       <FacultyTableColumnHeader
         column={column}
@@ -139,6 +140,15 @@ export const columns: ColumnDef<Faculty>[] = [
             </Badge>
           ))}
         </span>
+      );
+    },
+    filterFn: (row, id, value) => {
+      const facultyProfile: { subjects?: { subjectName: string }[] } =
+        row.getValue("facultyProfile");
+      return (
+        facultyProfile?.subjects?.some((subjects) =>
+          value.includes(subjects.subjectName),
+        ) || false
       );
     },
   },

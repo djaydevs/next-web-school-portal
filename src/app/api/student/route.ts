@@ -11,8 +11,16 @@ export async function GET(req: NextRequest) {
           include: {
             gradeLevel: true,
             section: true,
-            strand: true,
-            subjects: true,
+            strand: {
+              include: {
+                subjects: true,
+              }
+            },
+            subjects: {
+              include: {
+                grades: true,
+              }
+            },
             grades: true,
           }
         },

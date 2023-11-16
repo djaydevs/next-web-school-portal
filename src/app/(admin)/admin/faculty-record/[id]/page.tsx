@@ -1,16 +1,13 @@
 "use client";
 
 import { FC } from "react";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
-import axios, { AxiosError } from "axios";
-import * as z from "zod";
+import { useQuery } from "@tanstack/react-query";
 
 import { fetchFacultyById } from "@/hooks/getUsers";
-import { Faculty, facultySchema } from "@/types";
-import { useToast } from "@/components/ui/use-toast";
+import { Faculty } from "@/types";
 import { SkeletonCard } from "@/components/loading";
 import FacultyAssignForm from "@/components/faculty-assign-form";
+import FacultyInfoCard from "@/components/faculty-info-card";
 
 interface ManageFacultyRecordProps {
   params: {
@@ -36,11 +33,7 @@ const ManageFacultyRecord: FC<ManageFacultyRecordProps> = ({ params }) => {
   }
 
   return (
-    <div>
-      {/* {facultyInfo?.name}
-      {facultyInfo?.facultyProfile.section.map((section, index) => (
-        <p key={index}>{section.sectionName}</p>
-      ))} */}
+    <>
       <h2 className="px-4 text-2xl font-bold tracking-tight">
         Manage Faculty Details
       </h2>
@@ -50,10 +43,11 @@ const ManageFacultyRecord: FC<ManageFacultyRecordProps> = ({ params }) => {
         </div>
       ) : (
         <div className="w-full justify-between space-x-4 p-4 md:flex">
+          <FacultyInfoCard facultyInfo={facultyInfo} />
           <FacultyAssignForm initialValue={facultyInfo} params={{ id }} />
         </div>
       )}
-    </div>
+    </>
   );
 };
 

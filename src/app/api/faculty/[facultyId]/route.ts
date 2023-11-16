@@ -68,12 +68,12 @@ export async function PATCH(req: NextRequest, context: contextProps) {
     }
 
     // Assign faculty to grade levels
-    for (const gradeLevelId of gradeLevelIds) {
-      await prisma.gradeLevel.update({
-        where: { id: gradeLevelId },
-        data: { faculty: { connect: { userId: params.facultyId } } },
-      });
-    }
+    // for (const gradeLevelId of gradeLevelIds) {
+    //   await prisma.gradeLevel.update({
+    //     where: { id: gradeLevelId },
+    //     data: { faculty: { connect: { userId: params.facultyId } } },
+    //   });
+    // }
 
     return NextResponse.json({ message: "Successfully assign" }, { status: 200 });
   } catch (error: any) {

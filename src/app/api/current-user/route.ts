@@ -15,7 +15,19 @@ export async function GET(req: NextRequest) {
       where: {
         email: session.user.email as string,
       }, include: {
-        studentProfile: true,
+        studentProfile: {
+          include: {
+            strand: {
+              include: {
+                subjects: {
+                  include: {
+                    grades: true,
+                  }
+                },
+              }
+            }
+          }
+        },
         facultyProfile: true,
         adminProfile: true,
       }
@@ -89,6 +101,17 @@ export async function PATCH(req: NextRequest, res: NextResponse) {
           firstName: body.firstName,
           middleName: body.middleName,
           age: body.age,
+          sex: body.sex,
+          civilStatus: body.civilStatus,
+          yearsInMJA: body.yearsInMJA,
+          otherSchool: body.otherSchool,
+          dateIssued: body.dateIssued,
+          dateValid: body.dateValid,
+          licenseNumber: body.licenseNumber,
+          profOrg: body.profOrg,
+          degree: body.degree,
+          major: body.major,
+          minor: body.minor,
           // dateOfBirth: body.dateOfBirth,
           // gender: body.gender,
           // address: body.address,

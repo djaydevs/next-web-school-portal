@@ -20,8 +20,8 @@ export default function AuthenticationPage() {
             <Image
               priority
               fill
-              src="/signin-image.webp"
-              alt="Hero Image"
+              src="/signin.jpg"
+              alt="Signin Image"
               style={{ objectFit: "cover" }}
               className="hero-image"
             />

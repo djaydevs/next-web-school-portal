@@ -62,6 +62,7 @@ const AddStrandForm: FC<AddStrandFormProps> = ({}) => {
       gradeLevelId: "",
       strandCode: "",
       strandName: "",
+      subjects: [],
     },
   });
 
