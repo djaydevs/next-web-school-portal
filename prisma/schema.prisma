@@ -152,8 +152,10 @@ model SchoolYear {
 
 model Enrollment {
   id             String   @id @default(cuid())
-  status         String?
+  academicYear   String?
+  status         String   @default("Not yet registered")
   enrollmentDate DateTime @default(now())
+  percentage     Float?
 
   schoolYear   SchoolYear?     @relation(fields: [schoolYearId], references: [id])
   schoolYearId String?
