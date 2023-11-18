@@ -174,6 +174,23 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
     if (role === "student") {
       // Update student profile
+
+      const currentGradeLevel = currentUser.studentProfile?.gradeLevel?.gradeLevel || 11;
+      const newGradeLevel = currentGradeLevel + 1;
+
+      const schoolYear = await prisma.schoolYear.findFirst({
+        where: {
+          to: { gte: new Date() },
+        },
+        orderBy: {
+          from: 'asc',
+        },
+      });
+
+      if (!schoolYear) {
+        return NextResponse.json({ error: "No active school year found" }, { status: 400 });
+      }
+
       const addStudentProfile = await prisma.studentProfile.create({
         data: {
           user: {
@@ -197,6 +214,18 @@ export async function POST(req: NextRequest, res: NextResponse) {
           parentGuardianAddress: body.parentGuardianAddress,
           parentGuardianOccupation: body.parentGuardianOccupation,
           contactNumber: body.contact,
+          gradeLevel: {
+            connect: {
+              gradeLevel: newGradeLevel,
+            },
+          },
+          enrollment: {
+            create: {
+              academicYear: `${schoolYear.from.getFullYear()}-${schoolYear.to.getFullYear() + 1}`,
+              status: "Not yet registered",
+              enrollmentDate: new Date().toISOString(),
+            },
+          },
         },
       });
 
