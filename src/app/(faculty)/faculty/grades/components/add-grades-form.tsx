@@ -132,13 +132,11 @@ const AddGradesForm: FC<AddGradesFormProps> = ({ params, initialValue }) => {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {initialValue?.studentProfile?.strand?.subjects?.map(
-                        (sub) => (
-                          <SelectItem key={sub.id} value={sub.id}>
-                            {sub.subjectName}
-                          </SelectItem>
-                        ),
-                      )}
+                      {initialValue?.studentProfile?.subjects?.map((sub) => (
+                        <SelectItem key={sub.id} value={sub.id}>
+                          {sub.subjectName}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                   <FormMessage />

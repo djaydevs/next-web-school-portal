@@ -18,6 +18,38 @@ export const userSchema = z.object({
 });
 export type User = z.infer<typeof userSchema>
 
+export const enrollmentSchema = z.object({
+    sex: z.string(),
+    age: z.number({
+        required_error: "Age is required",
+        invalid_type_error: "Age must be a number",
+    }).int(),
+    lastName: z.string({
+        required_error: "Last name is required",
+    }),
+    firstName: z.string({
+        required_error: "First name is required",
+    }),
+    middleName: z.string().nullish(),
+    dateOfBirth: z.date({
+        required_error: "Date of birth is required",
+    }),
+    address: z.string({
+        required_error: "Address is required",
+    }),
+    parentGuardianName: z.string().nullish(),
+    parentGuardianAddress: z.string().nullish(),
+    parentGuardianOccupation: z.string().nullish(),
+    contactNumber: z.string().nullish(),
+    gradeLevelId: z.string({
+        required_error: "Grade level is required",
+    }),
+    enrollment: z.object({
+        schoolYearId: z.string(),
+    })
+})
+export type Enrollment = z.infer<typeof enrollmentSchema>
+
 export const adminSchema = z.object({
     id: z.string(),
     name: z.string().nullish(),
@@ -276,6 +308,15 @@ export const studentSchema = z.object({
             studentId: z.string({
                 required_error: "Student is required",
             }),
+            grades: z.array(z.object({
+                id: z.string(),
+                firstQuarter: z.number(),
+                secondQuarter: z.number(),
+                finalGrade: z.number(),
+                genAverage: z.number(),
+                remarks: z.string(),
+                studentId: z.string(),
+            })),
         })),
     })
 });

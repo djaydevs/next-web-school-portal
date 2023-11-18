@@ -27,7 +27,11 @@ export async function GET(req: NextRequest, context: contextProps) {
                             }
                         },
                         section: true,
-                        subjects: true,
+                        subjects: {
+                            include: {
+                                grades: true,
+                            }
+                        },
                         grades: true,
                     }
                 },
