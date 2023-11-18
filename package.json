@@ -44,6 +44,7 @@
     "date-fns": "^2.30.0",
     "eslint": "8.42.0",
     "eslint-config-next": "13.4.5",
+    "framer-motion": "^10.16.5",
     "lucide-react": "^0.263.1",
     "next": "^14.0.0",
     "next-auth": "^4.24.3",

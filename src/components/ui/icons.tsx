@@ -1,6 +1,8 @@
 import {
   ArrowUp,
   ArrowDown,
+  ArrowLeft,
+  ArrowRight,
   Bell,
   CalendarIcon,
   Check,
@@ -43,6 +45,8 @@ type IconProps = React.HTMLAttributes<SVGElement>;
 export const Icons = {
   ArrowUp,
   ArrowDown,
+  ArrowLeft,
+  ArrowRight,
   Bell,
   CalendarIcon,
   Check,
