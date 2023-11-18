@@ -160,7 +160,7 @@ model Enrollment {
   schoolYear   SchoolYear?     @relation(fields: [schoolYearId], references: [id])
   schoolYearId String?
   student      StudentProfile? @relation(fields: [studentId], references: [id])
-  studentId    String?         @unique
+  studentId    String?
 }
 
 model GradeLevel {

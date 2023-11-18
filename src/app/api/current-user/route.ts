@@ -146,7 +146,7 @@ export async function PATCH(req: NextRequest, res: NextResponse) {
   }
 }
 
-export async function POST(req: NextRequest, res: NextResponse) {
+export async function PUT(req: NextRequest, res: NextResponse) {
   try {
     const session = await getSession();
 
@@ -174,10 +174,6 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
     if (role === "student") {
       // Update student profile
-
-      const currentGradeLevel = currentUser.studentProfile?.gradeLevel?.gradeLevel || 11;
-      const newGradeLevel = currentGradeLevel + 1;
-
       const schoolYear = await prisma.schoolYear.findFirst({
         where: {
           to: { gte: new Date() },
@@ -191,14 +187,9 @@ export async function POST(req: NextRequest, res: NextResponse) {
         return NextResponse.json({ error: "No active school year found" }, { status: 400 });
       }
 
-      const addStudentProfile = await prisma.studentProfile.create({
+      const addStudentProfile = await prisma.studentProfile.update({
+        where: { id: currentUser.studentProfile?.id },
         data: {
-          user: {
-            connect: {
-              id: currentUser.id,
-            }
-          },
-          lrnNumber: body.lrnNumber,
           lastName: body.lastName,
           firstName: body.firstName,
           middleName: body.middleName,
@@ -214,15 +205,12 @@ export async function POST(req: NextRequest, res: NextResponse) {
           parentGuardianAddress: body.parentGuardianAddress,
           parentGuardianOccupation: body.parentGuardianOccupation,
           contactNumber: body.contact,
-          gradeLevel: {
-            connect: {
-              gradeLevel: newGradeLevel,
-            },
-          },
+          gradeLevel: body.gradeLevelId,
           enrollment: {
             create: {
+              schoolYearId: body.schoolYearId,
               academicYear: `${schoolYear.from.getFullYear()}-${schoolYear.to.getFullYear() + 1}`,
-              status: "Not yet registered",
+              status: "Pending",
               enrollmentDate: new Date().toISOString(),
             },
           },
@@ -230,48 +218,11 @@ export async function POST(req: NextRequest, res: NextResponse) {
       });
 
       return NextResponse.json(addStudentProfile, { status: 200 });
-    } else if (role === "faculty") {
-      // Update faculty profile || to be edited once the new fields are implemented
-      const addFacultyProfile = await prisma.facultyProfile.create({
-        data: {
-          user: {
-            connect: {
-              id: currentUser.id,
-            }
-          },
-          empNumber: body.empNumber,
-          lastName: body.lastName,
-          firstName: body.firstName,
-          middleName: body.middleName,
-          age: body.age,
-          sex: body.sex,
-          civilStatus: body.civilStatus,
-          yearsInMJA: body.yearsInMJA,
-          otherSchool: body.otherSchool,
-          dateIssued: body.dateIssued,
-          dateValid: body.dateValid,
-          licenseNumber: body.licenseNumber,
-          profOrg: body.profOrg,
-          degree: body.degree,
-          major: body.major,
-          minor: body.minor,
-          // dateOfBirth: body.dateOfBirth,
-          // gender: body.gender,
-          // address: body.address,
-          // contactNumber: body.contactNumber,
-        },
-      });
-
-      return NextResponse.json(addFacultyProfile, { status: 200 });
     } else if (role === "admin") {
       // Update admin profile
-      const addAdminProfile = await prisma.adminProfile.create({
+      const addAdminProfile = await prisma.adminProfile.update({
+        where: { id: currentUser.adminProfile?.id },
         data: {
-          user: {
-            connect: {
-              id: currentUser.id,
-            }
-          },
           lastName: body.lastName,
           firstName: body.firstName,
           middleName: body.middleName,
