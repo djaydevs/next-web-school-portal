@@ -174,50 +174,124 @@ export async function PUT(req: NextRequest, res: NextResponse) {
 
     if (role === "student") {
       // Update student profile
-      const schoolYear = await prisma.schoolYear.findFirst({
-        where: {
-          to: { gte: new Date() },
-        },
-        orderBy: {
-          from: 'asc',
-        },
+      const body = await req.json();
+
+      // Find the student with the given ID along with related section, school year, and grade level
+      const student = await prisma.studentProfile.findUnique({
+          where: { id: currentUser.studentProfile?.id },
+          include: {
+              section: {
+                  include: {
+                      schoolYear: true, // Include the school year through the section
+                  },
+              },
+              gradeLevel: true,
+          },
       });
 
-      if (!schoolYear) {
-        return NextResponse.json({ error: "No active school year found" }, { status: 400 });
+      if (!student) {
+          return NextResponse.json({ error: 'Student not found' });
       }
 
-      const addStudentProfile = await prisma.studentProfile.update({
-        where: { id: currentUser.studentProfile?.id },
-        data: {
-          lastName: body.lastName,
-          firstName: body.firstName,
-          middleName: body.middleName,
-          dateOfBirth: body.dateOfBirth,
-          age: body.age,
-          sex: body.sex,
-          genAveJHS: body.genAveJHS,
-          nameOfJHS: body.nameOfJHS,
-          jhsCompleted: body.jhsCompleted,
-          gender: body.gender,
-          address: body.address,
-          parentGuardianName: body.parentGuardianName,
-          parentGuardianAddress: body.parentGuardianAddress,
-          parentGuardianOccupation: body.parentGuardianOccupation,
-          contactNumber: body.contact,
-          gradeLevel: body.gradeLevelId,
-          enrollment: {
-            create: {
-              schoolYearId: body.schoolYearId,
-              academicYear: `${schoolYear.from.getFullYear()}-${schoolYear.to.getFullYear() + 1}`,
-              status: "Pending",
-              enrollmentDate: new Date().toISOString(),
-            },
+      const activeSchoolYear = student.section?.schoolYear;
+
+      if (!activeSchoolYear) {
+          return NextResponse.json({ error: 'Active school year not found' });
+      }
+
+      // Disconnect the current grade level and section
+      await prisma.studentProfile.update({
+          where: { id: currentUser.studentProfile?.id },
+          data: {
+              gradeLevel: {
+                  disconnect: true,
+              },
+              section: {
+                  disconnect: true,
+              },
           },
-        },
       });
 
-      return NextResponse.json(addStudentProfile, { status: 200 });
+      // Find the ID of the existing grade level with gradeLevel value 12
+      const targetGradeLevelId = await prisma.gradeLevel.findUnique({
+          where: { gradeLevel: 12 }, // Adjust this condition based on your data
+          select: { id: true },
+      });
+
+      if (!targetGradeLevelId) {
+          return NextResponse.json({ error: 'Target grade level not found' });
+      }
+
+      // Disconnect the current grade level
+      await prisma.studentProfile.update({
+          where: { id: currentUser.studentProfile?.id },
+          data: {
+              gradeLevel: {
+                  disconnect: true,
+              },
+          },
+      });
+
+      // Connect to the target grade level
+      const newGradeLevel = await prisma.studentProfile.update({
+          where: { id: currentUser.studentProfile?.id },
+          data: {
+              // Add other properties you want to update
+              gradeLevel: {
+                  connect: {
+                      id: targetGradeLevelId.id,
+                  },
+              },
+          },
+      });
+
+      // Create a new school year without inserting into the database
+      const newSchoolYear = {
+          from: new Date(activeSchoolYear.to.getFullYear() + 1, activeSchoolYear.to.getMonth(), activeSchoolYear.to.getDate()),
+          to: new Date(activeSchoolYear.to.getFullYear() + 2, activeSchoolYear.to.getMonth(), activeSchoolYear.to.getDate()),
+          semester: 1, // Adjust this based on your logic for the new school year
+      };
+
+      // Create a new enrollment record
+      const newEnrollment = await prisma.enrollment.create({
+          data: {
+              academicYear: `${newSchoolYear.from.getFullYear()}-${newSchoolYear.to.getFullYear()}`,
+              status: 'Pending',
+              enrollmentDate: new Date().toISOString(),
+              student: {
+                  connect: {
+                      id: currentUser.studentProfile?.id,
+                  },
+              },
+          },
+      });
+      
+
+      // Update the student profile to connect the new enrollment record and grade level
+      const updatedStudentProfile = await prisma.studentProfile.update({
+          where: { id: currentUser.studentProfile?.id },
+          data: {
+              lastName: body.lastName,
+              firstName: body.firstName,
+              middleName: body.middleName,
+              dateOfBirth: new Date(body.dateOfBirth).toISOString() ,
+              age: body.age,
+              sex: body.sex,
+              gender: body.gender,
+              address: body.address,
+              parentGuardianName: body.parentGuardianName,
+              parentGuardianAddress: body.parentGuardianAddress,
+              parentGuardianOccupation: body.parentGuardianOccupation,
+              contactNumber: body.contact,
+              enrollment: {
+                  connect: {
+                      id: newEnrollment.id,
+                  },
+              },
+          },
+      });
+
+      return NextResponse.json(updatedStudentProfile, { status: 200 });
     } else if (role === "admin") {
       // Update admin profile
       const addAdminProfile = await prisma.adminProfile.update({

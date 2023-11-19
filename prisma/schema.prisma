@@ -165,7 +165,7 @@ model Enrollment {
 
 model GradeLevel {
   id         String           @id @default(cuid())
-  gradeLevel Int              @unique @default(11)
+  gradeLevel Int              @unique @default(11) @map("level")
   strands    Strand[]
   sections   Section[]
   faculty    FacultyProfile[]
