@@ -19,11 +19,6 @@ export const userSchema = z.object({
 export type User = z.infer<typeof userSchema>
 
 export const enrollmentSchema = z.object({
-    sex: z.string(),
-    age: z.number({
-        required_error: "Age is required",
-        invalid_type_error: "Age must be a number",
-    }).int(),
     lastName: z.string({
         required_error: "Last name is required",
     }),
@@ -31,6 +26,13 @@ export const enrollmentSchema = z.object({
         required_error: "First name is required",
     }),
     middleName: z.string().nullish(),
+    sex: z.string({
+        required_error: "Sex is required"
+    }),
+    age: z.number({
+        required_error: "Age is required",
+        invalid_type_error: "Age must be a number",
+    }).int(),
     dateOfBirth: z.date({
         required_error: "Date of birth is required",
     }),
@@ -41,12 +43,6 @@ export const enrollmentSchema = z.object({
     parentGuardianAddress: z.string().nullish(),
     parentGuardianOccupation: z.string().nullish(),
     contactNumber: z.string().nullish(),
-    gradeLevelId: z.string({
-        required_error: "Grade level is required",
-    }),
-    enrollment: z.object({
-        schoolYearId: z.string(),
-    })
 })
 export type Enrollment = z.infer<typeof enrollmentSchema>
 
