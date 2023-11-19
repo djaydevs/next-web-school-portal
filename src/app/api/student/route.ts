@@ -6,6 +6,7 @@ export async function GET(req: NextRequest) {
     const students = await prisma.user.findMany({
       where: {
         role: "student",
+        isVerified: true,
       }, include: {
         studentProfile: {
           include: {
