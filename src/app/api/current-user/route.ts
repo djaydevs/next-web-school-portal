@@ -174,8 +174,6 @@ export async function PUT(req: NextRequest, res: NextResponse) {
 
     if (role === "student") {
       // Update student profile
-      const body = await req.json();
-
       // Find the student with the given ID along with related section, school year, and grade level
       const student = await prisma.studentProfile.findUnique({
         where: { id: currentUser.studentProfile?.id },
@@ -314,6 +312,7 @@ export async function PUT(req: NextRequest, res: NextResponse) {
     }
 
   } catch (error: any) {
-    return NextResponse.json({ message: error.message }, { status: 500 })
+    console.error("Error in PATCH/PUT request:", error);
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 })
   }
 }
