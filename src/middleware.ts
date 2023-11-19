@@ -35,20 +35,6 @@ export default withAuth(
         new URL("/not-found", req.url)
       );
 
-    // redirect to dashboard if already logged in
-    if (req.nextUrl.pathname.startsWith("/signin") && req.nextauth.token?.role === "admin")
-      return NextResponse.rewrite(
-        new URL("/admin", req.url)
-      );
-    if (req.nextUrl.pathname.startsWith("/signin") && req.nextauth.token?.role === "faculty")
-      return NextResponse.rewrite(
-        new URL("/faculty", req.url)
-      );
-    if (req.nextUrl.pathname.startsWith("/signin") && req.nextauth.token?.role === "student")
-      return NextResponse.rewrite(
-        new URL("/student", req.url)
-      );
-
     //protect routes per role
     if (req.nextUrl.pathname.startsWith("/admin") && req.nextauth.token?.role !== "admin")
       return NextResponse.rewrite(
@@ -72,5 +58,5 @@ export default withAuth(
 );
 
 export const config = {
-  matcher: ["/signin/:path*", "/verify/:path*", "/admin/:path*", "/faculty/:path*", "/student/:path*"],
+  matcher: ["/verify/:path*", "/admin/:path*", "/faculty/:path*", "/student/:path*"],
 };
