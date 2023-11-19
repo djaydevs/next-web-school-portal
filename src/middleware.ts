@@ -11,11 +11,13 @@ export default withAuth(
     // }
     // console.log("token: ", req.nextauth.token);
 
-    // protect routes for not verified users
+    // redirect to not found page if already verified
     if (req.nextUrl.pathname.startsWith("/verify") && req.nextauth.token?.isVerified)
       return NextResponse.rewrite(
         new URL("/not-found", req.url)
       );
+
+    // protect routes for not verified users
     if (req.nextUrl.pathname.startsWith("/admin") && !req.nextauth.token?.isVerified)
       return NextResponse.rewrite(
         new URL("/not-found", req.url)
@@ -28,19 +30,23 @@ export default withAuth(
       return NextResponse.rewrite(
         new URL("/not-found", req.url)
       );
+    if (req.nextUrl.pathname.startsWith("/api") && !req.nextauth.token?.isVerified)
+      return NextResponse.rewrite(
+        new URL("/not-found", req.url)
+      );
 
-    //protect api routes
-    if (req.nextUrl.pathname.startsWith("/api") && req.nextauth.token?.role === "admin")
+    // redirect to dashboard if already logged in
+    if (req.nextUrl.pathname.startsWith("/signin") && req.nextauth.token?.role === "admin")
       return NextResponse.rewrite(
-        new URL("/not-found", req.url)
+        new URL("/admin", req.url)
       );
-    if (req.nextUrl.pathname.startsWith("/api") && req.nextauth.token?.role === "faculty")
+    if (req.nextUrl.pathname.startsWith("/signin") && req.nextauth.token?.role === "faculty")
       return NextResponse.rewrite(
-        new URL("/not-found", req.url)
+        new URL("/faculty", req.url)
       );
-    if (req.nextUrl.pathname.startsWith("/api") && req.nextauth.token?.role === "student")
+    if (req.nextUrl.pathname.startsWith("/signin") && req.nextauth.token?.role === "student")
       return NextResponse.rewrite(
-        new URL("/not-found", req.url)
+        new URL("/student", req.url)
       );
 
     //protect routes per role
@@ -66,7 +72,5 @@ export default withAuth(
 );
 
 export const config = {
-  // REMINDER: add api route to the matcher if you're done testing
-  // matcher: ["/api/:path*", "/admin/:path*", "/faculty/:path*", "/student/:path*, "/verify/:path*""],
-  matcher: ["/admin/:path*", "/faculty/:path*", "/student/:path*", "/verify/:path*"],
+  matcher: ["/signin/:path*", "/verify/:path*", "/admin/:path*", "/faculty/:path*", "/student/:path*"],
 };
