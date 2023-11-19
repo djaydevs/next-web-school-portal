@@ -14,47 +14,47 @@ export default withAuth(
     // protect routes for not verified users
     if (req.nextUrl.pathname.startsWith("/verify") && req.nextauth.token?.isVerified)
       return NextResponse.rewrite(
-        new URL("/signin", req.url)
+        new URL("/not-found", req.url)
       );
     if (req.nextUrl.pathname.startsWith("/admin") && !req.nextauth.token?.isVerified)
       return NextResponse.rewrite(
-        new URL("/verify", req.url)
+        new URL("/not-found", req.url)
       );
     if (req.nextUrl.pathname.startsWith("/faculty") && !req.nextauth.token?.isVerified)
       return NextResponse.rewrite(
-        new URL("/verify", req.url)
+        new URL("/not-found", req.url)
       );
     if (req.nextUrl.pathname.startsWith("/student") && !req.nextauth.token?.isVerified)
       return NextResponse.rewrite(
-        new URL("/verify", req.url)
+        new URL("/not-found", req.url)
       );
 
     //protect api routes
     if (req.nextUrl.pathname.startsWith("/api") && req.nextauth.token?.role === "admin")
       return NextResponse.rewrite(
-        new URL("/admin", req.url)
+        new URL("/not-found", req.url)
       );
     if (req.nextUrl.pathname.startsWith("/api") && req.nextauth.token?.role === "faculty")
       return NextResponse.rewrite(
-        new URL("/faculty", req.url)
+        new URL("/not-found", req.url)
       );
     if (req.nextUrl.pathname.startsWith("/api") && req.nextauth.token?.role === "student")
       return NextResponse.rewrite(
-        new URL("/student", req.url)
+        new URL("/not-found", req.url)
       );
 
     //protect routes per role
     if (req.nextUrl.pathname.startsWith("/admin") && req.nextauth.token?.role !== "admin")
       return NextResponse.rewrite(
-        new URL("/signin", req.url)
+        new URL("/not-found", req.url)
       );
     if (req.nextUrl.pathname.startsWith("/faculty") && req.nextauth.token?.role !== "faculty")
       return NextResponse.rewrite(
-        new URL("/signin", req.url)
+        new URL("/not-found", req.url)
       );
     if (req.nextUrl.pathname.startsWith("/student") && req.nextauth.token?.role !== "student")
       return NextResponse.rewrite(
-        new URL("/signin", req.url)
+        new URL("/not-found", req.url)
       );
   },
   {
