@@ -44,26 +44,79 @@ export async function PATCH(req: NextRequest, context: contextProps) {
     const faculty = await prisma.facultyProfile.findUnique({
       where: {
         userId: params.facultyId,
+      }, 
+      include: {
+        subjects: true,
+        section: true,
       }
     });
 
-    const subjectIds = body.subjectIds; // an array of subject IDs
-    const sectionIds = body.sectionIds; // an array of section IDs
-    const gradeLevelIds = body.gradeLevelIds; // an array of grade level IDs
+    //An array of IDs in subject, section and grade level
+    const subjectIds = body.subjectIds; 
+    const sectionIds = body.sectionIds; 
+    const gradeLevelIds = body.gradeLevelIds; 
 
-    //Assign faculty to subjects
+    if (!faculty) {
+      return NextResponse.json({message: "No Faculty found"}, {status: 404})
+    }
+
+    // Extract the IDs of the currently connected subjects
+    const currentSubjectIds = faculty.subjects.map(subject => subject.id);
+
+    // Calculate the subjects to disconnect
+    const subjectsToDisconnect = currentSubjectIds.filter(subjectId => !subjectIds.includes(subjectId));
+
+    // Assign faculty to subjects
     for (const subjectId of subjectIds) {
       await prisma.subject.update({
         where: { id: subjectId },
-        data: { faculty: { connect: { userId: params.facultyId } } },
+        data: {
+          faculty: {
+            connect: { userId: params.facultyId },
+          },
+        },
       });
     }
+
+    // Disconnect faculty from subjects that are not in the updated subjectIds array
+    for (const subjectId of subjectsToDisconnect) {
+      await prisma.subject.update({
+        where: { id: subjectId },
+        data: {
+          faculty: {
+            disconnect: { userId: params.facultyId },
+          },
+        },
+      });
+    }
+
+    // Extract the IDs of the currently connected sections
+    const currentSectionIds = faculty.section.map(section => section.id);
+
+    // Calculate the sections to disconnect
+    const sectionsToDisconnect = currentSectionIds.filter(sectionId => !sectionIds.includes(sectionId));
 
     // Assign faculty to sections
     for (const sectionId of sectionIds) {
       await prisma.section.update({
         where: { id: sectionId },
-        data: { faculty: { connect: { userId: params.facultyId } } },
+        data: {
+          faculty: {
+            connect: { userId: params.facultyId },
+          },
+        },
+      });
+    }
+
+    // Disconnect faculty from sections that are not in the updated sectionIds array
+    for (const sectionId of sectionsToDisconnect) {
+      await prisma.section.update({
+        where: { id: sectionId },
+        data: {
+          faculty: {
+            disconnect: { userId: params.facultyId },
+          },
+        },
       });
     }
 
@@ -84,6 +137,7 @@ export async function PATCH(req: NextRequest, context: contextProps) {
 //Filter the section, subject and grade Level
 export async function POST(req: NextRequest, context: contextProps) {
   try {
+    console.log('Received PATCH request with body:', req.body);
     const { params } = context;
     const data = await req.json();
     const selection = await prisma.facultyProfile.findUnique({
