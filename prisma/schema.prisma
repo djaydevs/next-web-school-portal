@@ -205,13 +205,12 @@ model Subject {
   subjectName String           @unique
   faculty     FacultyProfile[]
   grades      Grades[]
+  student     StudentProfile[]
 
   schoolYear   SchoolYear?     @relation(fields: [schoolYearId], references: [id])
   schoolYearId String?
   strand       Strand?         @relation(fields: [strandId], references: [id])
   strandId     String?
-  student      StudentProfile? @relation(fields: [studentId], references: [id])
-  studentId    String?
 }
 
 model Grades {
