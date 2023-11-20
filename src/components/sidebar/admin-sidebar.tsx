@@ -93,19 +93,17 @@ const AdminSidebar = () => {
                   <Icons.Milestone />
                   <span className="hidden lg:flex">Manage Information</span>
                 </AccordionTrigger>
-                {manageInfoRoutes.map((route) => (
-                  <AccordionContent
-                    key={route.href}
-                    className="flex w-full flex-col"
-                  >
+                <AccordionContent className="flex w-full flex-col">
+                  {manageInfoRoutes.map((route) => (
                     <Link
+                      key={route.href}
                       href={route.href}
                       className={cn(
                         buttonVariants({
                           variant: "link",
                           size: "sm",
                         }),
-                        "flex h-6 w-full justify-start pl-14",
+                        "flex h-6 w-full justify-start py-5 pl-14",
                         pathname === route.href
                           ? "bg-primary/20 font-bold text-primary"
                           : "text-primary/70",
@@ -113,8 +111,8 @@ const AdminSidebar = () => {
                     >
                       {route.label}
                     </Link>
-                  </AccordionContent>
-                ))}
+                  ))}
+                </AccordionContent>
               </AccordionItem>
             </Accordion>
             <div className="lg:hidden">
