@@ -1,7 +1,12 @@
 import "@/styles/globals.css";
+import dynamic from "next/dynamic";
+
+const AdminSidebar = dynamic(
+  () => import("@/components/sidebar/admin-sidebar").then((mod) => mod.default),
+  { ssr: false },
+);
 
 import { mulish } from "@/lib/fonts";
-import { AdminSidebar } from "@/components/sidebar/admin-sidebar";
 import AdminNavbar from "@/components/navbar/admin-navbar";
 import Providers from "@/components/providers";
 
