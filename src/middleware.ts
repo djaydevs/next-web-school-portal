@@ -11,10 +11,10 @@ export default withAuth(
     // }
     // console.log("token: ", req.nextauth.token);
 
-    // redirect to not found page if already verified
+    // redirect to sign in if already verified
     if (req.nextUrl.pathname.startsWith("/verify") && req.nextauth.token?.isVerified)
       return NextResponse.rewrite(
-        new URL("/not-found", req.url)
+        new URL("/signin", req.url)
       );
 
     // protect routes for not verified users
