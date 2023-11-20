@@ -36,11 +36,6 @@ export const adminRoutes = [
     href: "/admin/faculty-record",
   },
   {
-    label: "Section and Subject",
-    icon: Icons.Milestone,
-    href: "/admin/section-subject",
-  },
-  {
     label: "Enrollment",
     icon: Icons.FileText,
     href: "/admin/enrollment",
@@ -56,6 +51,25 @@ export const adminRoutes = [
   //   href: "/admin/request",
   // },
 ];
+
+export const manageInfoRoutes = [
+  {
+    label: "School Year",
+    href: "/admin/school-year",
+  },
+  {
+    label: "Strand",
+    href: "/admin/strand",
+  },
+  {
+    label: "Subject",
+    href: "/admin/subject",
+  },
+  {
+    label: "Section",
+    href: "/admin/section",
+  },
+]
 
 export const facultyRoutes = [
   {
