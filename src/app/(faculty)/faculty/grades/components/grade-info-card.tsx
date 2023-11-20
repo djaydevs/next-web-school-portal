@@ -35,7 +35,7 @@ const GradeInfoCard: FC<GradeInfoCardProps> = ({ studentInfo }) => {
             <Separator className="mt-4" />
             <h3>Report Card Information</h3>
             <Separator />
-            {studentInfo?.studentProfile?.subjects?.map((sub) => (
+            {studentInfo?.studentProfile?.strand?.subjects.map((sub) => (
               <div key={sub.id}>
                 <Label>{sub.subjectName}:</Label>
                 {sub.grades ? (
