@@ -28,7 +28,13 @@ export async function GET(req: NextRequest) {
             }
           }
         },
-        facultyProfile: true,
+        facultyProfile: {
+          include: {
+            section: true,
+            subjects: true,
+            gradeLevel: true,
+          }
+        },
         adminProfile: true,
       }
     });
