@@ -11,6 +11,17 @@ export const statuses = [
   },
 ]
 
+export const enrollmentStatus = [
+  {
+    value: "Enrolled",
+    label: "Enrolled",
+  },
+  {
+    value: "Pending",
+    label: "Pending",
+  },
+]
+
 export const roles = [
   {
     label: "Student",

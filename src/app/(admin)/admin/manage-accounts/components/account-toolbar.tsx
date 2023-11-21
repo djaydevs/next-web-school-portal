@@ -30,9 +30,9 @@ export function AccountTableToolbar<TData>({
           className="h-8 w-full md:w-[300px]"
         />
         <div className="flex w-full items-center justify-start space-x-2">
-          {table.getColumn("status") && (
+          {table.getColumn("isVerified") && (
             <AccountTableFacetedFilter
-              column={table.getColumn("status")}
+              column={table.getColumn("isVerified")}
               title="Status"
               options={statuses.map((status) => ({
                 label: status.label,

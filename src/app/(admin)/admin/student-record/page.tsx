@@ -27,8 +27,8 @@ const StudentRecordPage: FC<StudentRecordPageProps> = ({}) => {
 
   const renderButton = (openModal: any) => {
     return (
-      <Button onClick={openModal} className="w-[170px]">
-        <Icons.FilePlus2 className="mr-2" />
+      <Button onClick={openModal}>
+        <Icons.FileUp className="mr-2" />
         Import Data
       </Button>
     );
@@ -49,11 +49,25 @@ const StudentRecordPage: FC<StudentRecordPageProps> = ({}) => {
           admin/registrar.
         </p>
       </div>
-      <UseCSV
-        importerKey="d4dd9a93-3546-44f6-9cbf-4ba978759442"
-        user={{ userId: 12345 }}
-        render={(openModal) => renderButton(openModal)}
-      />
+      <div className="flex">
+        <div className="flex w-full gap-3">
+          <UseCSV
+            importerKey="d4dd9a93-3546-44f6-9cbf-4ba978759442"
+            user={{ userId: 12345 }}
+            render={(openModal) => renderButton(openModal)}
+          />
+          <Button>
+            <Icons.FileDown className="mr-2" />
+            Export Data
+          </Button>
+        </div>
+        <div className="flex w-full justify-end">
+          <Button variant="secondary">
+            <Icons.FilePlus2 className="mr-2" />
+            Add Student
+          </Button>
+        </div>
+      </div>
       {isLoadingStudentTable ? (
         <SkeletonTable />
       ) : (

@@ -62,13 +62,21 @@ export const columns: ColumnDef<Student>[] = [
       ) as Student["studentProfile"];
 
       if (!studentProfile?.enrollment.length) {
-        return <Badge variant="destructive">No status</Badge>;
+        return (
+          <Badge variant="destructive" className="hidden md:table-cell">
+            No status
+          </Badge>
+        );
       }
 
       return (
         <span className="hidden w-full items-center justify-start md:flex">
           {studentProfile?.enrollment.map((enr) => (
-            <Badge key={enr.id} variant="outline" className="mr-2">
+            <Badge
+              key={enr.id}
+              variant={enr.status === "Enrolled" ? "outline" : "secondary"}
+              className="mr-2"
+            >
               {enr.status}
             </Badge>
           ))}
@@ -82,6 +90,44 @@ export const columns: ColumnDef<Student>[] = [
         studentProfile?.enrollment?.some((enrollment) =>
           value.includes(enrollment.status),
         ) || false
+      );
+    },
+  },
+  {
+    accessorKey: "enrollmentDate",
+    header: ({ column }) => (
+      <EnrollmentTableColumnHeader
+        column={column}
+        title="Date"
+        className="hidden md:table-cell"
+      />
+    ),
+    cell: ({ row }) => {
+      const studentProfile = row.getValue(
+        "studentProfile",
+      ) as Student["studentProfile"];
+
+      if (!studentProfile?.enrollment.length) {
+        return (
+          <Badge variant="destructive" className="hidden md:table-cell">
+            No date
+          </Badge>
+        );
+      }
+
+      return (
+        <span className="hidden w-full items-center justify-start md:flex">
+          {studentProfile?.enrollment.map((enr) => (
+            <p key={enr.id}>
+              {new Date(enr.enrollmentDate).toLocaleDateString(undefined, {
+                weekday: "short",
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
+            </p>
+          ))}
+        </span>
       );
     },
   },
@@ -100,15 +146,17 @@ export const columns: ColumnDef<Student>[] = [
       ) as Student["studentProfile"];
 
       if (!studentProfile?.enrollment.length) {
-        return <Badge variant="destructive">No school year</Badge>;
+        return (
+          <Badge variant="destructive" className="hidden md:table-cell">
+            No school year
+          </Badge>
+        );
       }
 
       return (
         <span className="hidden w-full items-center justify-start md:flex">
           {studentProfile?.enrollment.map((enr) => (
-            <p key={enr.id}>
-              {enr.academicYear}
-            </p>
+            <p key={enr.id}>{enr.academicYear}</p>
           ))}
         </span>
       );

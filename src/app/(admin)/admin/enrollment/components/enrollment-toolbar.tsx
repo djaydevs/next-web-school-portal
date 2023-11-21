@@ -2,7 +2,7 @@
 
 import { Table } from "@tanstack/react-table";
 
-import { statuses, roles } from "@/lib/options";
+import { enrollmentStatus } from "@/lib/options";
 import Icons from "@/components/ui/icons";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -29,21 +29,11 @@ export function EnrollmentTableToolbar<TData>({
           className="h-8 w-full md:w-[300px]"
         />
         <div className="flex w-full items-center justify-start space-x-2">
-          {table.getColumn("status") && (
+          {table.getColumn("studentProfile") && (
             <EnrollmentTableFacetedFilter
-              column={table.getColumn("status")}
+              column={table.getColumn("studentProfile")}
               title="Status"
-              options={statuses.map((status) => ({
-                label: status.label,
-                value: status.value.toString(),
-              }))}
-            />
-          )}
-          {table.getColumn("role") && (
-            <EnrollmentTableFacetedFilter
-              column={table.getColumn("role")}
-              title="Roles"
-              options={roles}
+              options={enrollmentStatus}
             />
           )}
           {isFiltered && (
