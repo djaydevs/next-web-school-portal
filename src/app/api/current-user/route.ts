@@ -203,52 +203,6 @@ export async function PUT(req: NextRequest, res: NextResponse) {
         return NextResponse.json({ error: 'Active school year not found' });
       }
 
-      // Disconnect the current grade level and section
-      await prisma.studentProfile.update({
-        where: { id: currentUser.studentProfile?.id },
-        data: {
-          gradeLevel: {
-            disconnect: true,
-          },
-          section: {
-            disconnect: true,
-          },
-        },
-      });
-
-      // Find the ID of the existing grade level with gradeLevel value 12
-      const targetGradeLevelId = await prisma.gradeLevel.findUnique({
-        where: { gradeLevel: 12 }, // Adjust this condition based on your data
-        select: { id: true },
-      });
-
-      if (!targetGradeLevelId) {
-        return NextResponse.json({ error: 'Target grade level not found' });
-      }
-
-      // Disconnect the current grade level
-      await prisma.studentProfile.update({
-        where: { id: currentUser.studentProfile?.id },
-        data: {
-          gradeLevel: {
-            disconnect: true,
-          },
-        },
-      });
-
-      // Connect to the target grade level
-      const newGradeLevel = await prisma.studentProfile.update({
-        where: { id: currentUser.studentProfile?.id },
-        data: {
-          // Add other properties you want to update
-          gradeLevel: {
-            connect: {
-              id: targetGradeLevelId.id,
-            },
-          },
-        },
-      });
-
       // Create a new school year without inserting into the database
       const newSchoolYear = {
         from: new Date(activeSchoolYear.to.getFullYear() + 1, activeSchoolYear.to.getMonth(), activeSchoolYear.to.getDate()),
