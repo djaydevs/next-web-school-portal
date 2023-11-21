@@ -51,13 +51,23 @@ const UserInfoCard: FC<UserInfoCardProps> = ({ userInfo }) => {
           <div className="flex flex-nowrap items-center justify-between">
             <Label>Created:</Label>
             <Label>
-              {new Date(userInfo?.createdAt as string).toLocaleDateString()}
+              {userInfo?.createdAt?.toLocaleDateString(undefined, {
+                weekday: "short",
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
             </Label>
           </div>
           <div className="flex flex-nowrap items-center justify-between">
             <Label>Updated:</Label>
             <Label>
-              {new Date(userInfo?.updatedAt as string).toLocaleDateString()}
+              {userInfo?.updatedAt?.toLocaleDateString(undefined, {
+                weekday: "short",
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
             </Label>
           </div>
         </div>

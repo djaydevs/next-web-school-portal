@@ -8,8 +8,8 @@ export const userSchema = z.object({
         invalid_type_error: "This field must be in email format",
     }).email(),
     emailVerified: z.string().nullish(),
-    createdAt: z.string().nullish(),
-    updatedAt: z.string().nullish(),
+    createdAt: z.string().transform((val) => new Date(val)),
+    updatedAt: z.string().transform((val) => new Date(val)),
     image: z.string().url().nullish(),
     role: z.string({
         required_error: "You need to select a role.",

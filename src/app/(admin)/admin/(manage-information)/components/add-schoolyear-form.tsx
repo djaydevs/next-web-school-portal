@@ -90,7 +90,7 @@ const AddSchoolYearForm: React.FC<AddSchoolYearFormProps> = ({}) => {
         title: "Success",
         description: "School year added successfully!",
       });
-      router.push("/admin/section-subject");
+      router.push("/admin/school-year");
       router.refresh();
     },
   });
@@ -102,7 +102,7 @@ const AddSchoolYearForm: React.FC<AddSchoolYearFormProps> = ({}) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="w-full">
+        <Button>
           <Icons.PlusCircle className="mr-2" />
           Add School Year
         </Button>
