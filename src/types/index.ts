@@ -314,6 +314,13 @@ export const studentSchema = z.object({
                 studentId: z.string(),
             })),
         })),
+        enrollment: z.array(z.object({
+            id: z.string(),
+            academicYear: z.string(),
+            status: z.string(),
+            enrollmentDate: z.date(),
+            studentId: z.string(),
+        }))
     })
 });
 export type Student = z.infer<typeof studentSchema>

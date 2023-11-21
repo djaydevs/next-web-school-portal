@@ -23,6 +23,7 @@ export async function GET(req: NextRequest) {
               }
             },
             grades: true,
+            enrollment: true,
           }
         },
       },
