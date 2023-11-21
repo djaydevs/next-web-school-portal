@@ -31,7 +31,6 @@ const ReportCard: FC<ReportCardProps> = ({ studentInfo }) => {
               <TableHead className="text-center">1st Quarter</TableHead>
               <TableHead className="text-center">2nd Quarter</TableHead>
               <TableHead className="text-center">Final Grade</TableHead>
-              <TableHead className="text-center">General Average</TableHead>
               <TableHead className="text-center">Remarks</TableHead>
             </TableRow>
           </TableHeader>
@@ -51,9 +50,6 @@ const ReportCard: FC<ReportCardProps> = ({ studentInfo }) => {
                     </TableCell>
                     <TableCell className="text-center">
                       {grade.finalGrade}
-                    </TableCell>
-                    <TableCell className="text-center font-bold">
-                      {grade.genAverage}
                     </TableCell>
                     <TableCell className="text-center font-bold">
                       {grade.remarks}
