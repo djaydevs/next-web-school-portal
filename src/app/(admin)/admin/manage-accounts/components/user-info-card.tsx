@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { UserAvatar } from "@/components/user-avatar";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { format } from "date-fns";
 
 interface UserInfoCardProps {
   userInfo?: User;
@@ -45,29 +46,19 @@ const UserInfoCard: FC<UserInfoCardProps> = ({ userInfo }) => {
           <div className="flex flex-nowrap items-center justify-between">
             <Label>Email Verified:</Label>
             <Label>
-              {new Date(userInfo?.emailVerified as string).toLocaleDateString()}
+            {userInfo?.emailVerified && format(new Date(userInfo.emailVerified), 'EEE, d MMM yyyy')}
             </Label>
           </div>
           <div className="flex flex-nowrap items-center justify-between">
             <Label>Created:</Label>
             <Label>
-              {userInfo?.createdAt?.toLocaleDateString(undefined, {
-                weekday: "short",
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })}
+            {userInfo?.createdAt && format(new Date(userInfo.createdAt), 'EEE, d MMM yyyy')}
             </Label>
           </div>
           <div className="flex flex-nowrap items-center justify-between">
             <Label>Updated:</Label>
             <Label>
-              {userInfo?.updatedAt?.toLocaleDateString(undefined, {
-                weekday: "short",
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })}
+            {userInfo?.updatedAt && format(new Date(userInfo.updatedAt), 'EEE, d MMM yyyy')}
             </Label>
           </div>
         </div>
