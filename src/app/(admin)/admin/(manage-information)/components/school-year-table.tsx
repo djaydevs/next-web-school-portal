@@ -13,7 +13,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import SchoolYearPageId from "../@modal/(.)school-year/[id]/page";
+import SchoolYearPageIdModal from "../@modal/(.)school-year/[id]/page";
 
 interface SchoolYearTableProps {
   schoolYearInfo?: SchoolYear[];
@@ -52,7 +52,7 @@ const SchoolYearTable: FC<SchoolYearTableProps> = ({ schoolYearInfo }) => {
                   {sy.semester === 1 ? "1st Semester" : "2nd Semester"}
                 </TableCell>
                 <TableCell>
-                  <SchoolYearPageId schoolYearInfo={sy} />
+                  <SchoolYearPageIdModal schoolYearInfo={sy} />
                 </TableCell>
               </TableRow>
             ))}

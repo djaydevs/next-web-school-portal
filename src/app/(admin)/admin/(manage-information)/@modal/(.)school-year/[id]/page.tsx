@@ -17,11 +17,13 @@ import { buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
-interface SchoolYearPageIdProps {
+interface SchoolYearPageIdModalProps {
   schoolYearInfo?: SchoolYear;
 }
 
-const SchoolYearPageId: FC<SchoolYearPageIdProps> = ({ schoolYearInfo }) => {
+const SchoolYearPageIdModal: FC<SchoolYearPageIdModalProps> = ({
+  schoolYearInfo,
+}) => {
   const [schoolYear, setSchoolYear] = useState({
     id: schoolYearInfo?.id,
     from: schoolYearInfo?.from,
@@ -71,4 +73,4 @@ const SchoolYearPageId: FC<SchoolYearPageIdProps> = ({ schoolYearInfo }) => {
   );
 };
 
-export default SchoolYearPageId;
+export default SchoolYearPageIdModal;
