@@ -152,18 +152,20 @@ model SchoolYear {
 
 model Enrollment {
   id             String   @id @default(cuid())
-  status         String?
+  academicYear   String?
+  status         String   @default("Not yet registered")
   enrollmentDate DateTime @default(now())
+  percentage     Float?
 
   schoolYear   SchoolYear?     @relation(fields: [schoolYearId], references: [id])
   schoolYearId String?
   student      StudentProfile? @relation(fields: [studentId], references: [id])
-  studentId    String?         @unique
+  studentId    String?
 }
 
 model GradeLevel {
   id         String           @id @default(cuid())
-  gradeLevel Int              @unique @default(11)
+  gradeLevel Int              @unique @default(11) @map("level")
   strands    Strand[]
   sections   Section[]
   faculty    FacultyProfile[]
@@ -203,13 +205,12 @@ model Subject {
   subjectName String           @unique
   faculty     FacultyProfile[]
   grades      Grades[]
+  student     StudentProfile[]
 
   schoolYear   SchoolYear?     @relation(fields: [schoolYearId], references: [id])
   schoolYearId String?
   strand       Strand?         @relation(fields: [strandId], references: [id])
   strandId     String?
-  student      StudentProfile? @relation(fields: [studentId], references: [id])
-  studentId    String?
 }
 
 model Grades {

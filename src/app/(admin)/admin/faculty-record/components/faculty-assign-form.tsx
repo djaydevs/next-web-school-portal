@@ -159,15 +159,12 @@ const FacultyAssignForm: FC<FacultyAssignFormProps> = ({
                                 checked={field.value?.includes(section.id)}
                                 onCheckedChange={(checked) => {
                                   return checked
-                                    ? field.onChange([
-                                        ...field.value,
-                                        section.id,
-                                      ])
+                                    ? field.onChange([...field.value, section.id])
                                     : field.onChange(
                                         field.value?.filter(
                                           (value) => value !== section.id,
-                                        ),
-                                      );
+                                        )
+                                      )
                                 }}
                               />
                             </FormControl>
@@ -203,15 +200,12 @@ const FacultyAssignForm: FC<FacultyAssignFormProps> = ({
                                 checked={field.value?.includes(subject.id)}
                                 onCheckedChange={(checked) => {
                                   return checked
-                                    ? field.onChange([
-                                        ...field.value,
-                                        subject.id,
-                                      ])
+                                    ? field.onChange([...field.value, subject.id])
                                     : field.onChange(
                                         field.value?.filter(
                                           (value) => value !== subject.id,
-                                        ),
-                                      );
+                                        )
+                                      )
                                 }}
                               />
                             </FormControl>

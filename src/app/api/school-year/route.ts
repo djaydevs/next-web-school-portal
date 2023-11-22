@@ -12,11 +12,10 @@ export async function GET(req: Request) {
         return NextResponse.json(schoolyears, { status: 200 });
 
     } catch (error: any) {
-        return NextResponse.json({ message: "Something went wrong!" }, { status: 500 });
+        return NextResponse.json({ message: error.message }, { status: 500 });
     }
 }
 
-// Create a school year
 export async function POST(req: NextRequest) {
     try {
         const body = await req.json();

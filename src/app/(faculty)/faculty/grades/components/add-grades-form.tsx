@@ -31,11 +31,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useToast } from "@/components/ui/use-toast";
-import { AddGrade, Strand, Student, addGradeSchema } from "@/types";
-import { fetchStrands } from "@/hooks/getInfos";
+import { AddGrade, Faculty, Student, addGradeSchema } from "@/types";
 import { Button } from "@/components/ui/button";
 import Icons from "@/components/ui/icons";
 import { Input } from "@/components/ui/input";
+import { getCurrentUser } from "@/hooks/getUsers";
 
 interface AddGradesFormProps {
   params: {
@@ -49,13 +49,15 @@ const AddGradesForm: FC<AddGradesFormProps> = ({ params, initialValue }) => {
   const router = useRouter();
   const { toast } = useToast();
 
-  const [selectedSubject, setSelectedSubject] = useState<string | undefined>(
-    undefined,
-  );
-
-  const subject = initialValue?.studentProfile?.strand?.subjects?.find(
-    (sub) => sub.id === selectedSubject,
-  );
+  const {
+    data: currentUser,
+    isPending: isLoadingCurrentUser,
+    isError: isErrorFetchingCurrentUser,
+    error,
+  } = useQuery<Faculty>({
+    queryKey: ["currentUser"],
+    queryFn: async () => getCurrentUser(),
+  });
 
   const form = useForm<z.infer<typeof addGradeSchema>>({
     resolver: zodResolver(addGradeSchema),
@@ -122,7 +124,6 @@ const AddGradesForm: FC<AddGradesFormProps> = ({ params, initialValue }) => {
                   <Select
                     onValueChange={(value) => {
                       field.onChange(value);
-                      setSelectedSubject(value);
                     }}
                     defaultValue={field.value ?? ""}
                   >
@@ -132,13 +133,11 @@ const AddGradesForm: FC<AddGradesFormProps> = ({ params, initialValue }) => {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {initialValue?.studentProfile?.strand?.subjects?.map(
-                        (sub) => (
-                          <SelectItem key={sub.id} value={sub.id}>
-                            {sub.subjectName}
-                          </SelectItem>
-                        ),
-                      )}
+                      {currentUser?.facultyProfile?.subjects?.map((sub) => (
+                        <SelectItem key={sub.id} value={sub.id}>
+                          {sub.subjectName}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -187,7 +186,7 @@ const AddGradesForm: FC<AddGradesFormProps> = ({ params, initialValue }) => {
               {isLoadingSubmit ? (
                 <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" />
               ) : null}{" "}
-              Save Changes
+              Save
             </Button>
           </CardFooter>
         </form>

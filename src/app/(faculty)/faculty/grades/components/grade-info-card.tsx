@@ -35,24 +35,23 @@ const GradeInfoCard: FC<GradeInfoCardProps> = ({ studentInfo }) => {
             <Separator className="mt-4" />
             <h3>Report Card Information</h3>
             <Separator />
-            {studentInfo?.studentProfile?.strand?.subjects?.map(
-              (sub) =>
-                sub.grades?.map((grade) => (
-                  <>
-                    <div className="flex flex-nowrap items-center justify-between">
-                      <div key={sub.id}>
-                        <Label>{sub.subjectName}:</Label>
-                      </div>
-                      <div key={grade.id}>
-                        <Label>
-                          1Q: {grade.firstQuarter}% | 2Q: {grade.secondQuarter}%
-                          | Final: {grade.finalGrade}%
-                        </Label>
-                      </div>
+            {studentInfo?.studentProfile?.strand?.subjects.map((sub) => (
+              <div key={sub.id}>
+                <Label>{sub.subjectName}:</Label>
+                {sub.grades ? (
+                  sub.grades.map((grade) => (
+                    <div key={grade.id}>
+                      <Label>
+                        1Q: {grade.firstQuarter}% | 2Q: {grade.secondQuarter}% |
+                        Final: {grade.finalGrade}%
+                      </Label>
                     </div>
-                  </>
-                )),
-            )}
+                  ))
+                ) : (
+                  <Label>No grades available</Label>
+                )}
+              </div>
+            ))}
           </div>
           <div className="space-y-4">
             <Separator className="mt-4" />

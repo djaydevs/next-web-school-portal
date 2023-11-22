@@ -11,50 +11,42 @@ export default withAuth(
     // }
     // console.log("token: ", req.nextauth.token);
 
-    // protect routes for not verified users
+    // redirect to sign in if already verified
     if (req.nextUrl.pathname.startsWith("/verify") && req.nextauth.token?.isVerified)
       return NextResponse.rewrite(
         new URL("/signin", req.url)
       );
+
+    // protect routes for not verified users
     if (req.nextUrl.pathname.startsWith("/admin") && !req.nextauth.token?.isVerified)
       return NextResponse.rewrite(
-        new URL("/verify", req.url)
+        new URL("/not-found", req.url)
       );
     if (req.nextUrl.pathname.startsWith("/faculty") && !req.nextauth.token?.isVerified)
       return NextResponse.rewrite(
-        new URL("/verify", req.url)
+        new URL("/not-found", req.url)
       );
     if (req.nextUrl.pathname.startsWith("/student") && !req.nextauth.token?.isVerified)
       return NextResponse.rewrite(
-        new URL("/verify", req.url)
+        new URL("/not-found", req.url)
       );
-
-    //protect api routes
-    if (req.nextUrl.pathname.startsWith("/api") && req.nextauth.token?.role === "admin")
+    if (req.nextUrl.pathname.startsWith("/api") && !req.nextauth.token?.isVerified)
       return NextResponse.rewrite(
-        new URL("/admin", req.url)
-      );
-    if (req.nextUrl.pathname.startsWith("/api") && req.nextauth.token?.role === "faculty")
-      return NextResponse.rewrite(
-        new URL("/faculty", req.url)
-      );
-    if (req.nextUrl.pathname.startsWith("/api") && req.nextauth.token?.role === "student")
-      return NextResponse.rewrite(
-        new URL("/student", req.url)
+        new URL("/not-found", req.url)
       );
 
     //protect routes per role
     if (req.nextUrl.pathname.startsWith("/admin") && req.nextauth.token?.role !== "admin")
       return NextResponse.rewrite(
-        new URL("/signin", req.url)
+        new URL("/not-found", req.url)
       );
     if (req.nextUrl.pathname.startsWith("/faculty") && req.nextauth.token?.role !== "faculty")
       return NextResponse.rewrite(
-        new URL("/signin", req.url)
+        new URL("/not-found", req.url)
       );
     if (req.nextUrl.pathname.startsWith("/student") && req.nextauth.token?.role !== "student")
       return NextResponse.rewrite(
-        new URL("/signin", req.url)
+        new URL("/not-found", req.url)
       );
   },
   {
@@ -66,7 +58,5 @@ export default withAuth(
 );
 
 export const config = {
-  // REMINDER: add api route to the matcher if you're done testing
-  // matcher: ["/api/:path*", "/admin/:path*", "/faculty/:path*", "/student/:path*, "/verify/:path*""],
-  matcher: ["/admin/:path*", "/faculty/:path*", "/student/:path*", "/verify/:path*"],
+  matcher: ["/verify/:path*", "/admin/:path*", "/faculty/:path*", "/student/:path*"],
 };

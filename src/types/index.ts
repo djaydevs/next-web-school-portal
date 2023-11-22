@@ -7,9 +7,9 @@ export const userSchema = z.object({
         required_error: "Email field is required",
         invalid_type_error: "This field must be in email format",
     }).email(),
-    emailVerified: z.string().nullish(),
-    createdAt: z.string().nullish(),
-    updatedAt: z.string().nullish(),
+    emailVerified: z.string().transform((val) => new Date(val)).nullish(),
+    createdAt: z.string().transform((val) => new Date(val)).nullish(),
+    updatedAt: z.string().transform((val) => new Date(val)).nullish(),
     image: z.string().url().nullish(),
     role: z.string({
         required_error: "You need to select a role.",
@@ -17,6 +17,34 @@ export const userSchema = z.object({
     isVerified: z.boolean(),
 });
 export type User = z.infer<typeof userSchema>
+
+export const enrollmentSchema = z.object({
+    lastName: z.string({
+        required_error: "Last name is required",
+    }),
+    firstName: z.string({
+        required_error: "First name is required",
+    }),
+    middleName: z.string().nullish(),
+    sex: z.string({
+        required_error: "Sex is required"
+    }),
+    age: z.number({
+        required_error: "Age is required",
+        invalid_type_error: "Age must be a number",
+    }).int(),
+    dateOfBirth: z.date({
+        required_error: "Date of birth is required",
+    }),
+    address: z.string({
+        required_error: "Address is required",
+    }),
+    parentGuardianName: z.string().nullish(),
+    parentGuardianAddress: z.string().nullish(),
+    parentGuardianOccupation: z.string().nullish(),
+    contactNumber: z.string().nullish(),
+})
+export type Enrollment = z.infer<typeof enrollmentSchema>
 
 export const adminSchema = z.object({
     id: z.string(),
@@ -276,7 +304,23 @@ export const studentSchema = z.object({
             studentId: z.string({
                 required_error: "Student is required",
             }),
+            grades: z.array(z.object({
+                id: z.string(),
+                firstQuarter: z.number(),
+                secondQuarter: z.number(),
+                finalGrade: z.number(),
+                genAverage: z.number(),
+                remarks: z.string(),
+                studentId: z.string(),
+            })),
         })),
+        enrollment: z.array(z.object({
+            id: z.string(),
+            academicYear: z.string(),
+            status: z.string(),
+            enrollmentDate: z.date(),
+            studentId: z.string(),
+        }))
     })
 });
 export type Student = z.infer<typeof studentSchema>

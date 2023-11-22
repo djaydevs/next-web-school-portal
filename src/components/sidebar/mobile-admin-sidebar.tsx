@@ -6,8 +6,8 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 import { cn } from "@/lib/utils";
-import { adminRoutes } from "@/lib/routes";
-import { Button } from "@/components/ui/button";
+import { adminRoutes, manageInfoRoutes } from "@/lib/routes";
+import { Button, buttonVariants } from "@/components/ui/button";
 import Icons from "@/components/ui/icons";
 import {
   Sheet,
@@ -15,6 +15,12 @@ import {
   SheetContent,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 export const MobileAdminSide = () => {
   const pathname = usePathname();
@@ -36,10 +42,10 @@ export const MobileAdminSide = () => {
         </Button>
       </SheetTrigger>
       <SheetContent side="left" className="p-0">
-        <div className="space-y-4 py-4 flex flex-col h-full bg-black/5 dark:bg-white/5 text-primary">
-          <div className="px-3 py-2 flex-1">
-            <Link href="/admin" className="flex items-center mb-14">
-              <div className="relative h-14 w-14 me-4">
+        <div className="flex h-full flex-col space-y-4 bg-black/5 py-4 text-primary dark:bg-white/5">
+          <div className="flex-1 px-3 py-2">
+            <Link href="/admin" className="mb-14 flex items-center">
+              <div className="relative me-4 h-14 w-14">
                 <Image fill alt="Logo" src="/mja-logo.png" />
               </div>
               <h1 className="text-2xl font-bold">Admin Portal</h1>
@@ -50,29 +56,57 @@ export const MobileAdminSide = () => {
                   key={route.href}
                   href={route.href}
                   className={cn(
-                    "text-sm group flex p-3 w-full justify-start font-medium cursor-pointer hover:text-primary hover:font-bold hover:bg-primary/20 rounded-lg transition",
+                    "group flex w-full cursor-pointer justify-start rounded-lg p-3 text-sm font-medium transition hover:bg-primary/20 hover:font-bold hover:text-primary",
                     pathname === route.href
-                      ? "text-primary font-bold bg-primary/20"
-                      : "text-primary/70"
+                      ? "bg-primary/20 font-bold text-primary"
+                      : "text-primary/70",
                   )}
                 >
                   <SheetClose>
-                    <div className="flex items-center flex-1">
+                    <div className="flex flex-1 items-center">
                       <route.icon
                         className={cn(
-                          "h-6 w-6 mx-1 hover:text-primary",
+                          "mx-1 h-6 w-6 hover:text-primary",
                           pathname === route.href
                             ? "text-primary "
-                            : "text-primary/70"
+                            : "text-primary/70",
                         )}
                       />
-                      <div className="md:hidden lg:flex pl-2 hover:block">
+                      <div className="pl-2 hover:block md:hidden lg:flex">
                         {route.label}
                       </div>
                     </div>
                   </SheetClose>
                 </Link>
               ))}
+              <Accordion type="single" collapsible className="w-full">
+                <AccordionItem value="item-1">
+                  <AccordionTrigger className="justify-start gap-4 rounded-lg p-3 text-sm font-medium text-primary/70 transition hover:bg-primary/20 hover:font-bold hover:text-primary">
+                    <Icons.Milestone />
+                    Manage Information
+                  </AccordionTrigger>
+                  <AccordionContent className="flex w-full flex-col">
+                    {manageInfoRoutes.map((route) => (
+                      <Link
+                        key={route.href}
+                        href={route.href}
+                        className={cn(
+                          buttonVariants({
+                            variant: "link",
+                            size: "sm",
+                          }),
+                          "flex h-6 w-full justify-start py-5 pl-14",
+                          pathname === route.href
+                            ? "bg-primary/20 font-bold text-primary"
+                            : "text-primary/70",
+                        )}
+                      >
+                        {route.label}
+                      </Link>
+                    ))}
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
             </div>
           </div>
         </div>

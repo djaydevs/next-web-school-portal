@@ -91,16 +91,14 @@ export const columns: ColumnDef<User>[] = [
 
       return (
         <span className="hidden md:table-cell">
-          {status.value === true ? (
-            <Badge variant="outline">{status.label}</Badge>
-          ) : (
-            <Badge variant="destructive">{status.label}</Badge>
-          )}
+          <Badge variant={status.value === true ? "outline" : "destructive"}>
+            {status.label}
+          </Badge>
         </span>
       );
     },
     filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
+      return String(row.getValue("isVerified")) === String(value);
     },
   },
   {
