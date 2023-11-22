@@ -119,64 +119,67 @@ const AddSchoolYearForm: React.FC<AddSchoolYearFormProps> = ({}) => {
             onSubmit={form.handleSubmit(onSubmit)}
             className="w-full space-y-6"
           >
-            <FormField
-              control={form.control}
-              name="schoolYear"
-              render={({ field }) => {
-                return (
-                  <FormItem className="flex w-full flex-col space-y-2">
-                    <FormLabel>School Year</FormLabel>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <FormControl>
-                          <Button
-                            variant={"outline"}
-                            className={cn(
-                              "w-full pl-3 text-left font-normal",
-                              !date && "text-muted-foreground",
-                            )}
-                            onClick={() => {
-                              setDate({
-                                from: field.value.from,
-                                to: field.value.to,
-                              });
-                            }}
-                          >
-                            <Icons.CalendarIcon className="mr-2 h-4 w-4 opacity-50" />
-                            {date?.from ? (
-                              date.to ? (
-                                <>
-                                  {format(date.from, "LLL dd, y")} -{" "}
-                                  {format(date.to, "LLL dd, y")}
-                                </>
-                              ) : (
-                                format(date.from, "LLL dd, y")
-                              )
-                            ) : (
-                              <span>Pick a date</span>
-                            )}
-                          </Button>
-                        </FormControl>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
-                          initialFocus
-                          mode="range"
-                          defaultMonth={date?.from}
-                          selected={date}
-                          onSelect={(range) => {
-                            setDate(range);
-                            field.onChange(range);
-                          }}
-                          numberOfMonths={2}
-                        />
-                      </PopoverContent>
-                    </Popover>
-                    <FormMessage />
-                  </FormItem>
-                );
-              }}
-            />
+            <FormItem className="flex w-full flex-col space-y-2">
+              <FormLabel>School Year</FormLabel>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <FormControl>
+                    <Button
+                      variant={"outline"}
+                      className={cn(
+                        "w-full pl-3 text-left font-normal",
+                        !date && "text-muted-foreground",
+                      )}
+                      onClick={() => {
+                        setDate({
+                          from: form.watch("schoolYear").from,
+                          to: form.watch("schoolYear").to,
+                        });
+                      }}
+                      {...form.register("schoolYear")}
+                    >
+                      <Icons.CalendarIcon className="mr-2 h-4 w-4 opacity-50" />
+                      {date?.from ? (
+                        date.to ? (
+                          <>
+                            {format(date.from, "LLL dd, y")} -{" "}
+                            {format(date.to, "LLL dd, y")}
+                          </>
+                        ) : (
+                          format(date.from, "LLL dd, y")
+                        )
+                      ) : (
+                        <span>Pick a date</span>
+                      )}
+                    </Button>
+                  </FormControl>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    initialFocus
+                    mode="range"
+                    defaultMonth={date?.from || new Date()}
+                    selected={date}
+                    onSelect={(range) => {
+                      if (range) {
+                        const from = range.from || new Date();
+                        const to = range.to || new Date();
+                        setDate({ from, to });
+                        form.setValue("schoolYear", { from, to });
+                      } else {
+                        setDate({ from: new Date(), to: new Date() });
+                        form.setValue("schoolYear", {
+                          from: new Date(),
+                          to: new Date(),
+                        });
+                      }
+                    }}
+                    numberOfMonths={2}
+                  />
+                </PopoverContent>
+              </Popover>
+              <FormMessage />
+            </FormItem>
             <FormField
               control={form.control}
               name="semester"
