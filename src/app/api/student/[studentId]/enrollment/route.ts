@@ -1,16 +1,16 @@
-import { NextRequest,  NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma"
 
 interface StudentProps {
     params: {
-      studentId: string;
+        studentId: string;
     }
-  }
-  
+}
+
 
 export async function PUT(req: NextRequest, context: StudentProps) {
     try {
-        const { params} = context;
+        const { params } = context;
         const body = await req.json();
 
         // Find the student with the given ID along with related section, school year, and grade level
@@ -56,12 +56,13 @@ export async function PUT(req: NextRequest, context: StudentProps) {
                     },
                 },
             },
-        });        
-        
+        });
+
         const newSection = await prisma.studentProfile.update({
-            where: { userId:  params.studentId},
+            where: { userId: params.studentId },
             data: {
-                sectionId: body.sectionId
+                sectionId: body.sectionId,
+                gradeLevelId: body.gradeLevelId,
                 // Add other properties you want to update
                 // section: {
                 //     connect: {
@@ -77,10 +78,10 @@ export async function PUT(req: NextRequest, context: StudentProps) {
                 enrollment: true,
             },
         });
-        
+
         if (enrollmentId && enrollmentId.enrollment.length > 0) {
             const enrollmentRecord = enrollmentId.enrollment[0];
-        
+
             // Create a new enrollment record
             const newEnrollment = await prisma.enrollment.update({
                 where: { id: enrollmentRecord.id },

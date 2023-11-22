@@ -1,3 +1,4 @@
+import { Section } from "@/types";
 import axios from "axios";
 
 export const fetchSchoolYear = async () => {
@@ -18,6 +19,13 @@ export const fetchStrands = async () => {
 export const fetchSections = async () => {
     const res = await axios.get("/api/section");
     return res.data;
+};
+
+export const fetchSectionsByStrand = async (strandId: string) => {
+    const res = await axios.get(`/api/section-by-strand?strandId=${strandId}`);
+    const sections = res.data
+
+    return sections as Section[];
 };
 
 export const fetchSubjects = async () => {

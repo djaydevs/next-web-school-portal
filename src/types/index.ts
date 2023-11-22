@@ -46,6 +46,12 @@ export const enrollmentSchema = z.object({
 })
 export type Enrollment = z.infer<typeof enrollmentSchema>
 
+export const enrollmentAdminSchema = z.object({
+    sectionId: z.string(),
+    gradeLevelId: z.string(),
+})
+export type EnrollmentAdmin = z.infer<typeof enrollmentAdminSchema>
+
 export const adminSchema = z.object({
     id: z.string(),
     name: z.string().nullish(),
@@ -234,6 +240,22 @@ export const studentSchema = z.object({
             strandName: z.string({
                 required_error: "Strand name is required",
             }),
+            sections: z.array(z.object({
+                id: z.string(),
+                schoolYearId: z.string({
+                    required_error: "School Year is required",
+                }),
+                gradeLevelId: z.string({
+                    required_error: "Grade level is required",
+                }),
+                strandId: z.string({
+                    required_error: "Strand code is required",
+                }),
+                sectionName: z.string({
+                    required_error: "Grade section is required",
+                }),
+                room: z.string(),
+            })),
             subjects: z.array(z.object({
                 id: z.string(),
                 subjectName: z.string({
@@ -364,6 +386,22 @@ export const strandSchema = z.object({
         schoolYearId: z.string({
             required_error: "School Year name is required",
         }),
+    })),
+    sections: z.array(z.object({
+        id: z.string(),
+        schoolYearId: z.string({
+            required_error: "School Year is required",
+        }),
+        gradeLevelId: z.string({
+            required_error: "Grade level is required",
+        }),
+        strandId: z.string({
+            required_error: "Strand code is required",
+        }),
+        sectionName: z.string({
+            required_error: "Grade section is required",
+        }),
+        room: z.string(),
     })),
 });
 export type Strand = z.infer<typeof strandSchema>

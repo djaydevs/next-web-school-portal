@@ -41,7 +41,7 @@
         "./src/app/(landing)/components/*",
         "./src/app/(admin)/admin/(dashboard)/components/*",
         "./src/app/(admin)/admin/(manage-information)/components/*",
-        "./src/app/(admin)/admin/enrollment/components/*",
+        "./src/app/(admin)/admin/(enrollment)/enrollment/components/*",
         "./src/app/(admin)/admin/manage-accounts/components/*",
         "./src/app/(admin)/admin/profile/components/*",
         "./src/app/(admin)/admin/student-record/components/*",

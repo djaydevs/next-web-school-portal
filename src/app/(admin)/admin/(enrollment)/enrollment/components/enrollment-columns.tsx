@@ -4,9 +4,9 @@ import { ColumnDef } from "@tanstack/react-table";
 
 import { EnrollmentTableColumnHeader } from "@/components/enrollment-table-column-header";
 import { EnrollmentTableRowDetails } from "@/components/enrollment-table-row-details";
-import { Student } from "@/types";
 import { UserAvatar } from "@/components/user-avatar";
 import { Badge } from "@/components/ui/badge";
+import { Student } from "@/types";
 
 export const columns: ColumnDef<Student>[] = [
   {
