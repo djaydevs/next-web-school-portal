@@ -136,7 +136,7 @@ const AddSectionForm: FC<AddSectionFormProps> = ({}) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="w-full">
+        <Button>
           <Icons.PlusCircle className="mr-2" />
           Add Section
         </Button>

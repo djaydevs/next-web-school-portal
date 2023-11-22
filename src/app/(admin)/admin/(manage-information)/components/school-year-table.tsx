@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import SchoolYearPageIdModal from "../@modal/(.)school-year/[id]/page";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface SchoolYearTableProps {
   schoolYearInfo?: SchoolYear[];
@@ -26,38 +27,40 @@ const SchoolYearTable: FC<SchoolYearTableProps> = ({ schoolYearInfo }) => {
         <CardTitle>School Year</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        <Table className="w-full">
-          <TableHeader>
-            <TableRow>
-              <TableHead>From</TableHead>
-              <TableHead>To</TableHead>
-              <TableHead>Semester</TableHead>
-              <TableHead></TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {schoolYearInfo?.map((sy) => (
-              <TableRow key={sy.id}>
-                <TableCell>
-                  {isValid(new Date(sy?.from))
-                    ? format(new Date(sy?.from), "EEEE, MMMM do, yyyy")
-                    : "Invalid date"}
-                </TableCell>
-                <TableCell>
-                  {isValid(new Date(sy?.to))
-                    ? format(new Date(sy?.to), "EEEE, MMMM do, yyyy")
-                    : "Invalid date"}
-                </TableCell>
-                <TableCell>
-                  {sy.semester === 1 ? "1st Semester" : "2nd Semester"}
-                </TableCell>
-                <TableCell>
-                  <SchoolYearPageIdModal params={{ id: sy.id }} />
-                </TableCell>
+        <ScrollArea className="h-[350px]">
+          <Table className="w-full">
+            <TableHeader>
+              <TableRow>
+                <TableHead>From</TableHead>
+                <TableHead>To</TableHead>
+                <TableHead>Semester</TableHead>
+                <TableHead></TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {schoolYearInfo?.map((sy) => (
+                <TableRow key={sy.id}>
+                  <TableCell>
+                    {isValid(new Date(sy?.from))
+                      ? format(new Date(sy?.from), "EEEE, MMMM do, yyyy")
+                      : "Invalid date"}
+                  </TableCell>
+                  <TableCell>
+                    {isValid(new Date(sy?.to))
+                      ? format(new Date(sy?.to), "EEEE, MMMM do, yyyy")
+                      : "Invalid date"}
+                  </TableCell>
+                  <TableCell>
+                    {sy.semester === 1 ? "1st Semester" : "2nd Semester"}
+                  </TableCell>
+                  <TableCell>
+                    <SchoolYearPageIdModal params={{ id: sy.id }} />
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </ScrollArea>
       </CardContent>
     </Card>
   );

@@ -1,7 +1,7 @@
 "use client";
 
 import { FC, useState, useCallback, useEffect } from "react";
-import { SchoolYear } from "@prisma/client";
+import { Strand } from "@/types";
 import { useRouter } from "next/navigation";
 
 import {
@@ -17,40 +17,40 @@ import { buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
-import { fetchSchoolYear } from "@/hooks/getInfos";
+import { fetchStrandById } from "@/hooks/getInfos";
 
-interface SchoolYearPageIdModalProps {
+interface StrandPageIdModalProps {
   params: {
     id: string;
   };
 }
 
-export default function SchoolYearPageIdModal({
-  params,
-}: SchoolYearPageIdModalProps) {
+export default function StrandPageIdModal({ params }: StrandPageIdModalProps) {
+  const { id } = params;
+
   const {
-    data: schoolYear,
-    isPending: isLoadingSchoolYear,
-    isError: isErrorFetchingSchoolYear,
-    error: schoolYearsError,
-  } = useQuery<SchoolYear>({
-    queryKey: ["schoolYear"],
-    queryFn: async () => fetchSchoolYear(),
+    data: strand,
+    isPending: isLoadingStrand,
+    isError: isErrorFetchingStrand,
+    error: strandsError,
+  } = useQuery<Strand>({
+    queryKey: ["strand", id],
+    queryFn: async () => fetchStrandById(id),
   });
 
-  const [schoolYearId, setSchoolYearId] = useState({ id: schoolYear?.id });
+  const [strandId, setStrandId] = useState({ id: strand?.id });
   const [open, setOpen] = useState(false);
   const router = useRouter();
 
   const handleClose = useCallback(() => {
     setOpen(false);
-    setSchoolYearId((prev) => ({ ...prev, id: params.id }));
-    router.push("/admin/school-year/");
-  }, [params.id, router]);
+    setStrandId((prev) => ({ ...prev, id: id }));
+    router.push("/admin/strand/");
+  }, [id, router]);
 
   useEffect(() => {
     if (!open) {
-      router.push("/admin/school-year/");
+      router.push("/admin/strand/");
     }
   }, [open, router]);
 
@@ -58,8 +58,8 @@ export default function SchoolYearPageIdModal({
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Link
-          href={`/admin/school-year/${params.id || ""}`}
-          aria-label="Manage school year details"
+          href={`/admin/strand/${id}`}
+          aria-label="Manage strand details"
           className={cn(
             buttonVariants({
               variant: "outline",
@@ -73,8 +73,8 @@ export default function SchoolYearPageIdModal({
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Edit School Year</DialogTitle>
-          <DialogDescription>Edit school year and semester.</DialogDescription>
+          <DialogTitle>Edit Strand</DialogTitle>
+          <DialogDescription>Edit strand.</DialogDescription>
         </DialogHeader>
       </DialogContent>
     </Dialog>

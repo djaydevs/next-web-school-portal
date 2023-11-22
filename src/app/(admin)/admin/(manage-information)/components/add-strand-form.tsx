@@ -103,7 +103,7 @@ const AddStrandForm: FC<AddStrandFormProps> = ({}) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="w-full">
+        <Button>
           <Icons.PlusCircle className="mr-2" />
           Add Strand
         </Button>

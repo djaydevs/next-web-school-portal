@@ -117,7 +117,7 @@ const AddSubjectForm: FC<AddSubjectFormProps> = ({}) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="w-full">
+        <Button>
           <Icons.PlusCircle className="mr-2" />
           Add Subject
         </Button>
