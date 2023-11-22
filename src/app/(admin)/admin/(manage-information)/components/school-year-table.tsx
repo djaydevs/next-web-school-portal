@@ -52,7 +52,7 @@ const SchoolYearTable: FC<SchoolYearTableProps> = ({ schoolYearInfo }) => {
                   {sy.semester === 1 ? "1st Semester" : "2nd Semester"}
                 </TableCell>
                 <TableCell>
-                  <SchoolYearPageIdModal schoolYearInfo={sy as SchoolYear} />
+                  <SchoolYearPageIdModal params={{ id: sy.id }} />
                 </TableCell>
               </TableRow>
             ))}

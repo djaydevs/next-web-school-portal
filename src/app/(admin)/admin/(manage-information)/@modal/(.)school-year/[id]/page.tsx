@@ -16,26 +16,35 @@ import {
 import { buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { useQuery } from "@tanstack/react-query";
+import { fetchSchoolYear } from "@/hooks/getInfos";
 
-export default function SchoolYearPageIdModal({
-  schoolYearInfo,
-}: {
-  schoolYearInfo?: SchoolYear;
-}) {
-  const [schoolYear, setSchoolYear] = useState({
-    id: schoolYearInfo?.id,
-    from: schoolYearInfo?.from,
-    to: schoolYearInfo?.to,
-    semester: schoolYearInfo?.semester,
-  });
+interface SchoolYearPageIdModalProps {
+    params: {
+        id: string;
+    };
+}
+
+export default function SchoolYearPageIdModal ({ params }: SchoolYearPageIdModalProps) {
+    const {
+        data: schoolYear,
+        isPending: isLoadingSchoolYear,
+        isError: isErrorFetchingSchoolYear,
+        error: schoolYearsError,
+      } = useQuery<SchoolYear>({
+        queryKey: ["schoolYear"],
+        queryFn: async () => fetchSchoolYear(),
+      });
+
+  const [schoolYearId, setSchoolYearId] = useState({ id: schoolYear?.id});
   const [open, setOpen] = useState(false);
   const router = useRouter();
 
   const handleClose = useCallback(() => {
     setOpen(false);
-    setSchoolYear((prev) => ({ ...prev, id: undefined }));
+    setSchoolYearId((prev) => ({ ...prev, id: params.id }));
     router.push("/admin/school-year/");
-  }, [router]);
+  }, [params.id, router]);
 
   useEffect(() => {
     if (!open) {
@@ -47,8 +56,7 @@ export default function SchoolYearPageIdModal({
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Link
-          key={schoolYear.id}
-          href={`/admin/school-year/${schoolYear.id || ""}`}
+          href={`/admin/school-year/${params.id || ""}`}
           aria-label="Manage enrollment details"
           className={cn(
             buttonVariants({
@@ -69,4 +77,4 @@ export default function SchoolYearPageIdModal({
       </DialogContent>
     </Dialog>
   );
-}
+};
