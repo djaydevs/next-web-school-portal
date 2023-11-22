@@ -14,6 +14,7 @@ export async function GET(req: NextRequest) {
             section: true,
             strand: {
               include: {
+                sections: true,
                 subjects: true,
               }
             },

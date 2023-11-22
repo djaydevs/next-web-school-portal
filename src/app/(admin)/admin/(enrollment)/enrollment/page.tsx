@@ -3,11 +3,11 @@
 import { FC } from "react";
 import { useQuery } from "@tanstack/react-query";
 
-import { fetchStudent } from "@/hooks/getUsers";
 import { SkeletonTable } from "@/components/loading";
 import { columns } from "@/components/enrollment-columns";
+import EnrollmentTable from "@/components/enrollment-table";
+import { fetchStudent } from "@/hooks/getUsers";
 import { Student } from "@/types";
-import EnrollmentTable from "./components/enrollment-table";
 
 interface UpdateEnrollmentProps {}
 
