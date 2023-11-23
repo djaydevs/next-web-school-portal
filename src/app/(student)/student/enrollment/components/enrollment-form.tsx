@@ -69,6 +69,7 @@ const steps = [
       "parentGuardianName",
       "parentGuardianAddress",
       "parentGuardianOccupation",
+      "contactNumber",
     ],
   },
   { id: "Step 3", name: "Pre-Registration" },
@@ -252,6 +253,7 @@ const EnrollmentForm: FC<EnrollmentFormProps> = ({ initialValue }) => {
                         id="lastName"
                         defaultValue={initialValue?.studentProfile?.lastName}
                         {...register("lastName")}
+                        disabled
                       />
                       {errors.lastName?.message && (
                         <p className="mt-2 text-sm text-red-400">
@@ -269,6 +271,7 @@ const EnrollmentForm: FC<EnrollmentFormProps> = ({ initialValue }) => {
                         id="firstName"
                         defaultValue={initialValue?.studentProfile?.firstName}
                         {...register("firstName")}
+                        disabled
                       />
                       {errors.firstName?.message && (
                         <p className="mt-2 text-sm text-red-400">
@@ -288,6 +291,7 @@ const EnrollmentForm: FC<EnrollmentFormProps> = ({ initialValue }) => {
                           initialValue?.studentProfile?.middleName || ""
                         }
                         {...register("middleName")}
+                        disabled
                       />
                       {errors.middleName?.message && (
                         <p className="mt-2 text-sm text-red-400">
@@ -381,6 +385,7 @@ const EnrollmentForm: FC<EnrollmentFormProps> = ({ initialValue }) => {
                           <Select
                             onValueChange={field.onChange}
                             defaultValue={field.value}
+                            disabled
                           >
                             <SelectTrigger>
                               <SelectValue placeholder="Select sex option" />
@@ -477,7 +482,7 @@ const EnrollmentForm: FC<EnrollmentFormProps> = ({ initialValue }) => {
                     </div>
                   </div>
                   {/* parentGuardianAddress */}
-                  <div className="sm:col-span-3 md:col-span-6">
+                  <div className="sm:col-span-3">
                     <Label>Parent/Guardian Address</Label>
                     <div className="mt-2">
                       <Input
@@ -492,6 +497,25 @@ const EnrollmentForm: FC<EnrollmentFormProps> = ({ initialValue }) => {
                       {errors.parentGuardianAddress?.message && (
                         <p className="mt-2 text-sm text-red-400">
                           {errors.parentGuardianAddress.message}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                  {/* contactNumber */}
+                  <div className="sm:col-span-3">
+                    <Label>Contact Number</Label>
+                    <div className="mt-2">
+                      <Input
+                        type="text"
+                        id="contactNumber"
+                        defaultValue={
+                          initialValue?.studentProfile?.contactNumber || ""
+                        }
+                        {...register("contactNumber")}
+                      />
+                      {errors.contactNumber?.message && (
+                        <p className="mt-2 text-sm text-red-400">
+                          {errors.contactNumber.message}
                         </p>
                       )}
                     </div>

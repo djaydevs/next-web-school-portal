@@ -19,12 +19,8 @@ export const userSchema = z.object({
 export type User = z.infer<typeof userSchema>
 
 export const enrollmentSchema = z.object({
-    lastName: z.string({
-        required_error: "Last name is required",
-    }),
-    firstName: z.string({
-        required_error: "First name is required",
-    }),
+    lastName: z.string().nullish(),
+    firstName: z.string().nullish(),
     middleName: z.string().nullish(),
     sex: z.string({
         required_error: "Sex is required"
