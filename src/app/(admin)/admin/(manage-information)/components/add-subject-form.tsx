@@ -97,7 +97,7 @@ const AddSubjectForm: FC<AddSubjectFormProps> = ({}) => {
         title: "Success",
         description: "Subject added successfully!",
       });
-      router.push("/admin/section-subject");
+      router.push("/admin/subject");
       router.refresh();
     },
   });

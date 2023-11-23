@@ -62,7 +62,6 @@ const AddStrandForm: FC<AddStrandFormProps> = ({}) => {
       gradeLevelId: "",
       strandCode: "",
       strandName: "",
-      subjects: [],
     },
   });
 
@@ -87,7 +86,7 @@ const AddStrandForm: FC<AddStrandFormProps> = ({}) => {
         title: "Success",
         description: "Strand added successfully!",
       });
-      router.push("/admin/section-subject");
+      router.push("/admin/strand");
       router.refresh();
     },
   });

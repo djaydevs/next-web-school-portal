@@ -311,6 +311,21 @@ export const studentSchema = z.object({
             genAverage: z.number(),
             remarks: z.string(),
             studentId: z.string(),
+            subject: z.array(z.object({
+                id: z.string(),
+                subjectName: z.string({
+                    required_error: "Subject name is required",
+                }),
+                schoolYearId: z.string({
+                    required_error: "School Year name is required",
+                }),
+                strandId: z.string({
+                    required_error: "Strand is required",
+                }),
+                studentId: z.string({
+                    required_error: "Student is required",
+                }),
+            })),
         })),
         subjects: z.array(z.object({
             id: z.string(),
@@ -375,34 +390,34 @@ export const strandSchema = z.object({
     strandName: z.string({
         required_error: "Strand name is required",
     }),
-    subjects: z.array(z.object({
-        id: z.string(),
-        subjectName: z.string({
-            required_error: "Subject name is required",
-        }),
-        strandId: z.string({
-            required_error: "Strand is required",
-        }),
-        schoolYearId: z.string({
-            required_error: "School Year name is required",
-        }),
-    })),
-    sections: z.array(z.object({
-        id: z.string(),
-        schoolYearId: z.string({
-            required_error: "School Year is required",
-        }),
-        gradeLevelId: z.string({
-            required_error: "Grade level is required",
-        }),
-        strandId: z.string({
-            required_error: "Strand code is required",
-        }),
-        sectionName: z.string({
-            required_error: "Grade section is required",
-        }),
-        room: z.string(),
-    })),
+    // subjects: z.array(z.object({
+    //     id: z.string(),
+    //     subjectName: z.string({
+    //         required_error: "Subject name is required",
+    //     }),
+    //     strandId: z.string({
+    //         required_error: "Strand is required",
+    //     }),
+    //     schoolYearId: z.string({
+    //         required_error: "School Year name is required",
+    //     }),
+    // })),
+    // sections: z.array(z.object({
+    //     id: z.string(),
+    //     schoolYearId: z.string({
+    //         required_error: "School Year is required",
+    //     }),
+    //     gradeLevelId: z.string({
+    //         required_error: "Grade level is required",
+    //     }),
+    //     strandId: z.string({
+    //         required_error: "Strand code is required",
+    //     }),
+    //     sectionName: z.string({
+    //         required_error: "Grade section is required",
+    //     }),
+    //     room: z.string(),
+    // })),
 });
 export type Strand = z.infer<typeof strandSchema>
 
