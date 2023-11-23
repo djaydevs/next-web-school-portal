@@ -1,16 +1,15 @@
-import { FC } from "react";
+"use client";
+
+import { FC, useState, useCallback, useEffect } from "react";
+import { Section, sectionSchema } from "@/types";
+import { useRouter } from "next/navigation";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { GradeLevel, SchoolYear, Strand } from "@prisma/client";
+import axios, { AxiosError } from "axios";
 
-import { Section, sectionSchema } from "@/types";
-import {
-  fetchGradeLevel,
-  fetchSchoolYear,
-  fetchStrands,
-} from "@/hooks/getInfos";
 import {
   Dialog,
   DialogContent,
@@ -36,18 +35,56 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
-import Icons from "@/components/ui/icons";
-import { Input } from "@/components/ui/input";
-import axios, { AxiosError } from "axios";
-import { useRouter } from "next/navigation";
+import { Button, buttonVariants } from "@/components/ui/button";
+import Link from "next/link";
+import { cn } from "@/lib/utils";
+import {
+  fetchGradeLevel,
+  fetchSchoolYear,
+  fetchSectionById,
+  fetchStrands,
+} from "@/hooks/getInfos";
 import { useToast } from "@/components/ui/use-toast";
+import { Input } from "@/components/ui/input";
+import Icons from "@/components/ui/icons";
 
-interface AddSectionFormProps {}
+interface SectionPageIdModalProps {
+  params: {
+    id: string;
+  };
+}
 
-const AddSectionForm: FC<AddSectionFormProps> = ({}) => {
-  const router = useRouter();
+export default function SectionPageIdModal({
+  params,
+}: SectionPageIdModalProps) {
+  const { id } = params;
   const { toast } = useToast();
+
+  const {
+    data: section,
+    isPending: isLoadingSection,
+    isError: isErrorFetchingSection,
+    error: sectionsError,
+  } = useQuery<Section>({
+    queryKey: ["section", id],
+    queryFn: async () => fetchSectionById(id),
+  });
+
+  const [sectionId, setSectionId] = useState({ id: section?.id });
+  const [open, setOpen] = useState(false);
+  const router = useRouter();
+
+  const handleClose = useCallback(() => {
+    setOpen(false);
+    setSectionId((prev) => ({ ...prev, id: id }));
+    router.push("/admin/section/");
+  }, [id, router]);
+
+  useEffect(() => {
+    if (!open) {
+      router.push("/admin/section/");
+    }
+  }, [open, router]);
 
   const {
     data: schoolYears,
@@ -82,18 +119,18 @@ const AddSectionForm: FC<AddSectionFormProps> = ({}) => {
   const form = useForm<z.infer<typeof sectionSchema>>({
     resolver: zodResolver(sectionSchema),
     defaultValues: {
-      id: "",
-      schoolYearId: "",
-      gradeLevelId: "",
-      strandId: "",
-      sectionName: "",
-      room: "",
+      id: section?.id,
+      schoolYearId: section?.schoolYearId,
+      gradeLevelId: section?.gradeLevelId,
+      strandId: section?.strandId,
+      sectionName: section?.sectionName,
+      room: section?.room,
     },
   });
 
-  const { mutate: addSection, isPending: isLoadingSubmit } = useMutation({
-    mutationFn: (newSection: Section) => {
-      return axios.post("/api/section", newSection);
+  const { mutate: editSection, isPending: isLoadingSubmit } = useMutation({
+    mutationFn: (section: Section) => {
+      return axios.patch("/api/section", section);
     },
     onError: (error) => {
       if (error instanceof AxiosError) {
@@ -112,39 +149,36 @@ const AddSectionForm: FC<AddSectionFormProps> = ({}) => {
         title: "Success",
         description: "Section added successfully!",
       });
-      router.push("/admin/section");
+      router.push("/admin/section-subject");
       router.refresh();
     },
   });
 
   const onSubmit = (data: z.infer<typeof sectionSchema>) => {
-    addSection(data);
+    editSection(data);
   };
 
-  if (isErrorFetchingSchoolYears) {
-    return <span>Error: {schoolYearsError.message}</span>;
-  }
-
-  if (isErrorFetchingGradeLevels) {
-    return <span>Error: {gradeLevelsError.message}</span>;
-  }
-
-  if (isErrorFetchingStrands) {
-    return <span>Error: {strandsError.message}</span>;
-  }
-
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>
-          <Icons.PlusCircle className="mr-2" />
-          Add Section
-        </Button>
+        <Link
+          href={`/admin/section/${id}`}
+          aria-label="Manage section details"
+          className={cn(
+            buttonVariants({
+              variant: "outline",
+              size: "sm",
+            }),
+            "w-full rounded-md px-2 py-1",
+          )}
+        >
+          Details
+        </Link>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>New Section</DialogTitle>
-          <DialogDescription>Add new section.</DialogDescription>
+          <DialogTitle>Edit Section</DialogTitle>
+          <DialogDescription>Edit section.</DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form
@@ -162,7 +196,7 @@ const AddSectionForm: FC<AddSectionFormProps> = ({}) => {
                   ) : (
                     <Select
                       onValueChange={field.onChange}
-                      defaultValue={field.value}
+                      defaultValue={section?.schoolYearId}
                     >
                       <FormControl>
                         <SelectTrigger>
@@ -204,7 +238,7 @@ const AddSectionForm: FC<AddSectionFormProps> = ({}) => {
                   ) : (
                     <Select
                       onValueChange={field.onChange}
-                      defaultValue={field.value}
+                      defaultValue={section?.gradeLevelId}
                     >
                       <FormControl>
                         <SelectTrigger>
@@ -235,7 +269,7 @@ const AddSectionForm: FC<AddSectionFormProps> = ({}) => {
                   ) : (
                     <Select
                       onValueChange={field.onChange}
-                      defaultValue={field.value}
+                      defaultValue={section?.strandId}
                     >
                       <FormControl>
                         <SelectTrigger>
@@ -274,6 +308,8 @@ const AddSectionForm: FC<AddSectionFormProps> = ({}) => {
                     <Input
                       required
                       {...field}
+                      defaultValue={section?.sectionName}
+                      value={field.value ?? ""}
                       onChange={(e) =>
                         field.onChange(e.target.value.toUpperCase())
                       }
@@ -292,6 +328,8 @@ const AddSectionForm: FC<AddSectionFormProps> = ({}) => {
                   <FormControl>
                     <Input
                       {...field}
+                      defaultValue={section?.room}
+                      value={field.value ?? ""}
                       onChange={(e) =>
                         field.onChange(e.target.value.toUpperCase())
                       }
@@ -310,7 +348,7 @@ const AddSectionForm: FC<AddSectionFormProps> = ({}) => {
                 {isLoadingSubmit ? (
                   <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" />
                 ) : null}{" "}
-                Add Section
+                Edit Section
               </Button>
             </DialogFooter>
           </form>
@@ -318,6 +356,4 @@ const AddSectionForm: FC<AddSectionFormProps> = ({}) => {
       </DialogContent>
     </Dialog>
   );
-};
-
-export default AddSectionForm;
+}

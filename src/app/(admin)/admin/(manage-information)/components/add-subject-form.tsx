@@ -97,7 +97,7 @@ const AddSubjectForm: FC<AddSubjectFormProps> = ({}) => {
         title: "Success",
         description: "Subject added successfully!",
       });
-      router.push("/admin/section-subject");
+      router.push("/admin/subject");
       router.refresh();
     },
   });
@@ -117,7 +117,7 @@ const AddSubjectForm: FC<AddSubjectFormProps> = ({}) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="w-full">
+        <Button>
           <Icons.PlusCircle className="mr-2" />
           Add Subject
         </Button>

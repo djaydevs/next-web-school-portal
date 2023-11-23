@@ -1,7 +1,7 @@
 "use client";
 
 import { FC, useState, useCallback, useEffect } from "react";
-import { SchoolYear } from "@prisma/client";
+import { Subject } from "@/types";
 import { useRouter } from "next/navigation";
 
 import {
@@ -17,40 +17,42 @@ import { buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
-import { fetchSchoolYear } from "@/hooks/getInfos";
+import { fetchSubjectById } from "@/hooks/getInfos";
 
-interface SchoolYearPageIdModalProps {
+interface SubjectPageIdModalProps {
   params: {
     id: string;
   };
 }
 
-export default function SchoolYearPageIdModal({
+export default function SubjectPageIdModal({
   params,
-}: SchoolYearPageIdModalProps) {
+}: SubjectPageIdModalProps) {
+  const { id } = params;
+
   const {
-    data: schoolYear,
-    isPending: isLoadingSchoolYear,
-    isError: isErrorFetchingSchoolYear,
-    error: schoolYearsError,
-  } = useQuery<SchoolYear>({
-    queryKey: ["schoolYear"],
-    queryFn: async () => fetchSchoolYear(),
+    data: subject,
+    isPending: isLoadingSubject,
+    isError: isErrorFetchingSubject,
+    error: subjectsError,
+  } = useQuery<Subject>({
+    queryKey: ["subject", id],
+    queryFn: async () => fetchSubjectById(id),
   });
 
-  const [schoolYearId, setSchoolYearId] = useState({ id: schoolYear?.id });
+  const [subjectId, setSubjectId] = useState({ id: subject?.id });
   const [open, setOpen] = useState(false);
   const router = useRouter();
 
   const handleClose = useCallback(() => {
     setOpen(false);
-    setSchoolYearId((prev) => ({ ...prev, id: params.id }));
-    router.push("/admin/school-year/");
-  }, [params.id, router]);
+    setSubjectId((prev) => ({ ...prev, id: id }));
+    router.push("/admin/subject/");
+  }, [id, router]);
 
   useEffect(() => {
     if (!open) {
-      router.push("/admin/school-year/");
+      router.push("/admin/subject/");
     }
   }, [open, router]);
 
@@ -58,8 +60,8 @@ export default function SchoolYearPageIdModal({
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Link
-          href={`/admin/school-year/${params.id || ""}`}
-          aria-label="Manage school year details"
+          href={`/admin/subject/${id}`}
+          aria-label="Manage subject details"
           className={cn(
             buttonVariants({
               variant: "outline",
@@ -73,8 +75,8 @@ export default function SchoolYearPageIdModal({
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Edit School Year</DialogTitle>
-          <DialogDescription>Edit school year and semester.</DialogDescription>
+          <DialogTitle>Edit Subject</DialogTitle>
+          <DialogDescription>Edit subject.</DialogDescription>
         </DialogHeader>
       </DialogContent>
     </Dialog>

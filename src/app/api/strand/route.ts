@@ -29,6 +29,8 @@ export async function POST(req: NextRequest) {
                 gradeLevelId: body.gradeLevelId,
                 strandCode: body.strandCode,
                 strandName: body.strandName,
+                // sections: body.sections,
+                // subjects: body.subjects,
             },
         });
 

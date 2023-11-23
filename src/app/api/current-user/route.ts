@@ -240,7 +240,7 @@ export async function PUT(req: NextRequest, res: NextResponse) {
           parentGuardianName: body.parentGuardianName,
           parentGuardianAddress: body.parentGuardianAddress,
           parentGuardianOccupation: body.parentGuardianOccupation,
-          contactNumber: body.contact,
+          contactNumber: body.contactNumber,
           enrollment: {
             connect: {
               id: newEnrollment.id,
