@@ -62,11 +62,9 @@ export async function POST(req: NextRequest, context: StudentProps) {
       studentId,
       section,
       subjectId,
-      grades: {
-        firstQuarter,
-        secondQuarter,
-        finalGrade,
-      },
+      firstQuarter,
+      secondQuarter,
+      finalGrade,
     } = data;
 
     // Check if grades already exist for the student, section, and subject

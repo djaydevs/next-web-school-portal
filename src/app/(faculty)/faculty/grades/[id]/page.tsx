@@ -8,7 +8,8 @@ import { Student } from "@/types";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { SkeletonCard } from "@/components/loading";
 import GradeInfoCard from "@/components/grade-info-card";
-import AddGradesForm from "../components/add-grades-form";
+import AddGradesForm from "@/components/add-grades-form";
+import ReportCard from "@/components/report-card";
 
 interface ManageGradeIdPageProps {
   params: {
@@ -46,8 +47,13 @@ const ManageGradeIdPage: FC<ManageGradeIdPageProps> = ({ params }) => {
         <>
           {studentInfo.studentProfile ? (
             <div className="w-full items-center justify-between space-x-4 p-4 md:flex">
-              <GradeInfoCard studentInfo={studentInfo} />
-              <AddGradesForm params={{ id }} initialValue={studentInfo} />
+              <div className="flex w-2/3 flex-col gap-4">
+                <AddGradesForm params={{ id }} initialValue={studentInfo} />
+                <GradeInfoCard studentInfo={studentInfo} />
+              </div>
+              <div className="w-full">
+                <ReportCard studentInfo={studentInfo} />
+              </div>
             </div>
           ) : (
             <div className="m-auto flex h-[500px] w-full items-center justify-center">

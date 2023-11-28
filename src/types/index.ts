@@ -469,18 +469,25 @@ export const facultyAssignSchema = z.object({
 });
 export type FacultyAssign = z.infer<typeof facultyAssignSchema>
 
-export const addGradeSchema = z.object({
+export const addFirstGradeSchema = z.object({
     studentId: z.string(),
     section: z.string({
         required_error: "Section is required",
     }),
     subjectId: z.string(),
-    grades: z.object({
-        firstQuarter: z.number(),
-        secondQuarter: z.number(),
-    })
+    firstQuarter: z.number(),
 });
-export type AddGrade = z.infer<typeof addGradeSchema>
+export type AddFirstGrade = z.infer<typeof addFirstGradeSchema>
+
+export const addSecondGradeSchema = z.object({
+    studentId: z.string(),
+    section: z.string({
+        required_error: "Section is required",
+    }),
+    subjectId: z.string(),
+    secondQuarter: z.number(),
+});
+export type AddSecondGrade = z.infer<typeof addSecondGradeSchema>
 
 export const verifySchema = z.object({
     inputNumber: z.string({
