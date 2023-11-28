@@ -14,6 +14,8 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
+  Row,
+  RowModel
 } from "@tanstack/react-table";
 
 import {
@@ -31,11 +33,13 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 interface StudentTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  onFilteredDataChange?: (filteredData: TData[]) => void;
 }
 
 export default function StudentTable<TData, TValue>({
   columns,
   data,
+  onFilteredDataChange,
 }: StudentTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
@@ -44,7 +48,7 @@ export default function StudentTable<TData, TValue>({
     [],
   );
   const [sorting, setSorting] = React.useState<SortingState>([]);
-  const table = useReactTable({
+  const table = useReactTable<TData>({
     data,
     columns,
     state: {
@@ -56,15 +60,30 @@ export default function StudentTable<TData, TValue>({
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
+    onColumnFiltersChange: (filters) => {
+      setColumnFilters(filters);
+    
+      if (onFilteredDataChange) {
+        const filteredData = getFilteredRowModel<TData>()(table) as unknown as RowModel<TData>;
+        const filteredDataArray = filteredData && filteredData.rows
+          ? filteredData.rows.map((row: Row<TData>) => row.original)
+          : [];
+    
+        console.log('Filtered Data Array:', filteredDataArray);
+        console.log('Filtered Data Length:', filteredDataArray.length);
+    
+        onFilteredDataChange(filteredDataArray);
+      }
+    },
     onColumnVisibilityChange: setColumnVisibility,
-    getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFacetedRowModel: getFacetedRowModel(),
-    getFacetedUniqueValues: getFacetedUniqueValues(),
+    getCoreRowModel: getCoreRowModel<TData>(),
+    getFilteredRowModel: getFilteredRowModel<TData>(),
+    getPaginationRowModel: getPaginationRowModel<TData>(),
+    getSortedRowModel: getSortedRowModel<TData>(),
+    getFacetedRowModel: getFacetedRowModel<TData>(),
+    getFacetedUniqueValues: getFacetedUniqueValues<TData>(),
   });
+
 
   return (
     <div className="space-y-2">

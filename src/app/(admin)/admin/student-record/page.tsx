@@ -11,6 +11,7 @@ import Icons from "@/components/ui/icons";
 import { Button } from "@/components/ui/button";
 import StudentTable from "@/components/student-table";
 import { columns } from "@/components/student-columns";
+import  StudentExportFilteredData  from "@/components/student-export-filtered-data";
 import { Student, studentSchema } from "@/types";
 import { fetchStudent } from "@/hooks/getUsers";
 
@@ -27,6 +28,8 @@ const StudentRecordPage: FC<StudentRecordPageProps> = ({}) => {
     queryFn: async () => fetchStudent(),
   });
 
+  console.log('Is Loading Student Table:', isLoadingStudentTable);
+
   const renderButton = (openModal: any) => {
     return (
       <Button onClick={openModal}>
@@ -36,83 +39,8 @@ const StudentRecordPage: FC<StudentRecordPageProps> = ({}) => {
     );
   };
 
-  const [studentsData, setStudentsData] = useState<Student[]>([]);
-
-  useEffect(() => {
-    if (students) {
-      setStudentsData(students);
-    }
-  }, [students]);
-
-  const handleExport = () => {
-    const rows = studentsData.map((student) => ({
-      lrn: student.studentProfile?.lrnNumber,
-      lastname: student.studentProfile?.lastName,
-      firstname: student.studentProfile?.firstName,
-      middlename: student.studentProfile?.middleName,
-      sex: student.studentProfile?.sex,
-      age: student.studentProfile?.age,
-      dateOfBirth: student.studentProfile.dateOfBirth,
-      address: student.studentProfile?.address,
-      parent: student.studentProfile?.parentGuardianName,
-      parentWork: student.studentProfile?.parentGuardianOccupation,
-      parentAddress: student.studentProfile?.parentGuardianAddress,
-      gradeLevel: student.studentProfile?.gradeLevel?.gradeLevel,
-      section: student.studentProfile?.section?.sectionName,
-      strand: student.studentProfile?.strand?.strandCode,
-    }));
-
-    // Create workbook and worksheet
-    const workbook: XLSX.WorkBook = XLSX.utils.book_new();
-    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(rows);
-
-    XLSX.utils.sheet_add_aoa(worksheet, [
-      ["LRN Number", "Last Name", "First Name", "Middle Name", "Sex", "Age", "Date of Birth", 
-      "Address", "Parent/Guardian's Name", "Parent/Guardian's Occupation", "Parent/Guardian's Address",
-      "Grade Level", "Section", "Strand"],
-    ]);
-
-    // Auto-size columns
-    const ref = worksheet['!ref'];
-    if (ref) {
-      const headerRange = XLSX.utils.decode_range(ref);
-
-      for (let col = headerRange.s.c; col <= headerRange.e.c; ++col) {
-        worksheet['!cols'] = worksheet['!cols'] || [];
-
-        // Set a default width for the column
-        worksheet['!cols'][col] = worksheet['!cols'][col] || { width: 15 };
-
-        // Adjust column width based on header length
-        const headerCell = worksheet[XLSX.utils.encode_cell({ r: headerRange.s.r, c: col })];
-        if (headerCell && typeof headerCell.v === 'string') {
-          const colInfo = worksheet['!cols'][col]!;
-          colInfo.width = colInfo.width || 15; // Default width
-          if (headerCell.v.length > colInfo.width) {
-            colInfo.width = headerCell.v.length + 2; // Add some padding
-          }
-        }
-
-        // Adjust column width based on data length
-        for (let row = headerRange.s.r + 1; row <= headerRange.e.r; ++row) {
-          const cell = worksheet[XLSX.utils.encode_cell({ r: row, c: col })];
-          if (cell && cell.v && typeof cell.v === 'string') {
-            const colInfo = worksheet['!cols'][col]!;
-            colInfo.width = colInfo.width || 15; // Default width
-            if (cell.v.length > colInfo.width) {
-              colInfo.width = cell.v.length + 2; // Add some padding
-            }
-          }
-        }
-      }
-    }
-
-    // Add the worksheet to the workbook
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Student");
-
-    // Save the workbook to a file
-    XLSX.writeFile(workbook, "StudentRecord.xlsx", { compression: true });
-};
+  const [filteredData, setFilteredData] = useState<Student[]>([]);
+  console.log('Fetched Students:', students);
   
   if (isErrorFetchingStudents) {
     return <span>Error: {error.message}</span>;
@@ -136,10 +64,12 @@ const StudentRecordPage: FC<StudentRecordPageProps> = ({}) => {
             user={{ userId: 12345 }}
             render={(openModal) => renderButton(openModal)}
           />
-          <Button onClick={handleExport}>
+          {/* <Button onClick={filteredData}>
             <Icons.FileDown className="mr-2" />
             Export Data
-          </Button>
+          </Button> */}
+          {/* Pass the filteredData to the ExportDataButton */}
+          <StudentExportFilteredData filteredData={filteredData} />
         </div>
         <div className="flex w-full justify-end">
           <Button variant="secondary">
@@ -151,7 +81,8 @@ const StudentRecordPage: FC<StudentRecordPageProps> = ({}) => {
       {isLoadingStudentTable ? (
         <SkeletonTable />
       ) : (
-        <StudentTable columns={columns} data={students} />
+        // Inside StudentRecordPage component
+        <StudentTable columns={columns} data={students} onFilteredDataChange={setFilteredData} />
       )}
     </div>
   );
