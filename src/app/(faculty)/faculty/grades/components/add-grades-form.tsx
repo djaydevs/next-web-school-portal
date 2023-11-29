@@ -1,5 +1,3 @@
-"use_client";
-
 import { FC, useState } from "react";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
@@ -66,7 +64,6 @@ const AddGradesForm: FC<AddGradesFormProps> = ({ params, initialValue }) => {
   const { id } = params;
   const router = useRouter();
   const { toast } = useToast();
-  const [isFirstFormSubmitted, setIsFirstFormSubmitted] = useState(false);
 
   const {
     data: currentUser,
@@ -81,20 +78,21 @@ const AddGradesForm: FC<AddGradesFormProps> = ({ params, initialValue }) => {
   const form1 = useForm<z.infer<typeof addFirstGradeSchema>>({
     resolver: zodResolver(addFirstGradeSchema),
     defaultValues: {
-      studentId: initialValue?.studentProfile.id ?? "",
+      studentId: initialValue?.studentProfile?.id ?? "",
+      facultyId: currentUser?.id ?? "",
       section: initialValue?.studentProfile?.sectionId ?? "",
       subjectId: "",
-      firstQuarter: undefined,
+      firstQuarter: 0,
     },
   });
 
   const form2 = useForm<z.infer<typeof addSecondGradeSchema>>({
     resolver: zodResolver(addSecondGradeSchema),
     defaultValues: {
-      studentId: initialValue?.studentProfile.id ?? "",
+      studentId: initialValue?.studentProfile?.id ?? "",
       section: initialValue?.studentProfile?.sectionId ?? "",
       subjectId: "",
-      secondQuarter: undefined,
+      secondQuarter: 0,
     },
   });
 
@@ -138,6 +136,14 @@ const AddGradesForm: FC<AddGradesFormProps> = ({ params, initialValue }) => {
             variant: "destructive",
           });
         }
+        if (error.response?.status === 404) {
+          toast({
+            title: "Error",
+            description:
+              "First quarter grade not found. Please enter the first quarter grade first.",
+            variant: "destructive",
+          });
+        }
       }
     },
     onSuccess: () => {
@@ -152,19 +158,9 @@ const AddGradesForm: FC<AddGradesFormProps> = ({ params, initialValue }) => {
 
   const onSubmit1 = (data1: z.infer<typeof addFirstGradeSchema>) => {
     addFirstGrade(data1);
-    setIsFirstFormSubmitted(true);
   };
 
   const onSubmit2 = (data2: z.infer<typeof addSecondGradeSchema>) => {
-    // Check if the first form has been submitted
-  if (!isFirstFormSubmitted) {
-    toast({
-      title: "Error",
-      description: "Please submit the first quarter grades before entering the second quarter.",
-      variant: "destructive",
-    });
-    return; // Stop the submission of the second form
-  }
     addSecondGrade(data2);
   };
 
@@ -178,24 +174,24 @@ const AddGradesForm: FC<AddGradesFormProps> = ({ params, initialValue }) => {
       </CardHeader>
       <CardContent className="flex w-full flex-col items-center justify-center gap-4">
         <Dialog>
-          <Form {...form1}>
-            <form
-              onSubmit={form1.handleSubmit(onSubmit1)}
-              className="w-full space-y-6"
-            >
-              <DialogTrigger asChild>
-                <Button className="w-full">
-                  <Icons.PlusCircle className="mr-2" />
-                  First Quarter Grade
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-[425px]">
-                <DialogHeader>
-                  <DialogTitle>Add First Quarter Grade</DialogTitle>
-                  <DialogDescription>
-                    Edit first quarter grade to student.
-                  </DialogDescription>
-                </DialogHeader>
+          <DialogTrigger asChild>
+            <Button className="w-full">
+              <Icons.PlusCircle className="mr-2" />
+              First Quarter Grade
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>Add First Quarter Grade</DialogTitle>
+              <DialogDescription>
+                Edit first quarter grade to student.
+              </DialogDescription>
+            </DialogHeader>
+            <Form {...form1}>
+              <form
+                onSubmit={form1.handleSubmit(onSubmit1)}
+                className="w-full space-y-6"
+              >
                 <FormField
                   control={form1.control}
                   name="subjectId"
@@ -256,29 +252,29 @@ const AddGradesForm: FC<AddGradesFormProps> = ({ params, initialValue }) => {
                     Save
                   </Button>
                 </DialogFooter>
-              </DialogContent>
-            </form>
-          </Form>
+              </form>
+            </Form>
+          </DialogContent>
         </Dialog>
         <Dialog>
-          <Form {...form2}>
-            <form
-              onSubmit={form2.handleSubmit(onSubmit2)}
-              className="w-full space-y-6"
-            >
-              <DialogTrigger asChild>
-                <Button disabled={!isFirstFormSubmitted} className="w-full">
-                  <Icons.PlusCircle className="mr-2" />
-                  Second Quarter Grade
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-[425px]">
-                <DialogHeader>
-                  <DialogTitle>Add Second Quarter Grade</DialogTitle>
-                  <DialogDescription>
-                    Edit second quarter grade to student.
-                  </DialogDescription>
-                </DialogHeader>
+          <DialogTrigger asChild>
+            <Button className="w-full">
+              <Icons.PlusCircle className="mr-2" />
+              Second Quarter Grade
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>Add Second Quarter Grade</DialogTitle>
+              <DialogDescription>
+                Edit second quarter grade to student.
+              </DialogDescription>
+            </DialogHeader>
+            <Form {...form2}>
+              <form
+                onSubmit={form2.handleSubmit(onSubmit2)}
+                className="w-full space-y-6"
+              >
                 <FormField
                   control={form2.control}
                   name="subjectId"
@@ -339,9 +335,9 @@ const AddGradesForm: FC<AddGradesFormProps> = ({ params, initialValue }) => {
                     Save
                   </Button>
                 </DialogFooter>
-              </DialogContent>
-            </form>
-          </Form>
+              </form>
+            </Form>
+          </DialogContent>
         </Dialog>
       </CardContent>
     </Card>

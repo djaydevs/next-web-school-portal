@@ -471,6 +471,7 @@ export type FacultyAssign = z.infer<typeof facultyAssignSchema>
 
 export const addFirstGradeSchema = z.object({
     studentId: z.string(),
+    facultyId: z.string(),
     section: z.string({
         required_error: "Section is required",
     }),
