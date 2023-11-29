@@ -68,6 +68,15 @@ export async function POST(req: NextRequest, context: StudentProps) {
     } = data;
 
     // Check if the user (with userId) exists in the Students table
+    const faculty = await prisma.facultyProfile.findUnique({
+      where: { userId: facultyId },
+    });
+
+    if (!faculty) {
+      return NextResponse.json({ message: 'User not found in Students table' }, { status: 404 });
+    }
+
+    // Check if the user (with userId) exists in the Students table
     const existingStudent = await prisma.studentProfile.findUnique({
       where: { userId: params.studentId },
     });
@@ -83,7 +92,7 @@ export async function POST(req: NextRequest, context: StudentProps) {
         section: { connect: { id: section } },
         subjectId,
         studentId: existingStudent.id,
-        facultyId: facultyId,
+        facultyId: faculty.id,
       },
     });
 
