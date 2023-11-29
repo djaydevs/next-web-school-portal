@@ -51,8 +51,49 @@ export async function GET(req: NextRequest, context: StudentProps) {
   }
 }
 
-//Encoding of grades
 export async function POST(req: NextRequest, context: StudentProps) {
+  try {
+    const { params } = context;
+    const data = await req.json();
+
+    //For encoding a single set of grades
+    const {
+      section,
+      subjectId,
+      firstQuarter,
+      secondQuarter,
+      finalGrade,
+      studentId,
+      facultyId,
+    } = data;
+
+    // Check if the user (with userId) exists in the Students table
+    const existingStudent = await prisma.studentProfile.findUnique({
+      where: { userId: params.studentId },
+    });
+
+    if (!existingStudent) {
+      return NextResponse.json({ message: 'User not found in Students table' }, { status: 404 });
+    }
+
+    // Grades don't exist, create new grades for the first quarter
+    const newGrades = await prisma.grades.create({
+      data: {
+        firstQuarter,
+        section: { connect: { id: section } },
+        subjectId,
+        studentId: existingStudent.id,
+        facultyId: facultyId,
+      },
+    });
+
+    return NextResponse.json({ message: 'Grades created successfully' }, { status: 200 });
+  } catch (error: any) {
+    return NextResponse.json({ message: error.message }, { status: 500 });
+  }
+}
+
+export async function PUT(req: NextRequest, context: StudentProps) {
   try {
     const { params } = context;
     const data = await req.json();
@@ -81,66 +122,30 @@ export async function POST(req: NextRequest, context: StudentProps) {
     });
 
     if (existingGrades) {
-      // Grades already exist, update them
-      const updatedGrades = await prisma.grades.update({
-        where: { id: existingGrades.id },
-        data: {
-          secondQuarter,
-          //finalGrade: (firstQuarter + secondQuarter) / 2,
-          //remarks: finalGrade < 74 ? "FAILED" : "PASSED",
-        },
-      });
-
-      // Fetch the updated grades from the database
-      const updatedGradesFromDB = await prisma.grades.findUnique({
-        where: { id: existingGrades.id },
-      });
-
-      // Ensure that updatedGradesFromDB and its relevant fields are not null
-      if (
-        updatedGradesFromDB &&
-        updatedGradesFromDB.firstQuarter !== null &&
-        updatedGradesFromDB.secondQuarter !== null
-      ) {
-        // Calculate finalGrade based on firstQuarter and updated secondQuarter
-        const calculatedFinalGrade =
-          (Number(updatedGradesFromDB.firstQuarter) +
-            Number(updatedGradesFromDB.secondQuarter)) /
-          2;
-
-        // Update the finalGrade in the database
-        await prisma.grades.update({
+      // Grades already exist, check if firstQuarter is present
+      if (existingGrades.firstQuarter !== null) {
+        // Update secondQuarter and recalculate finalGrade
+        const updatedGrades = await prisma.grades.update({
           where: { id: existingGrades.id },
           data: {
-            finalGrade: calculatedFinalGrade,
-            remarks: calculatedFinalGrade < 74 ? "FAILED" : "PASSED",
+            secondQuarter,
           },
         });
 
-        return NextResponse.json(
-          { message: "Grades updated successfully" },
-          { status: 200 }
-        );
+        return NextResponse.json({ message: "Grades updated successfully" }, { status: 200 });
       } else {
-        // Handle the case where any required field is null
+        // Handle the case where firstQuarter is null
         return NextResponse.json(
-          { message: "Error fetching or calculating grades from the database" },
-          { status: 500 }
+          { message: "Cannot update secondQuarter without firstQuarter" },
+          { status: 400 }
         );
       }
-
     } else {
-      // Grades don't exist, create new grades for the first quarter
-      const newGrades = await prisma.grades.create({
-        data: {
-          firstQuarter,
-          section: { connect: { id: section } },
-          subjectId,
-          studentId: studentId,
-        },
-      });
-
-      return NextResponse.json({ message: 'Grades created successfully' }, { status: 200 });
+      // Handle the case where grades don't exist
+      return NextResponse.json(
+        { message: "Grades not found. Please submit the first quarter grades first." },
+        { status: 404 }
+      );
     }
   } catch (error: any) {
     return NextResponse.json({ message: error.message }, { status: 500 });

@@ -126,7 +126,7 @@ const AddGradesForm: FC<AddGradesFormProps> = ({ params, initialValue }) => {
 
   const { mutate: addSecondGrade, isPending: isLoadingSubmit2 } = useMutation({
     mutationFn: (grade: AddSecondGrade) => {
-      return axios.post(`/api/student/${id}/grades`, grade);
+      return axios.put(`/api/student/${id}/grades`, grade);
     },
     onError: (error) => {
       if (error instanceof AxiosError) {
@@ -156,6 +156,15 @@ const AddGradesForm: FC<AddGradesFormProps> = ({ params, initialValue }) => {
   };
 
   const onSubmit2 = (data2: z.infer<typeof addSecondGradeSchema>) => {
+    // Check if the first form has been submitted
+  if (!isFirstFormSubmitted) {
+    toast({
+      title: "Error",
+      description: "Please submit the first quarter grades before entering the second quarter.",
+      variant: "destructive",
+    });
+    return; // Stop the submission of the second form
+  }
     addSecondGrade(data2);
   };
 
