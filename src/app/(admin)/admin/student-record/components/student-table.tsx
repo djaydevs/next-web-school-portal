@@ -33,13 +33,13 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 interface StudentTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  onFilteredDataChange?: (filteredData: TData[]) => void;
+  setFilteredData: (filteredData: TData[]) => void;
 }
 
 export default function StudentTable<TData, TValue>({
   columns,
   data,
-  onFilteredDataChange,
+  setFilteredData,
 }: StudentTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
@@ -60,10 +60,11 @@ export default function StudentTable<TData, TValue>({
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
-    onColumnFiltersChange: (filters) => {
+    onColumnFiltersChange: async (filters) => {
+      console.log('Filters Applied:', filters);    
       setColumnFilters(filters);
     
-      if (onFilteredDataChange) {
+      try {
         const filteredData = getFilteredRowModel<TData>()(table) as unknown as RowModel<TData>;
         const filteredDataArray = filteredData && filteredData.rows
           ? filteredData.rows.map((row: Row<TData>) => row.original)
@@ -72,9 +73,11 @@ export default function StudentTable<TData, TValue>({
         console.log('Filtered Data Array:', filteredDataArray);
         console.log('Filtered Data Length:', filteredDataArray.length);
     
-        onFilteredDataChange(filteredDataArray);
+        setFilteredData(filteredDataArray);
+      } catch (error) {
+        console.error('Error during filtering:', error);
       }
-    },
+    }, 
     onColumnVisibilityChange: setColumnVisibility,
     getCoreRowModel: getCoreRowModel<TData>(),
     getFilteredRowModel: getFilteredRowModel<TData>(),

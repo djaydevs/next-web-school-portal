@@ -11,11 +11,12 @@ import Icons from "@/components/ui/icons";
 import { Button } from "@/components/ui/button";
 import StudentTable from "@/components/student-table";
 import { columns } from "@/components/student-columns";
-import  StudentExportFilteredData  from "@/components/student-export-filtered-data";
 import { Student, studentSchema } from "@/types";
 import { fetchStudent } from "@/hooks/getUsers";
 
-interface StudentRecordPageProps {}
+interface StudentRecordPageProps {
+  filteredData: Student[];
+}
 
 const StudentRecordPage: FC<StudentRecordPageProps> = ({}) => {
   const {
@@ -39,8 +40,40 @@ const StudentRecordPage: FC<StudentRecordPageProps> = ({}) => {
     );
   };
 
+  const [exporting, setExporting] = useState(false);
   const [filteredData, setFilteredData] = useState<Student[]>([]);
-  console.log('Fetched Students:', students);
+  console.log('Fetched Students:', students); 
+
+  useEffect(() => {
+    if (students) {
+      setFilteredData(students);
+    }
+  }, [students]);
+
+  const handleExport = () => {
+    try {
+      setExporting(true)
+      // Ensure that filteredDataArray is not empty before proceeding
+      if (filteredData.length > 0 && exporting) {
+        // Create workbook and worksheet
+        const workbook: XLSX.WorkBook = XLSX.utils.book_new();
+        const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(filteredData);
+            
+        XLSX.utils.book_append_sheet(workbook, worksheet, 'Student');
+        XLSX.writeFile(workbook, 'StudentRecord.xlsx', { compression: true });
+      } else {
+          console.warn('Filtered data array is empty. No data to export.');
+      }      
+    } catch (error) {
+      console.error("Error exporting data:", error);      
+    } finally {
+      setExporting(false);
+    }  
+  };
+
+  useEffect(() => {
+    console.log('Component Re-rendered. Filtered Data:', filteredData);
+  }, [filteredData]);
   
   if (isErrorFetchingStudents) {
     return <span>Error: {error.message}</span>;
@@ -64,12 +97,10 @@ const StudentRecordPage: FC<StudentRecordPageProps> = ({}) => {
             user={{ userId: 12345 }}
             render={(openModal) => renderButton(openModal)}
           />
-          {/* <Button onClick={filteredData}>
+          <Button onClick={handleExport}>
             <Icons.FileDown className="mr-2" />
             Export Data
-          </Button> */}
-          {/* Pass the filteredData to the ExportDataButton */}
-          <StudentExportFilteredData filteredData={filteredData} />
+          </Button>
         </div>
         <div className="flex w-full justify-end">
           <Button variant="secondary">
@@ -82,7 +113,7 @@ const StudentRecordPage: FC<StudentRecordPageProps> = ({}) => {
         <SkeletonTable />
       ) : (
         // Inside StudentRecordPage component
-        <StudentTable columns={columns} data={students} onFilteredDataChange={setFilteredData} />
+        <StudentTable columns={columns} data={students} setFilteredData={setFilteredData} />
       )}
     </div>
   );
