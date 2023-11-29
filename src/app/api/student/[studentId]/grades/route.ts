@@ -141,6 +141,27 @@ export async function PUT(req: NextRequest, context: StudentProps) {
           },
         });
 
+        // Fetch the updated grades from the database
+        const updatedGradesFromDB = await prisma.grades.findUnique({
+          where: { id: existingGrades.id },
+        });
+
+        // Ensure that updatedGradesFromDB and its relevant fields are not null
+
+        if ( updatedGradesFromDB && updatedGradesFromDB.firstQuarter !== null && updatedGradesFromDB.secondQuarter !== null ) {
+            // Calculate finalGrade based on firstQuarter and updated secondQuarter
+            const calculatedFinalGrade = (Number(updatedGradesFromDB.firstQuarter) + Number(updatedGradesFromDB.secondQuarter)) / 2;
+
+            // Update the finalGrade in the database
+            await prisma.grades.update({
+              where: { id: existingGrades.id },
+              data: {
+                finalGrade: calculatedFinalGrade,
+                remarks: calculatedFinalGrade < 74 ? "FAILED" : "PASSED",
+              },
+            });
+        }
+      
         return NextResponse.json({ message: "Grades updated successfully" }, { status: 200 });
       } else {
         // Handle the case where firstQuarter is null
