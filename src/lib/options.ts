@@ -1,4 +1,4 @@
-import { Faculty, Student } from "@/types";
+import { Faculty, Strand, Student, Subject } from "@/types";
 
 export const statuses = [
   {
@@ -36,6 +36,20 @@ export const roles = [
     value: "admin",
   },
 ]
+
+export const generateStrandOptions = (strands: Strand[]) => {
+  const strs = strands.reduce(
+    (acc: { label: string; value: string }[], strand: Strand) => {
+      if (!acc.find((option) => option.value === strand.strandCode)) {
+        acc.push({ label: strand.strandCode, value: strand.strandCode });
+      }
+      return acc;
+    },
+    [],
+  );
+
+  return strs;
+};
 
 export const generateSectionOptionsFaculty = (faculties: Faculty[]) => {
   const sections = faculties.reduce(

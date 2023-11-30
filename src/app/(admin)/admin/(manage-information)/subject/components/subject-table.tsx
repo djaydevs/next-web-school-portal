@@ -24,19 +24,19 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { EnrollmentTableToolbar } from "@/components/enrollment-toolbar";
-import { EnrollmentTablePagination } from "./enrollment-table-pagination";
+import { SubjectTableToolbar } from "@/components/subject-toolbar";
+import { SubjectTablePagination } from "@/components/subject-table-pagination";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
-interface EnrollmentTableProps<TData, TValue> {
+interface SubjectTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
 }
 
-export default function EnrollmentTable<TData, TValue>({
+export default function SubjectTable<TData, TValue>({
   columns,
   data,
-}: EnrollmentTableProps<TData, TValue>) {
+}: SubjectTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
@@ -68,7 +68,7 @@ export default function EnrollmentTable<TData, TValue>({
 
   return (
     <div className="space-y-2">
-      <EnrollmentTableToolbar table={table} />
+      <SubjectTableToolbar table={table} />
       <div className="rounded-md border">
         <ScrollArea className="h-full md:h-[350px]">
           <Table>
@@ -113,7 +113,7 @@ export default function EnrollmentTable<TData, TValue>({
                     colSpan={columns.length}
                     className="h-24 text-center"
                   >
-                    No users found or an error occured.
+                    No subjects found or an error occured.
                   </TableCell>
                 </TableRow>
               )}
@@ -121,7 +121,7 @@ export default function EnrollmentTable<TData, TValue>({
           </Table>
         </ScrollArea>
       </div>
-      <EnrollmentTablePagination table={table} />
+      <SubjectTablePagination table={table} />
     </div>
   );
 }

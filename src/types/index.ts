@@ -446,8 +446,28 @@ export const subjectSchema = z.object({
     schoolYearId: z.string({
         required_error: "School Year name is required",
     }),
+    strand: z.object({
+        id: z.string(),
+        gradeLevelId: z.string({
+            required_error: "Grade level is required",
+        }),
+        strandCode: z.string({
+            required_error: "Strand code is required",
+        }),
+        strandName: z.string({
+            required_error: "Strand name is required",
+        }),
+    }),
 });
 export type Subject = z.infer<typeof subjectSchema>
+
+export const subjectFormSchema = z.object({
+    id: z.string(),
+    subjectName: z.string(),
+    strandId: z.string(),
+    schoolYearId: z.string(),
+});
+export type SubjectForm = z.infer<typeof subjectFormSchema>
 
 export const studentAssignSchema = z.object({
     gradeLevelId: z.string({

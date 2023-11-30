@@ -2,9 +2,7 @@
 
 import { FC } from "react";
 import UseCSV from "@usecsv/react";
-import * as XLSX from "xlsx";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
 
 import { SkeletonTable } from "@/components/loading";
 import Icons from "@/components/ui/icons";
