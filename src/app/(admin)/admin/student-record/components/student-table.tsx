@@ -14,8 +14,6 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-  Row,
-  RowModel
 } from "@tanstack/react-table";
 
 import {
@@ -29,17 +27,17 @@ import {
 import { StudentTableToolbar } from "@/components/student-toolbar";
 import { StudentTablePagination } from "@/components/student-table-pagination";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Button } from "@/components/ui/button";
+import Icons from "@/components/ui/icons";
 
 interface StudentTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  setFilteredData: (filteredData: TData[]) => void;
 }
 
 export default function StudentTable<TData, TValue>({
   columns,
   data,
-  setFilteredData,
 }: StudentTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
@@ -48,7 +46,7 @@ export default function StudentTable<TData, TValue>({
     [],
   );
   const [sorting, setSorting] = React.useState<SortingState>([]);
-  const table = useReactTable<TData>({
+  const table = useReactTable({
     data,
     columns,
     state: {
@@ -60,36 +58,36 @@ export default function StudentTable<TData, TValue>({
     enableRowSelection: true,
     onRowSelectionChange: setRowSelection,
     onSortingChange: setSorting,
-    onColumnFiltersChange: async (filters) => {
-      console.log('Filters Applied:', filters);    
-      setColumnFilters(filters);
-    
-      try {
-        const filteredData = getFilteredRowModel<TData>()(table) as unknown as RowModel<TData>;
-        const filteredDataArray = filteredData && filteredData.rows
-          ? filteredData.rows.map((row: Row<TData>) => row.original)
-          : [];
-    
-        console.log('Filtered Data Array:', filteredDataArray);
-        console.log('Filtered Data Length:', filteredDataArray.length);
-    
-        setFilteredData(filteredDataArray);
-      } catch (error) {
-        console.error('Error during filtering:', error);
-      }
-    }, 
+    onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
-    getCoreRowModel: getCoreRowModel<TData>(),
-    getFilteredRowModel: getFilteredRowModel<TData>(),
-    getPaginationRowModel: getPaginationRowModel<TData>(),
-    getSortedRowModel: getSortedRowModel<TData>(),
-    getFacetedRowModel: getFacetedRowModel<TData>(),
-    getFacetedUniqueValues: getFacetedUniqueValues<TData>(),
+    getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFacetedRowModel: getFacetedRowModel(),
+    getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
+  const exportFilteredData = () => {
+    const filteredData = table.getFilteredRowModel().rows;
+    // const dataStr = JSON.stringify(filteredData);
+    // const dataUri =
+    //   "data:application/json;charset=utf-8," + encodeURIComponent(dataStr);
+
+    // let exportFileDefaultName = "data.json";
+
+    // let linkElement = document.createElement("a");
+    // linkElement.setAttribute("href", dataUri);
+    // linkElement.setAttribute("download", exportFileDefaultName);
+    // linkElement.click();
+  };
 
   return (
     <div className="space-y-2">
+      <Button onClick={exportFilteredData}>
+        <Icons.FileDown className="mr-2" />
+        Export Data
+      </Button>
       <StudentTableToolbar table={table} />
       <div className="rounded-md border">
         <ScrollArea className="h-full md:h-[350px]">
