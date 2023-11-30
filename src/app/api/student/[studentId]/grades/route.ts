@@ -85,6 +85,21 @@ export async function POST(req: NextRequest, context: StudentProps) {
       return NextResponse.json({ message: 'User not found in Students table' }, { status: 404 });
     }
 
+    const schoolYear = await prisma.studentProfile.findUnique({
+      where: { userId: params.studentId },
+      select: {
+        section: {
+          select: {
+            schoolYearId: true,
+          },
+        },
+      },
+    });
+
+    if (!schoolYear) {
+      return NextResponse.json({ message: 'User not found in Students table' }, { status: 404 });
+    }
+
     // Grades don't exist, create new grades for the first quarter
     const newGrades = await prisma.grades.create({
       data: {
@@ -93,6 +108,7 @@ export async function POST(req: NextRequest, context: StudentProps) {
         subjectId,
         studentId: existingStudent.id,
         facultyId: faculty.id,
+        schoolYearId: schoolYear.section?.schoolYearId,
       },
     });
 
