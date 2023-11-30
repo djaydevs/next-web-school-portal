@@ -31,7 +31,7 @@ export async function GET(req: Request, context: contextProps) {
     }
 }
 
-export async function PATCH(req: NextRequest, context: contextProps) {
+export async function PUT(req: NextRequest, context: contextProps) {
     try {
         const { params } = context;
         const body = await req.json();
