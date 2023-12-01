@@ -1,17 +1,13 @@
 "use client";
 
-import { FC, useRef } from "react";
-import UseCSV from "@usecsv/react";
+import { FC } from "react";
 import { useQuery } from "@tanstack/react-query";
 
 import { SkeletonTable } from "@/components/loading";
-import Icons from "@/components/ui/icons";
-import { Button } from "@/components/ui/button";
 import StudentTable from "@/components/student-table";
 import { columns } from "@/components/student-columns";
-import { Student, studentSchema } from "@/types";
+import { Student } from "@/types";
 import { fetchStudent } from "@/hooks/getUsers";
-import PrintComponent from "./components/student-print";
 
 interface StudentRecordPageProps {}
 
@@ -25,16 +21,6 @@ const StudentRecordPage: FC<StudentRecordPageProps> = ({}) => {
     queryKey: ["students"],
     queryFn: async () => fetchStudent(),
   });
-
-  const renderButton = (openModal: any) => {
-    return (
-      <Button onClick={openModal}>
-        <Icons.FileUp className="mr-2" />
-        Import Data
-      </Button>
-    );
-  };
-  const filteredDataRef = useRef([]);
 
   if (isErrorFetchingStudents) {
     return <span>Error: {error.message}</span>;
@@ -51,30 +37,10 @@ const StudentRecordPage: FC<StudentRecordPageProps> = ({}) => {
           admin/registrar.
         </p>
       </div>
-      <div className="flex">
-        <div className="flex w-full gap-3">
-          <UseCSV
-            importerKey="d4dd9a93-3546-44f6-9cbf-4ba978759442"
-            user={{ userId: 12345 }}
-            render={(openModal) => renderButton(openModal)}
-          />
-          {/* <Button onClick={handleExport}>
-            <Icons.FileDown className="mr-2" />
-            Export Data
-          </Button> */}
-          <PrintComponent filteredDataRef={filteredDataRef}/>
-        </div>
-        <div className="flex w-full justify-end">
-          <Button variant="secondary">
-            <Icons.FilePlus2 className="mr-2" />
-            Add Student
-          </Button>
-        </div>
-      </div>
       {isLoadingStudentTable ? (
         <SkeletonTable />
       ) : (
-        <StudentTable columns={columns} data={students} filteredDataRef={filteredDataRef} />
+        <StudentTable columns={columns} data={students} />
       )}
     </div>
   );
