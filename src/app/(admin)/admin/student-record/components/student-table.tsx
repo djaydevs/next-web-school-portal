@@ -35,11 +35,13 @@ import { Student, studentSchema } from "@/types";
 interface StudentTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  filteredDataRef: React.MutableRefObject<any>;
 }
 
 export default function StudentTable<TData, TValue>({
   columns,
   data,
+  filteredDataRef,
 }: StudentTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
@@ -70,8 +72,14 @@ export default function StudentTable<TData, TValue>({
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
+  const filteredData = table.getFilteredRowModel().rows;
+  React.useEffect(() => {
+    if (filteredDataRef.current) {
+      filteredDataRef.current = filteredData;
+    }
+  }, [filteredData, filteredDataRef]);
+
   const exportFilteredData = () => {
-    const filteredData = table.getFilteredRowModel().rows;
     if (filteredData.length > 0) {
       const typedData = filteredData as { original: { email: string, studentProfile: {
         strand: any;
@@ -98,7 +106,6 @@ export default function StudentTable<TData, TValue>({
         sectionName: row.original.studentProfile.section?.sectionName,
         strandCode: row.original.studentProfile.strand?.strandCode,
       }));
-      
     
       // Create workbook and worksheet
       const workbook: XLSX.WorkBook = XLSX.utils.book_new();
@@ -145,25 +152,12 @@ export default function StudentTable<TData, TValue>({
         }
       }
     
-      // Add the worksheet to the workbook
       XLSX.utils.book_append_sheet(workbook, worksheet, 'Student');
-    
-      // Save the workbook to a file
       XLSX.writeFile(workbook, 'StudentRecord.xlsx', { compression: true });
+      
     } else {
       console.warn('Filtered data array is empty. No data to export.');
     }
-    
-    // const dataStr = JSON.stringify(filteredData);
-    // const dataUri =
-    //   "data:application/json;charset=utf-8," + encodeURIComponent(dataStr);
-
-    // let exportFileDefaultName = "data.json";
-
-    // let linkElement = document.createElement("a");
-    // linkElement.setAttribute("href", dataUri);
-    // linkElement.setAttribute("download", exportFileDefaultName);
-    // linkElement.click();
   };
 
   return (

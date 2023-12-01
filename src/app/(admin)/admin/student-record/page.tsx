@@ -1,6 +1,6 @@
 "use client";
 
-import { FC } from "react";
+import { FC, useRef } from "react";
 import UseCSV from "@usecsv/react";
 import { useQuery } from "@tanstack/react-query";
 
@@ -11,6 +11,7 @@ import StudentTable from "@/components/student-table";
 import { columns } from "@/components/student-columns";
 import { Student, studentSchema } from "@/types";
 import { fetchStudent } from "@/hooks/getUsers";
+import PrintComponent from "./components/student-print";
 
 interface StudentRecordPageProps {}
 
@@ -33,6 +34,7 @@ const StudentRecordPage: FC<StudentRecordPageProps> = ({}) => {
       </Button>
     );
   };
+  const filteredDataRef = useRef([]);
 
   if (isErrorFetchingStudents) {
     return <span>Error: {error.message}</span>;
@@ -60,6 +62,7 @@ const StudentRecordPage: FC<StudentRecordPageProps> = ({}) => {
             <Icons.FileDown className="mr-2" />
             Export Data
           </Button> */}
+          <PrintComponent filteredDataRef={filteredDataRef}/>
         </div>
         <div className="flex w-full justify-end">
           <Button variant="secondary">
@@ -71,7 +74,7 @@ const StudentRecordPage: FC<StudentRecordPageProps> = ({}) => {
       {isLoadingStudentTable ? (
         <SkeletonTable />
       ) : (
-        <StudentTable columns={columns} data={students} />
+        <StudentTable columns={columns} data={students} filteredDataRef={filteredDataRef} />
       )}
     </div>
   );
