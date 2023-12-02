@@ -39,11 +39,15 @@ export const columns: ColumnDef<Student>[] = [
     },
   },
   {
-    accessorKey: "name",
+    accessorKey: "fullName",
     header: ({ column }) => (
       <StudentTableColumnHeader column={column} title="Name" />
     ),
     cell: ({ row }) => {
+      const studentProfile = row.getValue(
+        "studentProfile",
+      ) as Student["studentProfile"];
+
       return (
         <div className="flex w-full items-center justify-start">
           <UserAvatar
@@ -53,7 +57,13 @@ export const columns: ColumnDef<Student>[] = [
             }}
             className="h-8 w-8 md:h-10 md:w-10"
           />
-          <span className="ml-2">{row.getValue("name")}</span>
+          <span className="ml-2">
+            {studentProfile?.firstName +
+              (studentProfile?.middleName
+                ? ` ${studentProfile?.middleName.charAt(0)}.`
+                : "") +
+              ` ${studentProfile?.lastName}`}
+          </span>
         </div>
       );
     },

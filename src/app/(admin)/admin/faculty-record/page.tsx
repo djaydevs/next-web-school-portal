@@ -27,15 +27,6 @@ const FacultyRecordPage: FC<FacultyRecordPageProps> = ({}) => {
     queryFn: async () => fetchFaculty(),
   });
 
-  const renderButton = (openModal: any) => {
-    return (
-      <Button onClick={openModal}>
-        <Icons.FileUp className="mr-2" />
-        Import Data
-      </Button>
-    );
-  };
-
   if (isErrorFetchingFaculties) {
     return <span>Error: {error.message}</span>;
   }
@@ -50,21 +41,6 @@ const FacultyRecordPage: FC<FacultyRecordPageProps> = ({}) => {
           Here&apos;s a list of faculty records you can manage as an
           admin/registrar.
         </p>
-      </div>
-      <div className="flex">
-        <div className="flex w-full gap-3">
-          <UseCSV
-            importerKey="d82e0f09-3989-45db-a14b-136267d2815f"
-            user={{ userId: 123456 }}
-            render={(openModal) => renderButton(openModal)}
-          />
-        </div>
-        <div className="flex w-full justify-end">
-          <Button variant="secondary">
-            <Icons.FilePlus2 className="mr-2" />
-            Add Faculty
-          </Button>
-        </div>
       </div>
       {isLoadingFacultyTable ? (
         <SkeletonTable />

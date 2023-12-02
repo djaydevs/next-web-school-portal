@@ -1,6 +1,9 @@
 "use client";
 
 import * as React from "react";
+import * as XLSX from "xlsx";
+import UseCSV from "@usecsv/react";
+import ReactToPrint from "react-to-print";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -29,7 +32,6 @@ import { FacultyTablePagination } from "@/components/faculty-table-pagination";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import Icons from "@/components/ui/icons";
-import * as XLSX from "xlsx";
 
 interface FacultyTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -72,13 +74,35 @@ export default function FacultyTable<TData, TValue>({
   const exportFilteredData = () => {
     const filteredData = table.getFilteredRowModel().rows;
     if (filteredData.length > 0) {
-      const typedData = filteredData as { original: { email: string, facultyProfile: {
-        section: any;
-        subjects: any; 
-        empNumber: string, firstName: string, middleName: string, lastName: string, sex: string, age: number, civilStatus: string, yearsInMJA: string, otherSchool: number, dateIssued: string, dateValid: string, licenseNumber: number, profOrg: string, degree: string, major: string, minor: string }, 
-        section: { sectionName: string }, subjects: {subjectName: string} } }[];
+      const typedData = filteredData as {
+        original: {
+          email: string;
+          facultyProfile: {
+            section: any;
+            subjects: any;
+            empNumber: string;
+            firstName: string;
+            middleName: string;
+            lastName: string;
+            sex: string;
+            age: number;
+            civilStatus: string;
+            yearsInMJA: string;
+            otherSchool: number;
+            dateIssued: string;
+            dateValid: string;
+            licenseNumber: number;
+            profOrg: string;
+            degree: string;
+            major: string;
+            minor: string;
+          };
+          section: { sectionName: string };
+          subjects: { subjectName: string };
+        };
+      }[];
       // Extract and map the required properties from each object
-      const dataToExport = typedData.map(row => ({
+      const dataToExport = typedData.map((row) => ({
         empNumber: row.original.facultyProfile.empNumber,
         firstName: row.original.facultyProfile.firstName,
         middleName: row.original.facultyProfile.middleName,
@@ -96,37 +120,58 @@ export default function FacultyTable<TData, TValue>({
         degree: row.original.facultyProfile.degree,
         major: row.original.facultyProfile.major,
         minor: row.original.facultyProfile.minor,
-        sectionNames: row.original.facultyProfile.section?.map((section: { sectionName: any; }) => section.sectionName).join(', '),
-        subjectNames: row.original.facultyProfile.subjects?.map((subjects: { subjectName: any; }) => subjects.subjectName).join(', '),
+        sectionNames: row.original.facultyProfile.section
+          ?.map((section: { sectionName: any }) => section.sectionName)
+          .join(", "),
+        subjectNames: row.original.facultyProfile.subjects
+          ?.map((subjects: { subjectName: any }) => subjects.subjectName)
+          .join(", "),
       }));
-      
-    
+
       // Create workbook and worksheet
       const workbook: XLSX.WorkBook = XLSX.utils.book_new();
       const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(dataToExport);
 
       XLSX.utils.sheet_add_aoa(worksheet, [
-        ["Employee Number", "Last Name", "First Name", "Middle Name", "Age", "Sex", "Civil Status","Email", 
-        "Years in MJA", "Other School", "Date Issued", "Date Valid",
-        "License Number", "Professional Organization", "Degree", "Major", "Minor", "Section", "Subject"],
+        [
+          "Employee Number",
+          "Last Name",
+          "First Name",
+          "Middle Name",
+          "Age",
+          "Sex",
+          "Civil Status",
+          "Email",
+          "Years in MJA",
+          "Other School",
+          "Date Issued",
+          "Date Valid",
+          "License Number",
+          "Professional Organization",
+          "Degree",
+          "Major",
+          "Minor",
+          "Section",
+          "Subject",
+        ],
       ]);
 
-    
       // Auto-size columns
-      const ref = worksheet['!ref'];
+      const ref = worksheet["!ref"];
       if (ref) {
         const headerRange = XLSX.utils.decode_range(ref);
 
         for (let col = headerRange.s.c; col <= headerRange.e.c; ++col) {
-          worksheet['!cols'] = worksheet['!cols'] || [];
+          worksheet["!cols"] = worksheet["!cols"] || [];
 
           // Set a default width for the column
-          worksheet['!cols'][col] = worksheet['!cols'][col] || { width: 15 };
+          worksheet["!cols"][col] = worksheet["!cols"][col] || { width: 15 };
 
           // Adjust column width based on header length
-          const headerCell = worksheet[XLSX.utils.encode_cell({ r: headerRange.s.r, c: col })];
-          if (headerCell && typeof headerCell.v === 'string') {
-            const colInfo = worksheet['!cols'][col]!;
+          const headerCell =
+            worksheet[XLSX.utils.encode_cell({ r: headerRange.s.r, c: col })];
+          if (headerCell && typeof headerCell.v === "string") {
+            const colInfo = worksheet["!cols"][col]!;
             colInfo.width = colInfo.width || 15; // Default width
             if (headerCell.v.length > colInfo.width) {
               colInfo.width = headerCell.v.length + 2; // Add some padding
@@ -136,8 +181,8 @@ export default function FacultyTable<TData, TValue>({
           // Adjust column width based on data length
           for (let row = headerRange.s.r + 1; row <= headerRange.e.r; ++row) {
             const cell = worksheet[XLSX.utils.encode_cell({ r: row, c: col })];
-            if (cell && cell.v && typeof cell.v === 'string') {
-              const colInfo = worksheet['!cols'][col]!;
+            if (cell && cell.v && typeof cell.v === "string") {
+              const colInfo = worksheet["!cols"][col]!;
               colInfo.width = colInfo.width || 15; // Default width
               if (cell.v.length > colInfo.width) {
                 colInfo.width = cell.v.length + 2; // Add some padding
@@ -146,37 +191,59 @@ export default function FacultyTable<TData, TValue>({
           }
         }
       }
-    
+
       // Add the worksheet to the workbook
-      XLSX.utils.book_append_sheet(workbook, worksheet, 'Faculty');    
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Faculty");
       // Save the workbook to a file
       XLSX.writeFile(workbook, "FacultyRecord.xlsx", { compression: true });
     } else {
-      console.warn('Filtered data array is empty. No data to export.');
+      console.warn("Filtered data array is empty. No data to export.");
     }
-    
-    // const dataStr = JSON.stringify(filteredData);
-    // const dataUri =
-    //   "data:application/json;charset=utf-8," + encodeURIComponent(dataStr);
-
-    // let exportFileDefaultName = "data.json";
-
-    // let linkElement = document.createElement("a");
-    // linkElement.setAttribute("href", dataUri);
-    // linkElement.setAttribute("download", exportFileDefaultName);
-    // linkElement.click();
   };
+
+  const renderButton = (openModal: any) => {
+    return (
+      <Button onClick={openModal}>
+        <Icons.FileUp className="mr-2" />
+        Import Data
+      </Button>
+    );
+  };
+
+  const componentRef = React.useRef<HTMLDivElement>(null);
 
   return (
     <div className="space-y-2">
-      <div className="flex w-full gap-3">
-        <Button onClick={exportFilteredData}>
-          <Icons.FileDown className="mr-2" />
-          Export Data
-        </Button>
+      <div className="flex">
+        <div className="flex w-full gap-3">
+          <UseCSV
+            importerKey="d82e0f09-3989-45db-a14b-136267d2815f"
+            user={{ userId: 123456 }}
+            render={(openModal) => renderButton(openModal)}
+          />
+          <Button onClick={exportFilteredData}>
+            <Icons.FileDown className="mr-2" />
+            Export Data
+          </Button>
+          <ReactToPrint
+            trigger={() => (
+              <Button>
+                <Icons.Printer className="mr-2" />
+                Print Data
+              </Button>
+            )}
+            content={() => (componentRef.current ? componentRef.current : null)}
+          />
+        </div>
+        <div className="flex w-full justify-end">
+          <Button variant="secondary">
+            <Icons.FilePlus2 className="mr-2" />
+            Add Faculty
+          </Button>
+        </div>
       </div>
       <FacultyTableToolbar table={table} />
-      <div className="rounded-md border">
+      <div ref={componentRef} className="rounded-md border">
         <ScrollArea className="h-full md:h-[350px]">
           <Table>
             <TableHeader>
