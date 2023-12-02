@@ -15,7 +15,7 @@ export const columns: ColumnDef<Faculty>[] = [
       <FacultyTableColumnHeader
         column={column}
         title="ID"
-        className="hidden md:table-cell"
+        className="table-cell"
       />
     ),
     cell: ({ row }) => {
@@ -25,25 +25,29 @@ export const columns: ColumnDef<Faculty>[] = [
 
       if (!facultyProfile?.empNumber) {
         return (
-          <Badge variant="destructive" className="hidden w-fit md:flex">
+          <Badge variant="destructive" className="w-fit">
             No ID
           </Badge>
         );
       }
 
       return (
-        <span className="hidden w-full items-center justify-start md:flex">
+        <span className=" w-full items-center justify-start">
           <p>{facultyProfile?.empNumber}</p>
         </span>
       );
     },
   },
   {
-    accessorKey: "name",
+    accessorKey: "fullName",
     header: ({ column }) => (
       <FacultyTableColumnHeader column={column} title="Name" />
     ),
     cell: ({ row }) => {
+      const facultyProfile = row.getValue(
+        "facultyProfile",
+      ) as Faculty["facultyProfile"];
+
       return (
         <div className="flex w-full items-center justify-start">
           <UserAvatar
@@ -53,7 +57,13 @@ export const columns: ColumnDef<Faculty>[] = [
             }}
             className="h-8 w-8 md:h-10 md:w-10"
           />
-          <span className="ml-2">{row.getValue("name")}</span>
+          <span className="ml-2">
+            {facultyProfile?.firstName +
+              (facultyProfile?.middleName
+                ? ` ${facultyProfile?.middleName.charAt(0)}.`
+                : "") +
+              ` ${facultyProfile?.lastName}`}
+          </span>
         </div>
       );
     },
@@ -65,12 +75,12 @@ export const columns: ColumnDef<Faculty>[] = [
       <FacultyTableColumnHeader
         column={column}
         title="Email"
-        className="hidden md:table-cell"
+        className="table-cell"
       />
     ),
     cell: ({ row }) => {
       return (
-        <div className="hidden w-full items-center justify-start md:flex">
+        <div className="w-full items-center justify-start">
           {row.getValue("email")}
         </div>
       );
@@ -82,7 +92,7 @@ export const columns: ColumnDef<Faculty>[] = [
       <FacultyTableColumnHeader
         column={column}
         title="Section"
-        className="hidden md:table-cell"
+        className="table-cell"
       />
     ),
     cell: ({ row }) => {
@@ -91,13 +101,17 @@ export const columns: ColumnDef<Faculty>[] = [
       ) as Faculty["facultyProfile"];
 
       if (!facultyProfile?.section.length) {
-        return <Badge variant="destructive">No sections</Badge>;
+        return (
+          <Badge variant="destructive" className="w-fit">
+            No sections
+          </Badge>
+        );
       }
 
       return (
-        <span className="hidden w-full items-center justify-start md:flex">
+        <span className="w-full items-center justify-start">
           {facultyProfile?.section.map((sec) => (
-            <Badge key={sec.id} variant="secondary" className="mr-2">
+            <Badge key={sec.id} variant="secondary" className="mb-1 mr-2">
               {sec.sectionName}
             </Badge>
           ))}
@@ -120,7 +134,7 @@ export const columns: ColumnDef<Faculty>[] = [
       <FacultyTableColumnHeader
         column={column}
         title="Subject"
-        className="hidden md:table-cell"
+        className=" md:table-cell"
       />
     ),
     cell: ({ row }) => {
@@ -129,13 +143,17 @@ export const columns: ColumnDef<Faculty>[] = [
       ) as Faculty["facultyProfile"];
 
       if (!facultyProfile?.subjects.length) {
-        return <Badge variant="destructive">No subjects</Badge>;
+        return (
+          <Badge variant="destructive" className="w-fit">
+            No subjects
+          </Badge>
+        );
       }
 
       return (
-        <span className="hidden w-full items-center justify-start md:flex">
+        <span className="w-full items-center justify-start">
           {facultyProfile?.subjects.map((sub) => (
-            <Badge key={sub.id} variant="outline" className="mr-2">
+            <Badge key={sub.id} variant="outline" className="mb-1 mr-2">
               {sub.subjectName}
             </Badge>
           ))}

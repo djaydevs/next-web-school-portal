@@ -12,7 +12,11 @@ import {
 interface DashboardCardsProps {}
 
 const DashboardCards: FC<DashboardCardsProps> = ({}) => {
-  const { data: studentData, isError: studentError, error: studentErrorDetails } = useQuery({
+  const {
+    data: studentData,
+    isError: studentError,
+    error: studentErrorDetails,
+  } = useQuery({
     queryKey: ["dashboardStudentCounts"],
     queryFn: async () => {
       const response = await fetch("/api/student");
@@ -23,7 +27,11 @@ const DashboardCards: FC<DashboardCardsProps> = ({}) => {
     },
   });
 
-  const { data: facultyData, isError: facultyError, error: facultyErrorDetails } = useQuery({
+  const {
+    data: facultyData,
+    isError: facultyError,
+    error: facultyErrorDetails,
+  } = useQuery({
     queryKey: ["dashboardFacultyCounts"],
     queryFn: async () => {
       const response = await fetch("/api/faculty");
@@ -38,7 +46,11 @@ const DashboardCards: FC<DashboardCardsProps> = ({}) => {
     return (
       <div>
         <span>Error fetching data:</span>
-        <pre>{studentError ? studentErrorDetails!.message : facultyErrorDetails!.message}</pre>
+        <pre>
+          {studentError
+            ? studentErrorDetails!.message
+            : facultyErrorDetails!.message}
+        </pre>
       </div>
     );
   }
@@ -56,9 +68,6 @@ const DashboardCards: FC<DashboardCardsProps> = ({}) => {
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">{studentCount}</div>
-          {/* <p className="text-xs text-muted-foreground">
-            +180.1% from last month
-          </p> */}
         </CardContent>
       </Card>
       <Card className="w-full">
@@ -67,7 +76,6 @@ const DashboardCards: FC<DashboardCardsProps> = ({}) => {
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">{facultyCount}</div>
-          {/* <p className="text-xs text-muted-foreground">+201 since last hour</p> */}
         </CardContent>
       </Card>
     </div>

@@ -15,7 +15,7 @@ export const columns: ColumnDef<Student>[] = [
       <StudentTableColumnHeader
         column={column}
         title="LRN"
-        className="hidden md:table-cell"
+        className="table-cell"
       />
     ),
     cell: ({ row }) => {
@@ -25,25 +25,29 @@ export const columns: ColumnDef<Student>[] = [
 
       if (!studentProfile?.lrnNumber) {
         return (
-          <Badge variant="destructive" className="hidden w-fit md:flex">
+          <Badge variant="destructive" className="w-fit">
             No LRN
           </Badge>
         );
       }
 
       return (
-        <span className="hidden w-full items-center justify-start md:flex">
+        <span className="w-full items-center justify-start">
           <p>{studentProfile?.lrnNumber}</p>
         </span>
       );
     },
   },
   {
-    accessorKey: "name",
+    accessorKey: "fullName",
     header: ({ column }) => (
       <StudentTableColumnHeader column={column} title="Name" />
     ),
     cell: ({ row }) => {
+      const studentProfile = row.getValue(
+        "studentProfile",
+      ) as Student["studentProfile"];
+
       return (
         <div className="flex w-full items-center justify-start">
           <UserAvatar
@@ -53,7 +57,13 @@ export const columns: ColumnDef<Student>[] = [
             }}
             className="h-8 w-8 md:h-10 md:w-10"
           />
-          <span className="ml-2">{row.getValue("name")}</span>
+          <span className="ml-2">
+            {studentProfile?.firstName +
+              (studentProfile?.middleName
+                ? ` ${studentProfile?.middleName.charAt(0)}.`
+                : "") +
+              ` ${studentProfile?.lastName}`}
+          </span>
         </div>
       );
     },
@@ -65,12 +75,12 @@ export const columns: ColumnDef<Student>[] = [
       <StudentTableColumnHeader
         column={column}
         title="Email"
-        className="hidden md:table-cell"
+        className="table-cell"
       />
     ),
     cell: ({ row }) => {
       return (
-        <div className="hidden w-full items-center justify-start md:flex">
+        <div className="w-full items-center justify-start">
           {row.getValue("email")}
         </div>
       );
@@ -82,7 +92,7 @@ export const columns: ColumnDef<Student>[] = [
       <StudentTableColumnHeader
         column={column}
         title="Grade"
-        className="hidden md:table-cell"
+        className="table-cell"
       />
     ),
     cell: ({ row }) => {
@@ -92,14 +102,14 @@ export const columns: ColumnDef<Student>[] = [
 
       if (!studentProfile?.gradeLevel) {
         return (
-          <Badge variant="destructive" className="hidden w-fit md:flex">
+          <Badge variant="destructive" className="w-fit">
             No grade
           </Badge>
         );
       }
 
       return (
-        <span className="hidden w-full items-center justify-start md:flex">
+        <span className="w-full items-center justify-start">
           <p>{studentProfile?.gradeLevel.gradeLevel}</p>
         </span>
       );
@@ -116,7 +126,7 @@ export const columns: ColumnDef<Student>[] = [
       <StudentTableColumnHeader
         column={column}
         title="Strand"
-        className="hidden md:table-cell"
+        className="table-cell"
       />
     ),
     cell: ({ row }) => {
@@ -126,14 +136,14 @@ export const columns: ColumnDef<Student>[] = [
 
       if (!studentProfile?.strand) {
         return (
-          <Badge variant="destructive" className="hidden w-fit md:flex">
+          <Badge variant="destructive" className="w-fit">
             No strand
           </Badge>
         );
       }
 
       return (
-        <span className="hidden w-full items-center justify-start md:flex">
+        <span className="w-full items-center justify-start">
           <p>{studentProfile?.strand.strandCode}</p>
         </span>
       );
@@ -150,7 +160,7 @@ export const columns: ColumnDef<Student>[] = [
       <StudentTableColumnHeader
         column={column}
         title="Section"
-        className="hidden md:table-cell"
+        className="table-cell"
       />
     ),
     cell: ({ row }) => {
@@ -160,14 +170,14 @@ export const columns: ColumnDef<Student>[] = [
 
       if (!studentProfile?.section) {
         return (
-          <Badge variant="destructive" className="hidden w-fit md:flex">
+          <Badge variant="destructive" className="w-fit">
             No section
           </Badge>
         );
       }
 
       return (
-        <span className="hidden w-full items-center justify-start md:flex">
+        <span className="w-full items-center justify-start">
           <p>{studentProfile?.section.sectionName}</p>
         </span>
       );

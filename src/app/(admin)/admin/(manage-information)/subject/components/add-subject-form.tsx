@@ -36,7 +36,7 @@ import { Button } from "@/components/ui/button";
 import Icons from "@/components/ui/icons";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
-import { Subject, subjectSchema } from "@/types";
+import { SubjectForm, subjectFormSchema } from "@/types";
 import { fetchSchoolYear, fetchStrands } from "@/hooks/getInfos";
 
 interface AddSubjectFormProps {}
@@ -65,8 +65,8 @@ const AddSubjectForm: FC<AddSubjectFormProps> = ({}) => {
     queryFn: async () => fetchSchoolYear(),
   });
 
-  const form = useForm<z.infer<typeof subjectSchema>>({
-    resolver: zodResolver(subjectSchema),
+  const form = useForm<z.infer<typeof subjectFormSchema>>({
+    resolver: zodResolver(subjectFormSchema),
     defaultValues: {
       id: "",
       subjectName: "",
@@ -77,7 +77,7 @@ const AddSubjectForm: FC<AddSubjectFormProps> = ({}) => {
 
   //Create a new subject
   const { mutate: addSubject, isPending: isLoadingSubmit } = useMutation({
-    mutationFn: (addSub: Subject) => {
+    mutationFn: (addSub: SubjectForm) => {
       return axios.post(`/api/subject`, addSub);
     },
     onError: (error) => {
@@ -102,7 +102,7 @@ const AddSubjectForm: FC<AddSubjectFormProps> = ({}) => {
     },
   });
 
-  const onSubmit = (data: z.infer<typeof subjectSchema>) => {
+  const onSubmit = (data: z.infer<typeof subjectFormSchema>) => {
     addSubject(data);
   };
 

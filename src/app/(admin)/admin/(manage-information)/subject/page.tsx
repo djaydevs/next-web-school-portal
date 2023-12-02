@@ -8,6 +8,7 @@ import AddSubjectForm from "@/components/add-subject-form";
 import { fetchSubjects } from "@/hooks/getInfos";
 import { SkeletonTable } from "@/components/loading";
 import SubjectTable from "@/components/subject-table";
+import { columns } from "@/components/subject-columns";
 
 interface SubjectPageProps {}
 
@@ -41,7 +42,7 @@ const SubjectPage: FC<SubjectPageProps> = ({}) => {
       {isLoadingSubjects ? (
         <SkeletonTable />
       ) : (
-        <SubjectTable subjectInfo={subjects} />
+        <SubjectTable columns={columns} data={subjects} />
       )}
     </div>
   );

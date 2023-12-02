@@ -56,10 +56,10 @@ export function StudentTableToolbar<TData>({
     <div className="flex items-center justify-between">
       <div className="flex flex-1 flex-col items-center space-x-2 py-4 md:flex-row">
         <Input
-          placeholder="Search student by name"
-          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+          placeholder="Search student by email"
+          value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("name")?.setFilterValue(event.target.value)
+            table.getColumn("email")?.setFilterValue(event.target.value)
           }
           className="h-8 w-full md:w-[300px]"
         />

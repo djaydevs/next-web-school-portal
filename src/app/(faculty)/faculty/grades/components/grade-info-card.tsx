@@ -3,9 +3,16 @@ import { FC } from "react";
 import { Student } from "@/types";
 import { UserAvatar } from "@/components/user-avatar";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Button } from "@/components/ui/button";
 
 interface GradeInfoCardProps {
   studentInfo?: Student;
@@ -13,15 +20,15 @@ interface GradeInfoCardProps {
 
 const GradeInfoCard: FC<GradeInfoCardProps> = ({ studentInfo }) => {
   return (
-    <Card className="my-auto w-full md:w-2/3">
-      <CardHeader className="space-y-2">
+    <Card className="my-auto">
+      <CardHeader>
         <div className="flex">
           <UserAvatar
             user={{
               name: studentInfo?.name || null,
               image: studentInfo?.image || null,
             }}
-            className="my-2 h-20 w-20"
+            className="h-16 w-16"
           />
           <div className="mx-2 my-auto flex flex-col gap-2">
             <CardTitle>{studentInfo?.name}</CardTitle>
@@ -29,32 +36,10 @@ const GradeInfoCard: FC<GradeInfoCardProps> = ({ studentInfo }) => {
           </div>
         </div>
       </CardHeader>
-      <CardContent className="space-y-4">
-        <ScrollArea className="h-full space-y-2 p-4 md:h-[360px]">
+      <CardContent>
+        <ScrollArea className="h-full px-4 md:h-[175px]">
           <div className="space-y-4">
-            <Separator className="mt-4" />
-            <h3>Report Card Information</h3>
             <Separator />
-            {studentInfo?.studentProfile?.strand?.subjects.map((sub) => (
-              <div key={sub.id}>
-                <Label>{sub.subjectName}:</Label>
-                {sub.grades ? (
-                  sub.grades.map((grade) => (
-                    <div key={grade.id}>
-                      <Label>
-                        1Q: {grade.firstQuarter}% | 2Q: {grade.secondQuarter}% |
-                        Final: {grade.finalGrade}%
-                      </Label>
-                    </div>
-                  ))
-                ) : (
-                  <Label>No grades available</Label>
-                )}
-              </div>
-            ))}
-          </div>
-          <div className="space-y-4">
-            <Separator className="mt-4" />
             <h3>Student Personal Information</h3>
             <Separator />
             <div className="flex flex-nowrap items-center justify-between">
@@ -137,9 +122,18 @@ const GradeInfoCard: FC<GradeInfoCardProps> = ({ studentInfo }) => {
                 {studentInfo?.studentProfile.parentGuardianOccupation}
               </Label>
             </div>
+            <div className="flex flex-nowrap items-center justify-between">
+              <Label>Contact Number:</Label>
+              <Label>{studentInfo?.studentProfile.contactNumber}</Label>
+            </div>
           </div>
         </ScrollArea>
       </CardContent>
+      {/* <CardFooter>
+        <Button variant="secondary" className="w-full">
+          View Student Grades
+        </Button>
+      </CardFooter> */}
     </Card>
   );
 };

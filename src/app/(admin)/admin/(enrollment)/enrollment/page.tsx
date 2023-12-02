@@ -2,9 +2,12 @@
 
 import { FC } from "react";
 import { useQuery } from "@tanstack/react-query";
+import UseCSV from "@usecsv/react";
 
 import { SkeletonTable } from "@/components/loading";
 import { columns } from "@/components/enrollment-columns";
+import { Button } from "@/components/ui/button";
+import Icons from "@/components/ui/icons";
 import EnrollmentTable from "@/components/enrollment-table";
 import { fetchStudent } from "@/hooks/getUsers";
 import { Student } from "@/types";
@@ -26,6 +29,15 @@ const UpdateEnrollment: FC<UpdateEnrollmentProps> = ({}) => {
     return <span>Error: {error.message}</span>;
   }
 
+  const renderButton = (openModal: any) => {
+    return (
+      <Button onClick={openModal}>
+        <Icons.FileUp className="mr-2" />
+        Import Data
+      </Button>
+    );
+  };
+
   // show the students that has enrollment only
   const studentsFilter = students?.filter(
     (student) =>
@@ -45,6 +57,13 @@ const UpdateEnrollment: FC<UpdateEnrollmentProps> = ({}) => {
           Here&apos;s a list of student enrollment you can manage as a portal
           admin/registrar.
         </p>
+      </div>
+      <div className="flex w-full gap-3">
+          <UseCSV
+            importerKey="78b8f45b-e611-48cc-96d5-af240f74d9fb"
+            user={{ userId: 12345 }}
+            render={(openModal) => renderButton(openModal)}
+          />
       </div>
       {isLoadingStudentsTable ? (
         <SkeletonTable />

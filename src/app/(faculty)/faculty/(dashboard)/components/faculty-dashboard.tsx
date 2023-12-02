@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useQuery } from "@tanstack/react-query";
 
 import Heading from "@/components/ui/heading";
@@ -21,48 +22,68 @@ export default function FacultyDashboard() {
   });
 
   return (
-    <div className="md:flex">
-      <section className="grow">
-        {currentUser?.name ? (
-          <Heading size="sm" className="grow py-2">
-            Welcome, {currentUser.name.split(" ")[0]} !
-          </Heading>
-        ) : (
-          <Heading size="sm" className="grow">
-            Welcome, Faculty !
-          </Heading>
-        )}
+    <div className="items-start justify-between px-4 md:flex md:pl-4 md:pr-0">
+      <section className="grow space-y-2">
+        <div className="flex items-center gap-4">
+          <Image
+            src="/dash-pic.png"
+            width={180}
+            height={180}
+            alt="dashboard picture"
+            className="mx-auto"
+          />
+          {currentUser?.name ? (
+            <Heading size="sm" className="grow py-4">
+              Welcome, {currentUser.name.split(" ")[0]} !
+            </Heading>
+          ) : (
+            <Heading size="sm" className="grow py-4">
+              Welcome, Faculty !
+            </Heading>
+          )}
+        </div>
         <Card>
           <CardHeader>
-            <CardTitle>
-              How to use faculty portal?
-            </CardTitle>
+            <CardTitle>How to use faculty portal?</CardTitle>
           </CardHeader>
           <CardContent>
-            <ScrollArea className="h-full space-y-2 p-4 md:h-[400px]">
-              <p> Encoding grades procedure</p><br />
+            <ScrollArea className="h-full space-y-2 p-4 md:h-[350px]">
+              <p> Encoding grades procedure</p>
+              <br />
               <ul>
                 <li>
                   <p>Step 1: Filtering out students</p>
                   <p>There are four methods to filter out your students </p>
-                  <p>1.	Search student by name in search bar</p>
-                  <p>2.	By grade level</p>
-                  <p>3.	By strand, and;</p>
-                  <p>4.	By section</p>
+                  <p>1. Search student by name in search bar</p>
+                  <p>2. By grade level</p>
+                  <p>3. By strand, and;</p>
+                  <p>4. By section</p>
                 </li>
                 <li>
                   <p>Step 2: Encoding student grades</p>
-                  <p>1.	After filtering out students, click “details” button at the right side of the student info</p>
-                  <p>2.	You&apos;ll directed to “Manage Report Card Details” where student information is shown.</p>
-                  <p>3.	At the right side of student info, there&apos;s an “Add Grade” table, to add grades:</p>
-                  <p>a.	Select a subject by clicking the dropdown box</p>
-                  <p>b.	Under the dropdown box, input the corresponding grade for first and second quarter</p>
-                  <p>c.	Click “Save Changes”</p>
+                  <p>
+                    1. After filtering out students, click “details” button at
+                    the right side of the student info
+                  </p>
+                  <p>
+                    2. You&apos;ll directed to “Manage Report Card Details”
+                    where student information is shown.
+                  </p>
+                  <p>
+                    3. At the right side of student info, there&apos;s an “Add
+                    Grade” table, to add grades:
+                  </p>
+                  <p>a. Select a subject by clicking the dropdown box</p>
+                  <p>
+                    b. Under the dropdown box, input the corresponding grade for
+                    first and second quarter
+                  </p>
+                  <p>c. Click “Save Changes”</p>
                 </li>
               </ul>
             </ScrollArea>
           </CardContent>
-       </Card>
+        </Card>
       </section>
       <section className="mx-auto hidden w-auto flex-none object-contain p-4 md:flex">
         <DashboardCalendar />

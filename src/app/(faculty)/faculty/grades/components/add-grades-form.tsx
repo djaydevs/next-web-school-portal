@@ -24,6 +24,15 @@ import {
   CardContent,
 } from "@/components/ui/card";
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
   Select,
   SelectContent,
   SelectItem,
@@ -31,7 +40,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useToast } from "@/components/ui/use-toast";
-import { AddGrade, Faculty, Student, addGradeSchema } from "@/types";
+import {
+  AddFirstGrade,
+  AddSecondGrade,
+  Faculty,
+  Student,
+  addFirstGradeSchema,
+  addSecondGradeSchema,
+} from "@/types";
 import { Button } from "@/components/ui/button";
 import Icons from "@/components/ui/icons";
 import { Input } from "@/components/ui/input";
@@ -59,21 +75,29 @@ const AddGradesForm: FC<AddGradesFormProps> = ({ params, initialValue }) => {
     queryFn: async () => getCurrentUser(),
   });
 
-  const form = useForm<z.infer<typeof addGradeSchema>>({
-    resolver: zodResolver(addGradeSchema),
+  const form1 = useForm<z.infer<typeof addFirstGradeSchema>>({
+    resolver: zodResolver(addFirstGradeSchema),
     defaultValues: {
-      studentId: initialValue?.studentProfile.id ?? "",
+      studentId: initialValue?.studentProfile?.id ?? "",
+      facultyId: currentUser?.id ?? "",
       section: initialValue?.studentProfile?.sectionId ?? "",
       subjectId: "",
-      grades: {
-        firstQuarter: undefined,
-        secondQuarter: undefined,
-      },
+      firstQuarter: 0,
     },
   });
 
-  const { mutate: addGrade, isPending: isLoadingSubmit } = useMutation({
-    mutationFn: (grade: AddGrade) => {
+  const form2 = useForm<z.infer<typeof addSecondGradeSchema>>({
+    resolver: zodResolver(addSecondGradeSchema),
+    defaultValues: {
+      studentId: initialValue?.studentProfile?.id ?? "",
+      section: initialValue?.studentProfile?.sectionId ?? "",
+      subjectId: "",
+      secondQuarter: 0,
+    },
+  });
+
+  const { mutate: addFirstGrade, isPending: isLoadingSubmit1 } = useMutation({
+    mutationFn: (grade: AddFirstGrade) => {
       return axios.post(`/api/student/${id}/grades`, grade);
     },
     onError: (error) => {
@@ -91,106 +115,231 @@ const AddGradesForm: FC<AddGradesFormProps> = ({ params, initialValue }) => {
     onSuccess: () => {
       toast({
         title: "Success",
-        description: "Strand added successfully!",
+        description: "Grade added successfully!",
       });
       router.push("/faculty/grades");
       router.refresh();
     },
   });
 
-  const onSubmit = (data: z.infer<typeof addGradeSchema>) => {
-    addGrade(data);
-    console.log(data);
+  const { mutate: addSecondGrade, isPending: isLoadingSubmit2 } = useMutation({
+    mutationFn: (grade: AddSecondGrade) => {
+      return axios.put(`/api/student/${id}/grades`, grade);
+    },
+    onError: (error) => {
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 500) {
+          toast({
+            title: "Error",
+            description:
+              "Something went wrong! Please check if required fields are answered, or try again later.",
+            variant: "destructive",
+          });
+        }
+        if (error.response?.status === 404) {
+          toast({
+            title: "Error",
+            description:
+              "First quarter grade not found. Please enter the first quarter grade first.",
+            variant: "destructive",
+          });
+        }
+      }
+    },
+    onSuccess: () => {
+      toast({
+        title: "Success",
+        description: "Grade added successfully!",
+      });
+      router.push("/faculty/grades");
+      router.refresh();
+    },
+  });
+
+  const onSubmit1 = (data1: z.infer<typeof addFirstGradeSchema>) => {
+    addFirstGrade(data1);
+  };
+
+  const onSubmit2 = (data2: z.infer<typeof addSecondGradeSchema>) => {
+    addSecondGrade(data2);
   };
 
   return (
-    <Card className="w-full">
+    <Card>
       <CardHeader>
-        <CardTitle>Add Grade</CardTitle>
-        <CardDescription>Add grades to student.</CardDescription>
+        <CardTitle>Add Grades</CardTitle>
+        <CardDescription>
+          Add first and second quarter grades to student.
+        </CardDescription>
       </CardHeader>
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="w-full space-y-6"
-        >
-          <CardContent>
-            <FormField
-              control={form.control}
-              name="subjectId"
-              render={({ field }) => (
-                <FormItem className="mb-2">
-                  <FormLabel>Subject</FormLabel>
-                  <Select
-                    onValueChange={(value) => {
-                      field.onChange(value);
-                    }}
-                    defaultValue={field.value ?? ""}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select subject option..." />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {currentUser?.facultyProfile?.subjects?.map((sub) => (
-                        <SelectItem key={sub.id} value={sub.id}>
-                          {sub.subjectName}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="grades.firstQuarter"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>First Quarter</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      value={field.value}
-                      onChange={(e) => field.onChange(Number(e.target.value))}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            {form.getValues("grades.firstQuarter") ? (
-              <FormField
-                control={form.control}
-                name="grades.secondQuarter"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Second Quarter</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        value={field.value}
-                        onChange={(e) => field.onChange(Number(e.target.value))}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            ) : null}
-          </CardContent>
-          <CardFooter className="flex w-full justify-end">
-            <Button type="submit" disabled={isLoadingSubmit}>
-              {isLoadingSubmit ? (
-                <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" />
-              ) : null}{" "}
-              Save
+      <CardContent className="flex w-full flex-col items-center justify-center gap-4">
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button className="w-full">
+              <Icons.PlusCircle className="mr-2" />
+              First Quarter Grade
             </Button>
-          </CardFooter>
-        </form>
-      </Form>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>Add First Quarter Grade</DialogTitle>
+              <DialogDescription>
+                Edit first quarter grade to student.
+              </DialogDescription>
+            </DialogHeader>
+            <Form {...form1}>
+              <form
+                onSubmit={form1.handleSubmit(onSubmit1)}
+                className="w-full space-y-6"
+              >
+                <FormField
+                  control={form1.control}
+                  name="subjectId"
+                  render={({ field }) => (
+                    <FormItem className="mb-2">
+                      <FormLabel>Subject</FormLabel>
+                      <Select
+                        onValueChange={(value) => {
+                          field.onChange(value);
+                        }}
+                        defaultValue={field.value ?? ""}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select subject option..." />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {currentUser?.facultyProfile?.subjects?.map((sub) => (
+                            <SelectItem key={sub.id} value={sub.id}>
+                              {sub.subjectName}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form1.control}
+                  name="firstQuarter"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>First Quarter</FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          value={field.value}
+                          onChange={(e) =>
+                            field.onChange(Number(e.target.value))
+                          }
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <DialogFooter className="flex justify-between gap-4">
+                  <Button
+                    type="submit"
+                    disabled={isLoadingSubmit1}
+                    className="w-full"
+                  >
+                    {isLoadingSubmit1 ? (
+                      <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" />
+                    ) : null}{" "}
+                    Save
+                  </Button>
+                </DialogFooter>
+              </form>
+            </Form>
+          </DialogContent>
+        </Dialog>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button className="w-full">
+              <Icons.PlusCircle className="mr-2" />
+              Second Quarter Grade
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>Add Second Quarter Grade</DialogTitle>
+              <DialogDescription>
+                Edit second quarter grade to student.
+              </DialogDescription>
+            </DialogHeader>
+            <Form {...form2}>
+              <form
+                onSubmit={form2.handleSubmit(onSubmit2)}
+                className="w-full space-y-6"
+              >
+                <FormField
+                  control={form2.control}
+                  name="subjectId"
+                  render={({ field }) => (
+                    <FormItem className="mb-2">
+                      <FormLabel>Subject</FormLabel>
+                      <Select
+                        onValueChange={(value) => {
+                          field.onChange(value);
+                        }}
+                        defaultValue={field.value ?? ""}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select subject option..." />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {currentUser?.facultyProfile?.subjects?.map((sub) => (
+                            <SelectItem key={sub.id} value={sub.id}>
+                              {sub.subjectName}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form2.control}
+                  name="secondQuarter"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Second Quarter</FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          value={field.value}
+                          onChange={(e) =>
+                            field.onChange(Number(e.target.value))
+                          }
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <DialogFooter className="flex justify-between gap-4">
+                  <Button
+                    type="submit"
+                    disabled={isLoadingSubmit2}
+                    className="w-full"
+                  >
+                    {isLoadingSubmit2 ? (
+                      <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" />
+                    ) : null}{" "}
+                    Save
+                  </Button>
+                </DialogFooter>
+              </form>
+            </Form>
+          </DialogContent>
+        </Dialog>
+      </CardContent>
     </Card>
   );
 };
