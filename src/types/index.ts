@@ -435,6 +435,36 @@ export const sectionSchema = z.object({
 });
 export type Section = z.infer<typeof sectionSchema>
 
+export const sectionAndStrandSchema = z.object({
+    id: z.string(),
+    schoolYearId: z.string({
+        required_error: "School Year is required",
+    }),
+    gradeLevelId: z.string({
+        required_error: "Grade level is required",
+    }),
+    strandId: z.string({
+        required_error: "Strand code is required",
+    }),
+    sectionName: z.string({
+        required_error: "Grade section is required",
+    }),
+    room: z.string(),
+    strand: z.object({
+        id: z.string(),
+        gradeLevelId: z.string({
+            required_error: "Grade level is required",
+        }),
+        strandCode: z.string({
+            required_error: "Strand code is required",
+        }),
+        strandName: z.string({
+            required_error: "Strand name is required",
+        }),
+    }),
+});
+export type SectionAndStrand = z.infer<typeof sectionAndStrandSchema>
+
 export const subjectSchema = z.object({
     id: z.string(),
     subjectName: z.string({
