@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import url from 'url';
 
 interface StudentProps {
   params: {
@@ -9,40 +10,27 @@ interface StudentProps {
 
 // Viewing of the grades
 export async function GET(req: NextRequest, context: StudentProps) {
-  try {
-    const { params } = context;
+  const { params } = context;
+  const { query } = url.parse(req.nextUrl.toString(), true);
+  const schoolYearId = Array.isArray(query.schoolYearId) ? query.schoolYearId[0] : query.schoolYearId;
 
-    //return the grades, subject and semester
-    const studentGrades = await prisma.studentProfile.findUnique({
-      where: { userId: params.studentId }, // model of user: id in the params
-      include: {
-        grades: {
-          select: {
-            firstQuarter: true,
-            secondQuarter: true,
-            finalGrade: true,
-            remarks: true,
-            subject: {
-              select: {
-                subjectName: true,
-              },
-            },
-            section: {
-              select: {
-                schoolYear: {
-                  select: {
-                    semester: true,
-                  },
-                },
-              },
-            },
-          },
-        },
+  try {
+    const student = await prisma.studentProfile.findUnique({
+      where: { userId: params.studentId },
+    })
+
+    const studentGrades = await prisma.grades.findMany({
+      where: {
+        studentId: student?.id,
+        schoolYearId: schoolYearId
       },
+      include: {
+        subject: true,
+      }
     });
 
     if (!studentGrades) {
-      return NextResponse.json({ error: 'Student not found' }, { status: 404 });
+      return NextResponse.json({ error: 'Student grades not found' }, { status: 404 });
     }
 
     return NextResponse.json(studentGrades, { status: 200 });
@@ -67,23 +55,13 @@ export async function POST(req: NextRequest, context: StudentProps) {
       facultyId,
     } = data;
 
-    // Check if the user (with userId) exists in the Students table
     const faculty = await prisma.facultyProfile.findUnique({
       where: { userId: facultyId },
     });
 
-    if (!faculty) {
-      return NextResponse.json({ message: 'User not found in Students table' }, { status: 404 });
-    }
-
-    // Check if the user (with userId) exists in the Students table
     const existingStudent = await prisma.studentProfile.findUnique({
       where: { userId: params.studentId },
     });
-
-    if (!existingStudent) {
-      return NextResponse.json({ message: 'User not found in Students table' }, { status: 404 });
-    }
 
     const schoolYear = await prisma.studentProfile.findUnique({
       where: { userId: params.studentId },
@@ -97,7 +75,7 @@ export async function POST(req: NextRequest, context: StudentProps) {
     });
 
     if (!schoolYear) {
-      return NextResponse.json({ message: 'User not found in Students table' }, { status: 404 });
+      return NextResponse.json({ message: 'School year not found' }, { status: 404 });
     }
 
     // Grades don't exist, create new grades for the first quarter
@@ -106,8 +84,8 @@ export async function POST(req: NextRequest, context: StudentProps) {
         firstQuarter,
         section: { connect: { id: section } },
         subjectId,
-        studentId: existingStudent.id,
-        facultyId: faculty.id,
+        studentId: existingStudent?.id,
+        facultyId: faculty?.id,
         schoolYearId: schoolYear.section?.schoolYearId,
       },
     });
@@ -164,20 +142,20 @@ export async function PUT(req: NextRequest, context: StudentProps) {
 
         // Ensure that updatedGradesFromDB and its relevant fields are not null
 
-        if ( updatedGradesFromDB && updatedGradesFromDB.firstQuarter !== null && updatedGradesFromDB.secondQuarter !== null ) {
-            // Calculate finalGrade based on firstQuarter and updated secondQuarter
-            const calculatedFinalGrade = (Number(updatedGradesFromDB.firstQuarter) + Number(updatedGradesFromDB.secondQuarter)) / 2;
+        if (updatedGradesFromDB && updatedGradesFromDB.firstQuarter !== null && updatedGradesFromDB.secondQuarter !== null) {
+          // Calculate finalGrade based on firstQuarter and updated secondQuarter
+          const calculatedFinalGrade = (Number(updatedGradesFromDB.firstQuarter) + Number(updatedGradesFromDB.secondQuarter)) / 2;
 
-            // Update the finalGrade in the database
-            await prisma.grades.update({
-              where: { id: existingGrades.id },
-              data: {
-                finalGrade: calculatedFinalGrade,
-                remarks: calculatedFinalGrade < 74 ? "FAILED" : "PASSED",
-              },
-            });
+          // Update the finalGrade in the database
+          await prisma.grades.update({
+            where: { id: existingGrades.id },
+            data: {
+              finalGrade: calculatedFinalGrade,
+              remarks: calculatedFinalGrade < 74 ? "FAILED" : "PASSED",
+            },
+          });
         }
-      
+
         return NextResponse.json({ message: "Grades updated successfully" }, { status: 200 });
       } else {
         // Handle the case where firstQuarter is null
