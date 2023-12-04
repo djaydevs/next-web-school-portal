@@ -1,7 +1,17 @@
 "use client";
 
 import { FC } from "react";
-import { Bar, BarChart, CartesianGrid, Legend, Rectangle, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Legend,
+  Rectangle,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 // interface Data1Item {
 //   name: string;
@@ -12,7 +22,7 @@ const data2 = [
   {
     name: "2018 - 2019",
     Grade11: 253,
-    Grade12: 308, 
+    Grade12: 308,
     Total: 561,
   },
   {
@@ -61,7 +71,7 @@ interface EnrollmentStatsProps {}
 const EnrollmentStats: FC<EnrollmentStatsProps> = ({}) => {
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
-    {/* <div style={{ width: "100%", height: 270,  marginBottom: '20px' }}>
+      {/* <div style={{ width: "100%", height: 270,  marginBottom: '20px' }}>
         <ResponsiveContainer width="100%" height="100%">
         <BarChart data={data1WithTotalSum}>
           <XAxis
@@ -86,43 +96,56 @@ const EnrollmentStats: FC<EnrollmentStatsProps> = ({}) => {
         </ResponsiveContainer>
       </div> */}
       <div style={{ width: "100%", height: 270 }}>
-      <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={data2}
-          width={500}
-          height={300}
-          margin={{
-            top: 5,
-            right: 30,
-            left: 20,
-            bottom: 5,
-          }}
-        >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis 
-            dataKey="name"
-            stroke="#888888"
-            fontSize={12}
-            tickLine={false}
-            axisLine={false}
-            tickFormatter={(value) => `${value}`}
-          />
-          <YAxis 
-            domain={[0, 1000]}
-            stroke="#888888"
-            fontSize={12}
-            tickLine={false}
-            axisLine={false}
-            tickFormatter={(value) => `${value}`}
-          />
-          <Tooltip />
-          <Legend />
-          <Bar dataKey="Grade11" fill="#845959" activeBar={<Rectangle fill="#51262" stroke="inverted" />} />
-          <Bar dataKey="Grade12" fill="#facc15" activeBar={<Rectangle fill="#c8a311" stroke="emphasis" />} />
-          <Bar dataKey="Total" fill="#65302f" activeBar={<Rectangle fill="#c8a311" stroke="emphasis" />} />
-        </BarChart>
-      </ResponsiveContainer>
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart
+            data={data2}
+            width={500}
+            height={300}
+            margin={{
+              top: 5,
+              right: 30,
+              left: 20,
+              bottom: 5,
+            }}
+          >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis
+              dataKey="name"
+              stroke="#888888"
+              fontSize={12}
+              tickLine={false}
+              axisLine={false}
+              tickFormatter={(value) => `${value}`}
+            />
+            <YAxis
+              domain={[0, 1000]}
+              stroke="#888888"
+              fontSize={12}
+              tickLine={false}
+              axisLine={false}
+              tickFormatter={(value) => `${value}`}
+            />
+            <Tooltip />
+            <Legend />
+            <Bar
+              dataKey="Grade11"
+              fill="#845959"
+              // activeBar={<Rectangle fill="#51262" stroke="inverted" />}
+            />
+            <Bar
+              dataKey="Grade12"
+              fill="#facc15"
+              // activeBar={<Rectangle fill="#c8a311" stroke="emphasis" />}
+            />
+            <Bar
+              dataKey="Total"
+              fill="#65302f"
+              // activeBar={<Rectangle fill="#c8a311" stroke="emphasis" />}
+            />
+          </BarChart>
+        </ResponsiveContainer>
       </div>
-    </div>    
+    </div>
   );
 };
 

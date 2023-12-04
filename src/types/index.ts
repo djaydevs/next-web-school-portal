@@ -550,6 +550,16 @@ export const gradesSchema = z.object({
         subjectName: z.string(),
         schoolYearId: z.string(),
         strandId: z.string(),
+    }),
+    faculty: z.object({
+        id: z.string(),
+        lastName: z.string(),
+        firstName: z.string(),
+        user: z.object({
+            id: z.string(),
+            name: z.string(),
+            image: z.string(),
+        })
     })
 });
 export type Grades = z.infer<typeof gradesSchema>

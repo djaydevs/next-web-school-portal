@@ -26,7 +26,11 @@ export async function GET(req: NextRequest, context: StudentProps) {
       },
       include: {
         subject: true,
-        faculty: true
+        faculty: {
+          include: {
+            user: true,
+          }
+        }
       },
     });
 
@@ -60,7 +64,7 @@ export async function POST(req: NextRequest, context: StudentProps) {
       where: { userId: facultyId },
     });
 
-    if(!faculty) {
+    if (!faculty) {
       return NextResponse.json({ message: 'Faculty not found' }, { status: 404 });
     }
 

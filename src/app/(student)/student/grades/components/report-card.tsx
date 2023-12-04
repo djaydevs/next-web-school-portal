@@ -31,10 +31,22 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { fetchGradesBySchoolYear, fetchSchoolYear } from "@/hooks/getInfos";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Grades, Student, gradesSchema } from "@/types";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { UserAvatar } from "@/components/user-avatar";
 
 interface ReportCardProps {
   studentInfo?: Student;
@@ -136,6 +148,7 @@ const ReportCard: FC<ReportCardProps> = ({ studentInfo }) => {
                 <TableHead className="text-center">2nd Quarter</TableHead>
                 <TableHead className="text-center">Final Grade</TableHead>
                 <TableHead className="text-center">Remarks</TableHead>
+                <TableHead className="text-center"></TableHead>
               </TableRow>
             </TableHeader>
             {isLoadingGradesBySchoolYear ? (
@@ -180,6 +193,47 @@ const ReportCard: FC<ReportCardProps> = ({ studentInfo }) => {
                           ) : (
                             <Badge variant="destructive">FAILED</Badge>
                           )}
+                        </TableCell>
+                        <TableCell>
+                          <Dialog>
+                            <DialogTrigger asChild>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="w-full"
+                              >
+                                Details
+                              </Button>
+                            </DialogTrigger>
+                            <DialogContent className="sm:max-w-[425px]">
+                              <DialogHeader>
+                                <DialogTitle>More Details</DialogTitle>
+                              </DialogHeader>
+                              {grade.faculty ? (
+                                <div className="flex flex-col gap-2">
+                                  <Label>Graded by:</Label>
+                                  <div className="flex w-full flex-col items-center justify-center gap-2">
+                                    <UserAvatar
+                                      user={{
+                                        name: grade.faculty.user.name || null,
+                                        image: grade.faculty.user.image || null,
+                                      }}
+                                      className="h-20 w-20"
+                                    />
+                                    <span>
+                                      {grade.faculty?.firstName +
+                                        ` ${grade.faculty?.lastName}`}
+                                    </span>
+                                    <Label className="font-sm text-gray-700 dark:text-gray-400">
+                                      {grade.subject.subjectName + " Teacher"}
+                                    </Label>
+                                  </div>
+                                </div>
+                              ) : (
+                                <span>No Faculty</span>
+                              )}
+                            </DialogContent>
+                          </Dialog>
                         </TableCell>
                       </TableRow>
                     );

@@ -102,7 +102,7 @@ const AddGradesForm: FC<AddGradesFormProps> = ({ params, initialValue }) => {
     if (currentUser?.id) {
       form1.setValue("facultyId", currentUser.id);
     }
-  }, [currentUser]);
+  }, [currentUser, form1]);
 
   const { mutate: addFirstGrade, isPending: isLoadingSubmit1 } = useMutation({
     mutationFn: (grade: AddFirstGrade) => {
@@ -171,8 +171,6 @@ const AddGradesForm: FC<AddGradesFormProps> = ({ params, initialValue }) => {
   const onSubmit2 = (data2: z.infer<typeof addSecondGradeSchema>) => {
     addSecondGrade(data2);
   };
-
-  console.log("Data sent to API:", form1.getValues());
 
   return (
     <Card>
