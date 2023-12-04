@@ -3,7 +3,11 @@ import { prisma } from "@/lib/prisma";
 
 export async function GET(req: Request) {
   try {
-    const sections = await prisma.section.findMany();
+    const sections = await prisma.section.findMany({
+      include: {
+        strand: true,
+      },
+    });
 
     if (!sections) {
       return NextResponse.json({ message: "No sections found" }, { status: 404 });

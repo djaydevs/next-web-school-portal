@@ -37,7 +37,7 @@ const ManageGradeIdPage: FC<ManageGradeIdPageProps> = ({ params }) => {
   return (
     <>
       <h2 className="px-4 text-2xl font-bold tracking-tight">
-        Manage Report Card Details
+        Manage Student Report Card Details
       </h2>
       {infoLoading ? (
         <div className="m-auto">

@@ -1,5 +1,5 @@
-import { Section } from "@/types";
 import axios from "axios";
+import { Section, Grades } from "@/types";
 
 export const fetchSchoolYear = async () => {
     const res = await axios.get("/api/school-year");
@@ -52,3 +52,15 @@ export const fetchSubjectById = async (subjectId: string) => {
     const res = await axios.get(`/api/subject/${subjectId}`)
     return res.data
 }
+
+export const fetchGrades = async () => {
+    const res = await axios.get("/api/grades");
+    return res.data;
+};
+
+export const fetchGradesBySchoolYear = async (userId: string, schoolYearId: string) => {
+    const res = await axios.get(`/api/student/${userId}/grades?schoolYearId=${schoolYearId}`);
+    const grades = res.data
+
+    return grades as Grades[];
+};

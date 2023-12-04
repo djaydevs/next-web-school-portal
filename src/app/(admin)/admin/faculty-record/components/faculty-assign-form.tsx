@@ -4,7 +4,7 @@ import axios, { AxiosError } from "axios";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Section, Subject } from "@prisma/client";
+import { Subject } from "@prisma/client";
 import { useRouter } from "next/navigation";
 
 import {
@@ -29,8 +29,14 @@ import Icons from "@/components/ui/icons";
 import { useToast } from "@/components/ui/use-toast";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Faculty, FacultyAssign, facultyAssignSchema } from "@/types";
+import {
+  Faculty,
+  FacultyAssign,
+  SectionAndStrand,
+  facultyAssignSchema,
+} from "@/types";
 import { fetchSections, fetchSubjects } from "@/hooks/getInfos";
+import { Badge } from "@/components/ui/badge";
 
 interface FacultyAssignFormProps {
   params: {
@@ -52,7 +58,7 @@ const FacultyAssignForm: FC<FacultyAssignFormProps> = ({
     isPending: isLoadingSections,
     isError: isErrorFetchingSections,
     error: sectionsError,
-  } = useQuery<Section[]>({
+  } = useQuery<SectionAndStrand[]>({
     queryKey: ["sections"],
     queryFn: async () => fetchSections(),
   });
@@ -159,17 +165,23 @@ const FacultyAssignForm: FC<FacultyAssignFormProps> = ({
                                 checked={field.value?.includes(section.id)}
                                 onCheckedChange={(checked) => {
                                   return checked
-                                    ? field.onChange([...field.value, section.id])
+                                    ? field.onChange([
+                                        ...field.value,
+                                        section.id,
+                                      ])
                                     : field.onChange(
                                         field.value?.filter(
                                           (value) => value !== section.id,
-                                        )
-                                      )
+                                        ),
+                                      );
                                 }}
                               />
                             </FormControl>
                             <FormLabel className="font-normal">
                               {section.sectionName}
+                              <Badge variant="outline" className="ml-2">
+                                {section.strand.strandCode}
+                              </Badge>
                             </FormLabel>
                           </FormItem>
                         ))}
@@ -200,12 +212,15 @@ const FacultyAssignForm: FC<FacultyAssignFormProps> = ({
                                 checked={field.value?.includes(subject.id)}
                                 onCheckedChange={(checked) => {
                                   return checked
-                                    ? field.onChange([...field.value, subject.id])
+                                    ? field.onChange([
+                                        ...field.value,
+                                        subject.id,
+                                      ])
                                     : field.onChange(
                                         field.value?.filter(
                                           (value) => value !== subject.id,
-                                        )
-                                      )
+                                        ),
+                                      );
                                 }}
                               />
                             </FormControl>

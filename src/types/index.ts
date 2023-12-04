@@ -185,6 +185,7 @@ export const studentSchema = z.object({
     isVerified: z.boolean(),
     studentProfile: z.object({
         id: z.string(),
+        userId: z.string(),
         lrnNumber: z.string(),
         sex: z.string(),
         age: z.number({
@@ -274,6 +275,7 @@ export const studentSchema = z.object({
                     genAverage: z.number(),
                     remarks: z.string(),
                     studentId: z.string(),
+                    // schoolYearId: z.string(),
                 })),
             }))
         }),
@@ -435,6 +437,30 @@ export const sectionSchema = z.object({
 });
 export type Section = z.infer<typeof sectionSchema>
 
+export const sectionAndStrandSchema = z.object({
+    id: z.string(),
+    schoolYearId: z.string({
+        required_error: "School Year is required",
+    }),
+    gradeLevelId: z.string({
+        required_error: "Grade level is required",
+    }),
+    strandId: z.string({
+        required_error: "Strand code is required",
+    }),
+    sectionName: z.string({
+        required_error: "Grade section is required",
+    }),
+    room: z.string(),
+    strand: z.object({
+        id: z.string(),
+        gradeLevelId: z.string(),
+        strandCode: z.string(),
+        strandName: z.string(),
+    }),
+});
+export type SectionAndStrand = z.infer<typeof sectionAndStrandSchema>
+
 export const subjectSchema = z.object({
     id: z.string(),
     subjectName: z.string({
@@ -509,6 +535,34 @@ export const addSecondGradeSchema = z.object({
     secondQuarter: z.number(),
 });
 export type AddSecondGrade = z.infer<typeof addSecondGradeSchema>
+
+export const gradesSchema = z.object({
+    id: z.string(),
+    firstQuarter: z.number(),
+    secondQuarter: z.number(),
+    finalGrade: z.number(),
+    genAverage: z.number(),
+    remarks: z.string(),
+    studentId: z.string(),
+    schoolYearId: z.string(),
+    subject: z.object({
+        id: z.string(),
+        subjectName: z.string(),
+        schoolYearId: z.string(),
+        strandId: z.string(),
+    }),
+    faculty: z.object({
+        id: z.string(),
+        lastName: z.string(),
+        firstName: z.string(),
+        user: z.object({
+            id: z.string(),
+            name: z.string(),
+            image: z.string(),
+        })
+    })
+});
+export type Grades = z.infer<typeof gradesSchema>
 
 export const verifySchema = z.object({
     inputNumber: z.string({

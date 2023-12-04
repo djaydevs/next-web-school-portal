@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -75,11 +75,13 @@ const AddGradesForm: FC<AddGradesFormProps> = ({ params, initialValue }) => {
     queryFn: async () => getCurrentUser(),
   });
 
+  console.log("currentUser:", currentUser?.id);
+
   const form1 = useForm<z.infer<typeof addFirstGradeSchema>>({
     resolver: zodResolver(addFirstGradeSchema),
     defaultValues: {
       studentId: initialValue?.studentProfile?.id ?? "",
-      facultyId: currentUser?.id ?? "",
+      facultyId: currentUser?.id,
       section: initialValue?.studentProfile?.sectionId ?? "",
       subjectId: "",
       firstQuarter: 0,
@@ -95,6 +97,12 @@ const AddGradesForm: FC<AddGradesFormProps> = ({ params, initialValue }) => {
       secondQuarter: 0,
     },
   });
+
+  useEffect(() => {
+    if (currentUser?.id) {
+      form1.setValue("facultyId", currentUser.id);
+    }
+  }, [currentUser, form1]);
 
   const { mutate: addFirstGrade, isPending: isLoadingSubmit1 } = useMutation({
     mutationFn: (grade: AddFirstGrade) => {

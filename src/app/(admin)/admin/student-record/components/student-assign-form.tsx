@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import * as z from "zod";
 import axios, { AxiosError } from "axios";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -33,9 +33,15 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import Icons from "@/components/ui/icons";
+import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/components/ui/use-toast";
 import { Student, StudentAssign, studentAssignSchema } from "@/types";
-import { fetchGradeLevel, fetchSections, fetchStrands } from "@/hooks/getInfos";
+import {
+  fetchGradeLevel,
+  fetchSections,
+  fetchSectionsByStrand,
+  fetchStrands,
+} from "@/hooks/getInfos";
 
 interface StudentAssignFormProps {
   params: {
@@ -73,7 +79,7 @@ const StudentAssignForm: FC<StudentAssignFormProps> = ({
   });
 
   const {
-    data: sections,
+    data: section,
     isPending: isLoadingSections,
     isError: isErrorFetchingSections,
     error: sectionsError,
@@ -90,6 +96,16 @@ const StudentAssignForm: FC<StudentAssignFormProps> = ({
       sectionId: initialValue?.studentProfile.sectionId ?? "",
     },
   });
+
+  // get section based on selected strand
+  const selectedStrandId = form.watch("strandId");
+  const [sections, setSections] = useState(section || []);
+
+  useEffect(() => {
+    fetchSectionsByStrand(selectedStrandId).then((sections) => {
+      setSections(sections);
+    });
+  }, [selectedStrandId]);
 
   const { mutate: updateStudent, isPending: isLoadingSubmit } = useMutation({
     mutationFn: (update: StudentAssign) => {
@@ -201,6 +217,9 @@ const StudentAssignForm: FC<StudentAssignFormProps> = ({
                         {strands?.map((strand) => (
                           <SelectItem key={strand.id} value={strand.id}>
                             {strand.strandCode}
+                            <Badge variant="outline" className="ml-2">
+                              {strand.strandName}
+                            </Badge>
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -229,11 +248,19 @@ const StudentAssignForm: FC<StudentAssignFormProps> = ({
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {sections?.map((section) => (
-                          <SelectItem key={section.id} value={section.id}>
-                            {section.sectionName}
-                          </SelectItem>
-                        ))}
+                        {sections?.length > 0 ? (
+                          sections.map((section) => (
+                            <SelectItem key={section.id} value={section.id}>
+                              {section.sectionName}
+                            </SelectItem>
+                          ))
+                        ) : (
+                          <div className="flex items-center justify-center p-4">
+                            <Badge variant="destructive">
+                              No sections found
+                            </Badge>
+                          </div>
+                        )}
                       </SelectContent>
                     </Select>
                   )}

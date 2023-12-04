@@ -14,14 +14,14 @@ interface FacultyInfoCardProps {
 const FacultyInfoCard: FC<FacultyInfoCardProps> = ({ facultyInfo }) => {
   return (
     <Card className="my-auto w-full md:w-2/3">
-      <CardHeader className="space-y-2">
+      <CardHeader>
         <div className="flex">
           <UserAvatar
             user={{
               name: facultyInfo?.name || null,
               image: facultyInfo?.image || null,
             }}
-            className="my-2 h-20 w-20"
+            className="h-20 w-20"
           />
           <div className="mx-2 my-auto flex flex-col gap-2">
             <CardTitle>{facultyInfo?.name}</CardTitle>
@@ -30,7 +30,7 @@ const FacultyInfoCard: FC<FacultyInfoCardProps> = ({ facultyInfo }) => {
         </div>
       </CardHeader>
       <CardContent className="space-y-4">
-        <ScrollArea className="h-full space-y-2 p-4 md:h-[360px]">
+        <ScrollArea className="h-full p-4 md:h-[360px]">
           <div className="space-y-4">
             <h3>Faculty Personal Information</h3>
             <Separator />
