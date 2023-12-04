@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import Heading from "@/components/ui/heading";
 import DashboardCalendar from "@/components/dashboard-calendar";
 import { getCurrentUser } from "@/hooks/getUsers";
-import { User } from "@/types";
+import { Faculty, User } from "@/types";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
@@ -16,7 +16,7 @@ export default function FacultyDashboard() {
     isPending: isLoadingCurrentUser,
     isError: isErrorFetchingCurrentUser,
     error,
-  } = useQuery<User>({
+  } = useQuery<Faculty>({
     queryKey: ["currentUser"],
     queryFn: async () => getCurrentUser(),
   });
@@ -32,9 +32,9 @@ export default function FacultyDashboard() {
             alt="dashboard picture"
             className="mx-auto"
           />
-          {currentUser?.name ? (
+          {currentUser?.facultyProfile ? (
             <Heading size="sm" className="grow py-4">
-              Welcome, {currentUser.name.split(" ")[0]} !
+              Welcome, {currentUser.facultyProfile.firstName} !
             </Heading>
           ) : (
             <Heading size="sm" className="grow py-4">
