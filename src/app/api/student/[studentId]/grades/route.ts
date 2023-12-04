@@ -26,7 +26,8 @@ export async function GET(req: NextRequest, context: StudentProps) {
       },
       include: {
         subject: true,
-      }
+        faculty: true
+      },
     });
 
     if (!studentGrades) {
@@ -59,6 +60,10 @@ export async function POST(req: NextRequest, context: StudentProps) {
       where: { userId: facultyId },
     });
 
+    if(!faculty) {
+      return NextResponse.json({ message: 'Faculty not found' }, { status: 404 });
+    }
+
     const existingStudent = await prisma.studentProfile.findUnique({
       where: { userId: params.studentId },
     });
@@ -85,7 +90,7 @@ export async function POST(req: NextRequest, context: StudentProps) {
         section: { connect: { id: section } },
         subjectId,
         studentId: existingStudent?.id,
-        facultyId: faculty?.id,
+        facultyId: faculty.id,
         schoolYearId: schoolYear.section?.schoolYearId,
       },
     });
